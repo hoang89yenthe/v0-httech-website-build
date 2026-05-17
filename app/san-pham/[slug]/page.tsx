@@ -3,43 +3,33 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { getMockProductBySlug, getRelatedProducts, getMockProducts } from "@/lib/sanity/mock-data";
-import { getProductBySlug } from "@/lib/sanity/queries";
-import { Product, categoryLabels, tagLabels } from "@/lib/sanity/schema";
+import { getRelatedProducts, getMockProducts } from "@/lib/sanity/mock-data";
+import { fetchProductBySlug } from "@/lib/sanity/fetch";
+import { categoryLabels, tagLabels, getTagClass } from "@/lib/sanity/schema";
+import { getProductImageUrl } from "@/lib/sanity/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { 
-  ChevronRight, 
-  Phone, 
-  ShoppingCart, 
-  Check, 
-  Truck, 
-  Shield, 
+import {
+  ChevronRight,
+  Phone,
+  ShoppingCart,
+  Check,
+  Truck,
+  Shield,
   RotateCcw,
   MessageCircle
 } from "lucide-react";
+
+const ZALO_NUMBER = process.env.NEXT_PUBLIC_ZALO_NUMBER ?? "0909123456";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function fetchProduct(slug: string): Promise<Product | null> {
-  try {
-    const sanityProduct = await getProductBySlug(slug);
-    if (sanityProduct) {
-      return sanityProduct;
-    }
-  } catch (error) {
-    console.log("[v0] Sanity not connected, using mock data");
-  }
-  
-  return getMockProductBySlug(slug) || null;
-}
-
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = await fetchProduct(slug);
+  const product = await fetchProductBySlug(slug);
   
   if (!product) {
     return {
@@ -55,7 +45,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = await fetchProduct(slug);
+  const product = await fetchProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -66,19 +56,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const formatPrice = (price?: number) => {
     if (!price) return "Liên hệ";
     return new Intl.NumberFormat("vi-VN").format(price) + "đ";
-  };
-
-  const getTagColor = (tag?: string) => {
-    switch (tag) {
-      case "hot":
-        return "bg-red-500 text-white";
-      case "best-seller":
-        return "bg-amber-500 text-white";
-      case "new":
-        return "bg-green-500 text-white";
-      default:
-        return "bg-slate-500 text-white";
-    }
   };
 
   return (
@@ -112,14 +89,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="relative">
               <div className="aspect-square rounded-2xl overflow-hidden bg-muted">
                 <img
-                  src={`https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=800&fit=crop&q=80&sig=${product._id}`}
+                  src={getProductImageUrl(product, 800)}
                   alt={product.title}
                   className="w-full h-full object-cover"
                 />
               </div>
               {product.tag && (
                 <Badge
-                  className={`absolute top-4 left-4 ${getTagColor(product.tag)} text-sm px-3 py-1`}
+                  className={`absolute top-4 left-4 ${getTagClass(product.tag)} text-sm px-3 py-1`}
                 >
                   {tagLabels[product.tag] || product.tag}
                 </Badge>
@@ -206,7 +183,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
               {/* Zalo contact */}
               <a
-                href="https://zalo.me/0909123456"
+                href={`https://zalo.me/${ZALO_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors mb-6"
@@ -245,7 +222,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <Card key={relatedProduct._id} className="group overflow-hidden">
                     <div className="relative aspect-square bg-muted overflow-hidden">
                       <img
-                        src={`https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&h=400&fit=crop&q=80&sig=${relatedProduct._id}`}
+                        src={getProductImageUrl(relatedProduct)}
                         alt={relatedProduct.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />

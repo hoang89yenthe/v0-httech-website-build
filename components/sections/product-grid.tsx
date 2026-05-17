@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Product, categoryLabels, tagLabels } from "@/lib/sanity/schema";
+import { Product, categoryLabels, tagLabels, getTagClass } from "@/lib/sanity/schema";
+import { getProductImageUrl } from "@/lib/sanity/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -36,19 +37,6 @@ export function ProductGrid({ products }: ProductGridProps) {
   const formatPrice = (price?: number) => {
     if (!price) return "Liên hệ";
     return new Intl.NumberFormat("vi-VN").format(price) + "đ";
-  };
-
-  const getTagColor = (tag?: string) => {
-    switch (tag) {
-      case "hot":
-        return "bg-red-500 text-white";
-      case "best-seller":
-        return "bg-amber-500 text-white";
-      case "new":
-        return "bg-green-500 text-white";
-      default:
-        return "bg-slate-500 text-white";
-    }
   };
 
   return (
@@ -94,13 +82,13 @@ export function ProductGrid({ products }: ProductGridProps) {
             >
               <div className="relative aspect-square bg-muted overflow-hidden">
                 <img
-                  src={`https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&h=400&fit=crop&q=80&sig=${product._id}`}
+                  src={getProductImageUrl(product)}
                   alt={product.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 {product.tag && (
                   <Badge
-                    className={`absolute top-3 left-3 ${getTagColor(product.tag)}`}
+                    className={`absolute top-3 left-3 ${getTagClass(product.tag)}`}
                   >
                     {tagLabels[product.tag] || product.tag}
                   </Badge>
@@ -119,9 +107,12 @@ export function ProductGrid({ products }: ProductGridProps) {
                   >
                     <Eye className="w-5 h-5" />
                   </Link>
-                  <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                  <Link
+                    href="/#contact"
+                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                  >
                     <ShoppingCart className="w-5 h-5" />
-                  </button>
+                  </Link>
                 </div>
               </div>
               <CardContent className="p-4">

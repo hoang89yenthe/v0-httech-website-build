@@ -3,28 +3,13 @@ import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ProductGrid } from "@/components/sections/product-grid";
-import { getMockProducts } from "@/lib/sanity/mock-data";
-import { getProducts } from "@/lib/sanity/queries";
-import { Product } from "@/lib/sanity/schema";
+import { fetchProducts } from "@/lib/sanity/fetch";
 import { ChevronRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Sản Phẩm - HTtech Thiết Bị Điện Công Nghiệp",
   description: "Khám phá đầy đủ các sản phẩm biến tần, PLC, HMI, thiết bị đóng cắt, cảm biến và vật tư tủ điện chính hãng tại HTtech.",
 };
-
-async function fetchProducts(): Promise<Product[]> {
-  try {
-    const sanityProducts = await getProducts();
-    if (sanityProducts && sanityProducts.length > 0) {
-      return sanityProducts;
-    }
-  } catch (error) {
-    console.log("[v0] Sanity not connected, using mock data");
-  }
-  
-  return getMockProducts();
-}
 
 export default async function ProductsPage() {
   const products = await fetchProducts();

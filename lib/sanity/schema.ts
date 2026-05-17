@@ -149,3 +149,12 @@ export const tagLabels: Record<string, string> = {
   "best-seller": "Bán chạy",
   "new": "Mới",
 };
+
+export function getTagClass(tag?: string): string {
+  switch (tag) {
+    case "hot": return "bg-red-500 text-white";
+    case "best-seller": return "bg-amber-500 text-white";
+    case "new": return "bg-green-500 text-white";
+    default: return "bg-slate-500 text-white";
+  }
+}
