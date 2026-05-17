@@ -59,6 +59,7 @@ export function HeroSection() {
               <img
                 src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&h=500&fit=crop"
                 alt="Tự động hóa công nghiệp"
+                loading="eager"
                 className="w-full h-auto"
               />
             </div>

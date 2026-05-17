@@ -9,11 +9,27 @@ const beVietnamPro = Be_Vietnam_Pro({
   variable: "--font-sans",
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://httech.vn';
+
 export const metadata: Metadata = {
   title: 'HTtech - Thiết Bị Điện Công Nghiệp & Tự Động Hóa',
   description: 'HTtech chuyên cung cấp thiết bị điện công nghiệp, biến tần, PLC, HMI, thiết bị đóng cắt từ Siemens, ABB, Mitsubishi, Schneider. Dịch vụ thiết kế tủ điện chuyên nghiệp.',
   keywords: ['biến tần', 'PLC', 'HMI', 'thiết bị điện công nghiệp', 'tự động hóa', 'Siemens', 'ABB', 'Mitsubishi'],
   generator: 'v0.app',
+  metadataBase: new URL(SITE_URL),
+  openGraph: {
+    title: 'HTtech - Thiết Bị Điện Công Nghiệp & Tự Động Hóa',
+    description: 'HTtech chuyên cung cấp thiết bị điện công nghiệp, biến tần, PLC, HMI, thiết bị đóng cắt từ Siemens, ABB, Mitsubishi, Schneider.',
+    siteName: 'HTtech',
+    locale: 'vi_VN',
+    type: 'website',
+    url: SITE_URL,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'HTtech - Thiết Bị Điện Công Nghiệp & Tự Động Hóa',
+    description: 'HTtech chuyên cung cấp thiết bị điện công nghiệp, biến tần, PLC, HMI từ Siemens, ABB, Mitsubishi, Schneider.',
+  },
   icons: {
     icon: [
       {

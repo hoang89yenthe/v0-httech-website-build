@@ -9,9 +9,19 @@ import { ChevronRight } from "lucide-react";
 export const metadata: Metadata = {
   title: "Sản Phẩm - HTtech Thiết Bị Điện Công Nghiệp",
   description: "Khám phá đầy đủ các sản phẩm biến tần, PLC, HMI, thiết bị đóng cắt, cảm biến và vật tư tủ điện chính hãng tại HTtech.",
+  openGraph: {
+    title: "Sản Phẩm - HTtech Thiết Bị Điện Công Nghiệp",
+    description: "Khám phá đầy đủ các sản phẩm biến tần, PLC, HMI, thiết bị đóng cắt, cảm biến và vật tư tủ điện chính hãng tại HTtech.",
+    type: "website",
+  },
 };
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category } = await searchParams;
   const products = await fetchProducts();
 
   return (
@@ -36,7 +46,7 @@ export default async function ProductsPage() {
         </div>
 
         {/* Products */}
-        <ProductGrid products={products} />
+        <ProductGrid products={products} initialCategory={category} />
       </main>
       <Footer />
     </div>

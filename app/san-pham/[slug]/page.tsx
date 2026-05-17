@@ -37,9 +37,15 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     };
   }
 
+  const description = product.description || `Mua ${product.title} chính hãng tại HTtech với giá tốt nhất.`;
   return {
     title: `${product.title} - HTtech`,
-    description: product.description || `Mua ${product.title} chính hãng tại HTtech với giá tốt nhất.`,
+    description,
+    openGraph: {
+      title: `${product.title} - HTtech`,
+      description,
+      type: 'website',
+    },
   };
 }
 
@@ -91,6 +97,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <img
                   src={getProductImageUrl(product, 800)}
                   alt={product.title}
+                  loading="eager"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -224,6 +231,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       <img
                         src={getProductImageUrl(relatedProduct)}
                         alt={relatedProduct.title}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>

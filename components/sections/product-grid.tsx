@@ -20,11 +20,14 @@ const categories = [
 
 interface ProductGridProps {
   products: Product[];
+  initialCategory?: string;
 }
 
-export function ProductGrid({ products }: ProductGridProps) {
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [visibleCount, setVisibleCount] = useState(12);
+export function ProductGrid({ products, initialCategory }: ProductGridProps) {
+  const [activeCategory, setActiveCategory] = useState(
+    initialCategory && initialCategory !== "" ? initialCategory : "all"
+  );
+  const [visibleCount, setVisibleCount] = useState(8);
 
   const filteredProducts =
     activeCategory === "all"
@@ -84,6 +87,7 @@ export function ProductGrid({ products }: ProductGridProps) {
                 <img
                   src={getProductImageUrl(product)}
                   alt={product.title}
+                  loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 {product.tag && (
