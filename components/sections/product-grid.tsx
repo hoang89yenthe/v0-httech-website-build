@@ -1,0 +1,180 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { Product, categoryLabels, tagLabels } from "@/lib/sanity/schema";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { ShoppingCart, Eye, Check } from "lucide-react";
+
+const categories = [
+  { value: "all", label: "Tất cả" },
+  { value: "bien-tan", label: "Biến tần" },
+  { value: "plc-hmi", label: "PLC & HMI" },
+  { value: "dong-cat", label: "Thiết bị đóng cắt" },
+  { value: "cam-bien", label: "Cảm biến" },
+  { value: "vat-tu", label: "Vật tư tủ điện" },
+];
+
+interface ProductGridProps {
+  products: Product[];
+}
+
+export function ProductGrid({ products }: ProductGridProps) {
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [visibleCount, setVisibleCount] = useState(12);
+
+  const filteredProducts =
+    activeCategory === "all"
+      ? products
+      : products.filter((p) => p.category === activeCategory);
+
+  const displayedProducts = filteredProducts.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredProducts.length;
+
+  const formatPrice = (price?: number) => {
+    if (!price) return "Liên hệ";
+    return new Intl.NumberFormat("vi-VN").format(price) + "đ";
+  };
+
+  const getTagColor = (tag?: string) => {
+    switch (tag) {
+      case "hot":
+        return "bg-red-500 text-white";
+      case "best-seller":
+        return "bg-amber-500 text-white";
+      case "new":
+        return "bg-green-500 text-white";
+      default:
+        return "bg-slate-500 text-white";
+    }
+  };
+
+  return (
+    <section id="products" className="py-16 md:py-24 bg-muted/30">
+      <div className="container mx-auto px-4">
+        {/* Section header */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Sản Phẩm <span className="text-primary">Nổi Bật</span>
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Thiết bị điện công nghiệp chính hãng từ các thương hiệu hàng đầu thế giới: 
+            Siemens, ABB, Mitsubishi, Schneider, Omron, Delta...
+          </p>
+        </div>
+
+        {/* Category tabs */}
+        <div className="flex flex-wrap justify-center gap-2 mb-10">
+          {categories.map((cat) => (
+            <button
+              key={cat.value}
+              onClick={() => {
+                setActiveCategory(cat.value);
+                setVisibleCount(12);
+              }}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeCategory === cat.value
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-background hover:bg-muted border"
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Products grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {displayedProducts.map((product) => (
+            <Card
+              key={product._id}
+              className="group overflow-hidden hover:shadow-lg transition-shadow"
+            >
+              <div className="relative aspect-square bg-muted overflow-hidden">
+                <img
+                  src={`https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&h=400&fit=crop&q=80&sig=${product._id}`}
+                  alt={product.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                {product.tag && (
+                  <Badge
+                    className={`absolute top-3 left-3 ${getTagColor(product.tag)}`}
+                  >
+                    {tagLabels[product.tag] || product.tag}
+                  </Badge>
+                )}
+                {product.inStock && (
+                  <div className="absolute top-3 right-3 bg-green-500/90 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                    <Check className="w-3 h-3" />
+                    Còn hàng
+                  </div>
+                )}
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                  <Link
+                    href={`/san-pham/${product.slug.current}`}
+                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                  >
+                    <Eye className="w-5 h-5" />
+                  </Link>
+                  <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                    <ShoppingCart className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+              <CardContent className="p-4">
+                {product.brand && (
+                  <p className="text-xs text-muted-foreground mb-1">
+                    {product.brand}
+                  </p>
+                )}
+                <Link href={`/san-pham/${product.slug.current}`}>
+                  <h3 className="font-semibold line-clamp-2 hover:text-primary transition-colors">
+                    {product.title}
+                  </h3>
+                </Link>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {categoryLabels[product.category] || product.category}
+                </p>
+              </CardContent>
+              <CardFooter className="p-4 pt-0 flex items-center justify-between">
+                <div>
+                  <span className="text-lg font-bold text-primary">
+                    {formatPrice(product.price)}
+                  </span>
+                  {product.originalPrice && product.originalPrice > (product.price || 0) && (
+                    <span className="text-sm text-muted-foreground line-through ml-2">
+                      {formatPrice(product.originalPrice)}
+                    </span>
+                  )}
+                </div>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+
+        {/* Load more */}
+        {hasMore && (
+          <div className="text-center mt-10">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setVisibleCount((prev) => prev + 8)}
+            >
+              Xem thêm sản phẩm
+            </Button>
+          </div>
+        )}
+
+        {/* View all link */}
+        <div className="text-center mt-8">
+          <Link href="/san-pham" className="text-primary hover:underline font-medium">
+            Xem tất cả sản phẩm &rarr;
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
