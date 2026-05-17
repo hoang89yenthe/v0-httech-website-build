@@ -63,7 +63,7 @@ export function Footer() {
             <h3 className="text-white font-semibold mb-4">Về chúng tôi</h3>
             <ul className="space-y-2">
               {footerLinks.company.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm hover:text-primary transition-colors"
@@ -80,7 +80,7 @@ export function Footer() {
             <h3 className="text-white font-semibold mb-4">Sản phẩm</h3>
             <ul className="space-y-2">
               {footerLinks.products.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm hover:text-primary transition-colors"
@@ -97,7 +97,7 @@ export function Footer() {
             <h3 className="text-white font-semibold mb-4">Hỗ trợ</h3>
             <ul className="space-y-2">
               {footerLinks.support.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
                     className="text-sm hover:text-primary transition-colors"
