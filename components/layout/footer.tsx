@@ -3,8 +3,8 @@ import { Phone, Mail, MapPin, Facebook, Youtube } from "lucide-react";
 
 const footerLinks = {
   company: [
-    { label: "Giới thiệu", href: "#about" },
-    { label: "Dịch vụ", href: "#services" },
+    { label: "Giới thiệu", href: "/#about" },
+    { label: "Dịch vụ", href: "/#services" },
     { label: "Dự án", href: "#" },
     { label: "Tuyển dụng", href: "#" },
   ],
@@ -35,25 +35,33 @@ export function Footer() {
                 <span className="text-primary-foreground font-bold">HT</span>
               </div>
               <div>
-                <span className="text-xl font-bold text-white">HTtech</span>
+                <span className="text-xl font-bold text-white">HT TECH</span>
                 <p className="text-xs text-slate-400">Kỹ Thuật Công Nghiệp</p>
               </div>
             </div>
-            <p className="text-sm mb-4">
-              Đối tác tin cậy trong lĩnh vực tự động hóa và thiết bị điện công nghiệp tại Việt Nam.
+            <p className="text-sm mb-4 font-semibold text-white">
+              CÔNG TY TNHH KỸ THUẬT CÔNG NGHIỆP HT TECH
             </p>
             <div className="space-y-2 text-sm">
+              <p className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-primary shrink-0 mt-1" />
+                <span>CL13-16 KĐT Him Lam Green Park, Phường Võ Cường, Tỉnh Bắc Ninh, Việt Nam</span>
+              </p>
               <p className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-primary" />
-                123 Đường ABC, Quận 9, TP.HCM
+                <span className="text-primary font-bold text-xs border border-primary px-1 rounded">MST</span>
+                <span>2301405035</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <span className="text-primary font-bold text-xs border border-primary px-1 rounded">Đại diện</span>
+                <span>Nguyễn Văn Hoàn</span>
               </p>
               <p className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-primary" />
-                1900 6868
+                <span>1900 6868</span>
               </p>
               <p className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-primary" />
-                info@httech.vn
+                <span>info@httech.vn</span>
               </p>
             </div>
           </div>
@@ -129,7 +137,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-slate-800 mt-8 pt-8 text-center text-sm">
-          <p>&copy; {new Date().getFullYear()} HTtech. Tất cả quyền được bảo lưu.</p>
+          <p>&copy; {new Date().getFullYear()} HT TECH. Tất cả quyền được bảo lưu.</p>
         </div>
       </div>
     </footer>

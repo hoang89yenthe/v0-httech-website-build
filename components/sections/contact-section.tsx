@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,19 +16,12 @@ export function ContactSection() {
     product: "",
     message: "",
   });
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission - would integrate with Sanity or other backend
-    alert("Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.");
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      company: "",
-      product: "",
-      message: "",
-    });
+    setSubmitted(true);
+    setFormData({ name: "", phone: "", email: "", company: "", product: "", message: "" });
   };
 
   const handleChange = (
@@ -62,7 +55,7 @@ export function ContactSection() {
                   <div>
                     <h3 className="font-semibold mb-1">Địa chỉ</h3>
                     <p className="text-sm text-muted-foreground">
-                      123 Đường ABC, Phường XYZ, Quận 9, TP. Hồ Chí Minh
+                      CL13-16 KĐT Him Lam Green Park, Phường Võ Cường, Tỉnh Bắc Ninh, Việt Nam
                     </p>
                   </div>
                 </div>
@@ -76,7 +69,7 @@ export function ContactSection() {
                     <Phone className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Hotline</h3>
+                    <h3 className="font-semibold mb-1">Hotline / Zalo</h3>
                     <p className="text-sm text-muted-foreground">
                       1900 6868
                       <br />
@@ -129,6 +122,18 @@ export function ContactSection() {
             <Card>
               <CardContent className="p-6 md:p-8">
                 <h3 className="text-xl font-semibold mb-6">Gửi yêu cầu tư vấn</h3>
+                {submitted ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-center gap-4">
+                    <CheckCircle className="w-16 h-16 text-green-500" />
+                    <h4 className="text-xl font-semibold">Gửi yêu cầu thành công!</h4>
+                    <p className="text-muted-foreground max-w-sm">
+                      Cảm ơn bạn đã liên hệ. Đội ngũ tư vấn HT TECH sẽ phản hồi trong thời gian sớm nhất.
+                    </p>
+                    <Button variant="outline" onClick={() => setSubmitted(false)}>
+                      Gửi yêu cầu khác
+                    </Button>
+                  </div>
+                ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
@@ -219,6 +224,7 @@ export function ContactSection() {
                     Gửi yêu cầu
                   </Button>
                 </form>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -227,7 +233,7 @@ export function ContactSection() {
         {/* Google Map */}
         <div className="mt-12 rounded-xl overflow-hidden shadow-lg">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.4842102890986!2d106.76932!3d10.8500!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDUxJzAwLjAiTiAxMDbCsDQ2JzA5LjYiRQ!5e0!3m2!1sen!2s!4v1234567890"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.825835693041!2d106.06456077597138!3d21.15933618321685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31350965d1d6adad%3A0x27f7db5d91835697!2sHim%20Lam%20Green%20Park!5e0!3m2!1svi!2s!4v1717336000000"
             width="100%"
             height="400"
             style={{ border: 0 }}

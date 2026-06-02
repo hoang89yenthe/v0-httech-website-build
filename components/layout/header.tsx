@@ -6,10 +6,10 @@ import { Menu, X, Phone, Mail, MapPin } from "lucide-react";
 
 const navItems = [
   { label: "Trang chủ", href: "/" },
-  { label: "Giới thiệu", href: "#about" },
-  { label: "Sản phẩm", href: "#products" },
-  { label: "Dịch vụ", href: "#services" },
-  { label: "Liên hệ", href: "#contact" },
+  { label: "Giới thiệu", href: "/#about" },
+  { label: "Sản phẩm", href: "/#products" },
+  { label: "Dịch vụ", href: "/#services" },
+  { label: "Liên hệ", href: "/#contact" },
 ];
 
 export function Header() {
@@ -23,7 +23,7 @@ export function Header() {
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-2">
               <MapPin className="w-4 h-4" />
-              123 Đường ABC, Quận 9, TP.HCM
+              CL13-16 KĐT Him Lam Green Park, Phường Võ Cường, Tỉnh Bắc Ninh
             </span>
             <span className="flex items-center gap-2">
               <Mail className="w-4 h-4" />
@@ -46,7 +46,7 @@ export function Header() {
               <span className="text-primary-foreground font-bold text-lg">HT</span>
             </div>
             <div>
-              <span className="text-xl font-bold text-primary">HTtech</span>
+              <span className="text-xl font-bold text-primary">HT TECH</span>
               <p className="text-xs text-muted-foreground hidden sm:block">
                 Kỹ Thuật Công Nghiệp
               </p>

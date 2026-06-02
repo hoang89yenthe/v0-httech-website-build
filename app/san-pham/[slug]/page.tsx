@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { getRelatedProducts, getMockProducts } from "@/lib/sanity/mock-data";
+import { getRelatedProducts } from "@/lib/sanity/mock-data";
 import { fetchProductBySlug } from "@/lib/sanity/fetch";
 import { categoryLabels, tagLabels, getTagClass } from "@/lib/sanity/schema";
 import { getProductImageUrl } from "@/lib/sanity/image";
@@ -264,7 +264,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
 // Generate static params for build time
 export async function generateStaticParams() {
-  const products = getMockProducts();
+  const products = await fetchProducts();
   return products.map((product) => ({
     slug: product.slug.current,
   }));
