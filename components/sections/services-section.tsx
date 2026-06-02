@@ -18,19 +18,9 @@ const services = [
     description: "Lịch bảo dưỡng chủ động — thiết bị vận hành liên tục, không gián đoạn.",
   },
   {
-    icon: GraduationCap,
-    title: "Đào tạo kỹ thuật",
-    description: "Lập trình PLC, HMI, SCADA — nâng cao năng lực đội ngũ vận hành của bạn.",
-  },
-  {
     icon: Headphones,
     title: "Hỗ trợ 24/7",
     description: "Kỹ thuật viên sẵn sàng từ xa và tại chỗ — xử lý sự cố trong vài giờ.",
-  },
-  {
-    icon: Zap,
-    title: "Tiết kiệm năng lượng",
-    description: "Kiểm toán và tối ưu hóa điện năng — giảm chi phí, tăng hiệu suất sản xuất.",
   },
 ];
 
@@ -51,7 +41,7 @@ export function ServicesSection() {
         </div>
 
         {/* Services grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
             <Card
               key={index}

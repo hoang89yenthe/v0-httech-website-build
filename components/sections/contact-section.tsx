@@ -12,7 +12,6 @@ export function ContactSection() {
     name: "",
     phone: "",
     email: "",
-    company: "",
     product: "",
     message: "",
   });
@@ -21,7 +20,7 @@ export function ContactSection() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
-    setFormData({ name: "", phone: "", email: "", company: "", product: "", message: "" });
+    setFormData({ name: "", phone: "", email: "", product: "", message: "" });
   };
 
   const handleChange = (
@@ -91,8 +90,6 @@ export function ContactSection() {
                     <h3 className="font-semibold mb-1">Email</h3>
                     <p className="text-sm text-muted-foreground">
                       info@httech.vn
-                      <br />
-                      sales@httech.vn
                     </p>
                   </div>
                 </div>
@@ -164,26 +161,15 @@ export function ContactSection() {
                     </div>
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Email</label>
-                      <Input
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="Nhập email"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Công ty</label>
-                      <Input
-                        name="company"
-                        value={formData.company}
-                        onChange={handleChange}
-                        placeholder="Tên công ty"
-                      />
-                    </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Email</label>
+                    <Input
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Nhập email"
+                    />
                   </div>
 
                   <div>
@@ -231,19 +217,6 @@ export function ContactSection() {
           </div>
         </div>
 
-        {/* Google Map */}
-        <div className="mt-12 rounded-xl overflow-hidden shadow-lg">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.825835693041!2d106.06456077597138!3d21.15933618321685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31350965d1d6adad%3A0x27f7db5d91835697!2sHim%20Lam%20Green%20Park!5e0!3m2!1svi!2s!4v1717336000000"
-            width="100%"
-            height="400"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="HT TECH location"
-          />
-        </div>
       </div>
     </section>
   );

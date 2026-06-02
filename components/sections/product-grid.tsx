@@ -156,8 +156,8 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
           ))}
         </div>
 
-        {/* Load more */}
-        {hasMore && (
+        {/* Load more — chỉ hiện trên trang /san-pham */}
+        {isPage && hasMore && (
           <div className="text-center mt-10">
             <Button
               variant="outline"
@@ -171,9 +171,9 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
 
         {/* View all link — chỉ hiện trên homepage */}
         {!isPage && (
-          <div className="text-center mt-8">
-            <Link href="/san-pham" className="text-primary hover:underline font-medium">
-              Xem tất cả sản phẩm &rarr;
+          <div className="text-center mt-10">
+            <Link href="/san-pham" className="text-primary hover:underline font-medium text-base">
+              Xem tất cả {products.length} sản phẩm &rarr;
             </Link>
           </div>
         )}

@@ -12,11 +12,6 @@ export function HeroSection() {
 
           {/* Text */}
           <div className="flex flex-col justify-center">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/10 px-4 py-1.5 rounded-full text-sm text-white/70 mb-10 w-fit">
-              <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-              Phân phối chính hãng tại Việt Nam
-            </div>
-
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-8">
               Thiết Bị Điện<br />
               <span className="text-primary">Công Nghiệp<br />Chính Hãng.</span>
@@ -28,11 +23,7 @@ export function HeroSection() {
             </p>
 
             <div className="flex flex-wrap items-center gap-5">
-              <Button
-                size="lg"
-                className="rounded-full px-8 h-12 text-base font-semibold"
-                asChild
-              >
+              <Button size="lg" className="rounded-full px-8 h-12 text-base font-semibold" asChild>
                 <Link href="/san-pham">
                   Khám phá sản phẩm
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -49,25 +40,13 @@ export function HeroSection() {
 
           {/* Image */}
           <div className="hidden lg:flex items-center justify-end">
-            <div className="relative w-full max-w-[560px]">
-              <div className="rounded-3xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.5)]">
-                <img
-                  src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=700&h=580&fit=crop&q=90"
-                  alt="Tự động hóa công nghiệp HT TECH"
-                  loading="eager"
-                  className="w-full h-auto block"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 to-transparent rounded-3xl" />
-              </div>
-              {/* Floating stat */}
-              <div className="absolute -bottom-6 -left-8 bg-white/10 backdrop-blur-md border border-white/20 text-white px-5 py-4 rounded-2xl shadow-xl">
-                <div className="text-3xl font-bold text-primary">10+</div>
-                <div className="text-xs text-white/60 mt-0.5">Năm kinh nghiệm</div>
-              </div>
-              <div className="absolute -top-6 -right-6 bg-white/10 backdrop-blur-md border border-white/20 text-white px-5 py-4 rounded-2xl shadow-xl">
-                <div className="text-3xl font-bold text-primary">1.000+</div>
-                <div className="text-xs text-white/60 mt-0.5">Dự án hoàn thành</div>
-              </div>
+            <div className="rounded-3xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.5)] w-full max-w-[560px]">
+              <img
+                src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=700&h=580&fit=crop&q=90"
+                alt="Tự động hóa công nghiệp HT TECH"
+                loading="eager"
+                className="w-full h-auto block"
+              />
             </div>
           </div>
 

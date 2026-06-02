@@ -18,22 +18,16 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-background shadow-sm">
       {/* Top bar */}
-      <div className="hidden md:block bg-primary text-primary-foreground py-2">
+      <div className="hidden md:block bg-primary text-primary-foreground py-1.5">
         <div className="container mx-auto px-4 flex justify-between items-center text-sm">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-2">
-              <MapPin className="w-4 h-4" />
-              CL13-16 KĐT Him Lam Green Park, Phường Võ Cường, Tỉnh Bắc Ninh
-            </span>
-            <span className="flex items-center gap-2">
-              <Mail className="w-4 h-4" />
-              info@httech.vn
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Phone className="w-4 h-4" />
-            <span className="font-semibold">Hotline: 1900 6868</span>
-          </div>
+          <span className="flex items-center gap-2 opacity-90">
+            <Mail className="w-3.5 h-3.5" />
+            info@httech.vn
+          </span>
+          <span className="flex items-center gap-2 font-semibold">
+            <Phone className="w-3.5 h-3.5" />
+            Hotline: 1900 6868
+          </span>
         </div>
       </div>
 
