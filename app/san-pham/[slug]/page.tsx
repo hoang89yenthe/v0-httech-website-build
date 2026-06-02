@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { getRelatedProducts } from "@/lib/sanity/mock-data";
-import { fetchProductBySlug } from "@/lib/sanity/fetch";
+import { fetchProductBySlug, fetchProducts } from "@/lib/sanity/fetch";
 import { categoryLabels, tagLabels, getTagClass } from "@/lib/sanity/schema";
 import { getProductImageUrl } from "@/lib/sanity/image";
 import { Badge } from "@/components/ui/badge";
