@@ -42,11 +42,11 @@ export function Footer() {
               </p>
               <p className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-primary shrink-0" />
-                <span>1900 6868</span>
+                <span>0972 916 382</span>
               </p>
               <p className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-primary shrink-0" />
-                <span>info@httech.vn</span>
+                <span>Httechbn@gmail.com</span>
               </p>
             </div>
             <div className="flex gap-3 mt-5">

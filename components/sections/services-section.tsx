@@ -72,10 +72,10 @@ export function ServicesSection() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="tel:19006868"
+                href="tel:0972916382"
                 className="inline-flex items-center justify-center px-8 py-3.5 bg-white text-slate-950 font-semibold rounded-full hover:bg-white/90 transition-colors text-base"
               >
-                Gọi ngay: 1900 6868
+                Gọi ngay: 0972 916 382
               </a>
               <a
                 href="/#contact"

@@ -71,9 +71,7 @@ export function ContactSection() {
                   <div>
                     <h3 className="font-semibold mb-1">Hotline / Zalo</h3>
                     <p className="text-sm text-muted-foreground">
-                      1900 6868
-                      <br />
-                      0909 123 456
+                      0972 916 382
                     </p>
                   </div>
                 </div>
@@ -89,7 +87,7 @@ export function ContactSection() {
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
                     <p className="text-sm text-muted-foreground">
-                      info@httech.vn
+                      Httechbn@gmail.com
                     </p>
                   </div>
                 </div>

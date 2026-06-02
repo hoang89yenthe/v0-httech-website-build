@@ -21,7 +21,7 @@ import {
   MessageCircle
 } from "lucide-react";
 
-const ZALO_NUMBER = process.env.NEXT_PUBLIC_ZALO_NUMBER ?? "0909123456";
+const ZALO_NUMBER = process.env.NEXT_PUBLIC_ZALO_NUMBER ?? "0972916382";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -183,7 +183,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   </a>
                 </Button>
                 <Button size="lg" variant="outline" className="gap-2" asChild>
-                  <a href="tel:19006868">
+                  <a href="tel:0972916382">
                     <Phone className="w-5 h-5" />
                     Gọi đặt hàng
                   </a>

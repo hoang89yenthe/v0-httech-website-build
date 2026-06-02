@@ -22,11 +22,11 @@ export function Header() {
         <div className="container mx-auto px-4 flex justify-between items-center text-sm">
           <span className="flex items-center gap-2 opacity-90">
             <Mail className="w-3.5 h-3.5" />
-            info@httech.vn
+            Httechbn@gmail.com
           </span>
           <span className="flex items-center gap-2 font-semibold">
             <Phone className="w-3.5 h-3.5" />
-            Hotline: 1900 6868
+            Hotline: 0972 916 382
           </span>
         </div>
       </div>
@@ -63,11 +63,11 @@ export function Header() {
           {/* CTA & Mobile toggle */}
           <div className="flex items-center gap-4">
             <a
-              href="tel:19006868"
+              href="tel:0972916382"
               className="hidden sm:flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity"
             >
               <Phone className="w-4 h-4" />
-              1900 6868
+              0972 916 382
             </a>
             <button
               className="md:hidden p-2"
@@ -97,11 +97,11 @@ export function Header() {
                 </Link>
               ))}
               <a
-                href="tel:19006868"
+                href="tel:0972916382"
                 className="flex items-center gap-2 bg-accent text-accent-foreground px-4 py-3 rounded-lg font-semibold justify-center"
               >
                 <Phone className="w-4 h-4" />
-                Gọi ngay: 1900 6868
+                Gọi ngay: 0972 916 382
               </a>
             </nav>
           </div>
