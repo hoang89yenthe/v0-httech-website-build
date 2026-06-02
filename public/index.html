@@ -3,12 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTtech - Kỹ Thuật Công Nghiệp | Giải Pháp Tự Động Hóa</title>
-    <meta name="description" content="HTtech - Đơn vị cung cấp thiết bị tự động hóa, biến tần, PLC, HMI, thiết bị đóng cắt và dịch vụ thi công tủ điện công nghiệp hàng đầu Việt Nam.">
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SEO: Primary Meta Tags                              -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <title>HTtech - Giải Pháp Tự Động Hóa Công Nghiệp | Biến Tần, PLC, HMI, Tủ Điện</title>
+    <meta name="description" content="HTtech cung cấp thiết bị tự động hóa công nghiệp chính hãng: Biến tần Siemens, ABB, Mitsubishi; PLC, HMI, tủ điện điều khiển. Thi công, lắp đặt, bảo trì uy tín tại TP.HCM. Hotline: 1900 6868.">
+    <meta name="keywords" content="tự động hóa công nghiệp, biến tần, PLC, HMI, tủ điện, Siemens, ABB, Mitsubishi, thi công tủ điện, HTtech, thiết bị công nghiệp, nâng cấp nhà máy, bảo trì công nghiệp, TP HCM">
+    <meta name="author" content="HTtech - Kỹ Thuật Công Nghiệp">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://httech.vn/">
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SEO: Open Graph (Facebook, Zalo, LinkedIn)         -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="HTtech - Kỹ Thuật Công Nghiệp">
+    <meta property="og:title" content="HTtech - Giải Pháp Tự Động Hóa Công Nghiệp Toàn Diện">
+    <meta property="og:description" content="Đơn vị hàng đầu cung cấp thiết bị tự động hóa: Biến tần, PLC, HMI, tủ điện Siemens, ABB, Mitsubishi. Thi công, bảo trì, nâng cấp nhà máy chuyên nghiệp tại TP.HCM.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=630&fit=crop">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="HTtech - Hệ thống tự động hóa công nghiệp hiện đại">
+    <meta property="og:url" content="https://httech.vn/">
+    <meta property="og:locale" content="vi_VN">
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SEO: Twitter Card                                   -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HTtech - Giải Pháp Tự Động Hóa Công Nghiệp Toàn Diện">
+    <meta name="twitter:description" content="Cung cấp thiết bị tự động hóa chính hãng: Biến tần, PLC, HMI, tủ điện Siemens, ABB, Mitsubishi. Hotline tư vấn: 1900 6868.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=630&fit=crop">
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- Fonts & Styles                                      -->
+    <!-- ═══════════════════════════════════════════════════ -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <script>
         tailwind.config = {
             theme: {
@@ -58,6 +93,20 @@
         .tab-btn.active { background: #0066CC; color: white; }
         .product-item { transition: all 0.3s ease; }
         .product-item:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        
+        /* Chatbot custom animation and scrollbar helper */
+        .scrollbar-none::-webkit-scrollbar { display: none; }
+        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes typing-bounce {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+            40% { transform: translateY(-6px); opacity: 1; }
+        }
+        .dot-bounce {
+            animation: typing-bounce 1.4s infinite ease-in-out both;
+        }
+        .dot-bounce:nth-child(2) { animation-delay: 0.2s; }
+        .dot-bounce:nth-child(3) { animation-delay: 0.4s; }
     </style>
 </head>
 <body class="font-sans antialiased bg-gray-50 text-gray-800">
@@ -220,7 +269,7 @@
                                 <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             </div>
                             <div>
-                                <h4 class="font-semibold text-dark">Sản phẩm chính hãng</h4>
+                                <h3 class="font-semibold text-dark">Sản phẩm chính hãng</h3>
                                 <p class="text-gray-600 text-sm">Phân phối chính thức từ các thương hiệu hàng đầu thế giới</p>
                             </div>
                         </div>
@@ -229,7 +278,7 @@
                                 <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             </div>
                             <div>
-                                <h4 class="font-semibold text-dark">Đội ngũ kỹ thuật chuyên nghiệp</h4>
+                                <h3 class="font-semibold text-dark">Đội ngũ kỹ thuật chuyên nghiệp</h3>
                                 <p class="text-gray-600 text-sm">Hơn 50 kỹ sư được đào tạo bài bản, sẵn sàng hỗ trợ 24/7</p>
                             </div>
                         </div>
@@ -238,7 +287,7 @@
                                 <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             </div>
                             <div>
-                                <h4 class="font-semibold text-dark">Bảo hành dài hạn</h4>
+                                <h3 class="font-semibold text-dark">Bảo hành dài hạn</h3>
                                 <p class="text-gray-600 text-sm">Chế độ bảo hành lên đến 24 tháng cho tất cả sản phẩm</p>
                             </div>
                         </div>
@@ -331,21 +380,21 @@
                     <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     </div>
-                    <h4 class="text-xl font-bold text-dark mb-2">Bảo trì định kỳ</h4>
+                    <h3 class="text-xl font-bold text-dark mb-2">Bảo trì định kỳ</h3>
                     <p class="text-gray-600 text-sm">Dịch vụ bảo trì, bảo dưỡng thiết bị tự động hóa định kỳ theo hợp đồng</p>
                 </div>
                 <div class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow">
                     <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                     </div>
-                    <h4 class="text-xl font-bold text-dark mb-2">Đào tạo kỹ thuật</h4>
+                    <h3 class="text-xl font-bold text-dark mb-2">Đào tạo kỹ thuật</h3>
                     <p class="text-gray-600 text-sm">Đào tạo vận hành, lập trình PLC, HMI cho đội ngũ kỹ thuật của khách hàng</p>
                 </div>
                 <div class="bg-gray-50 rounded-2xl p-6 hover:shadow-lg transition-shadow">
                     <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                     </div>
-                    <h4 class="text-xl font-bold text-dark mb-2">Hỗ trợ kỹ thuật 24/7</h4>
+                    <h3 class="text-xl font-bold text-dark mb-2">Hỗ trợ kỹ thuật 24/7</h3>
                     <p class="text-gray-600 text-sm">Đường dây nóng hỗ trợ kỹ thuật khẩn cấp hoạt động 24/7</p>
                 </div>
             </div>
@@ -424,7 +473,7 @@
                 </div>
                 <div class="space-y-8">
                     <div class="bg-gray-50 rounded-2xl p-6">
-                        <h4 class="text-xl font-bold text-dark mb-4">Thông tin liên hệ</h4>
+                        <h3 class="text-xl font-bold text-dark mb-4">Thông tin liên hệ</h3>
                         <div class="space-y-4">
                             <div class="flex items-start gap-4">
                                 <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -487,7 +536,7 @@
                     </div>
                 </div>
                 <div>
-                    <h4 class="text-lg font-bold mb-6">Liên kết nhanh</h4>
+                    <h3 class="text-lg font-bold mb-6">Liên kết nhanh</h3>
                     <ul class="space-y-3">
                         <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">Trang chủ</a></li>
                         <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">Giới thiệu</a></li>
@@ -497,7 +546,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg font-bold mb-6">Sản phẩm</h4>
+                    <h3 class="text-lg font-bold mb-6">Sản phẩm</h3>
                     <ul class="space-y-3">
                         <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Biến tần</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white transition-colors">PLC & HMI</a></li>
@@ -507,7 +556,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-lg font-bold mb-6">Đăng ký nhận tin</h4>
+                    <h3 class="text-lg font-bold mb-6">Đăng ký nhận tin</h3>
                     <p class="text-gray-400 mb-4">Nhận thông tin khuyến mãi và sản phẩm mới</p>
                     <form class="flex gap-2">
                         <input type="email" placeholder="Email của bạn" class="flex-1 px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-primary">
@@ -529,6 +578,18 @@
 
     <!-- Floating Buttons -->
     <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-40">
+        <!-- Chatbot AI Button -->
+        <button id="aiChatBtn" class="w-14 h-14 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 transition-all hover:scale-110 relative group">
+            <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white flex items-center justify-center animate-bounce">
+                <span class="block w-2 h-2 bg-white rounded-full"></span>
+            </span>
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+            <span class="absolute right-16 bg-dark text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                Trợ lý ảo AI HTtech 🤖
+            </span>
+        </button>
         <a href="tel:19006868" class="w-14 h-14 bg-secondary hover:bg-orange-600 rounded-full flex items-center justify-center shadow-lg shadow-secondary/30 transition-all hover:scale-110">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
         </a>
@@ -741,6 +802,494 @@
         });
 
         // Initialize
+        renderProducts();
+    </script>
+
+    <!-- AI Chat Widget -->
+    <div id="aiChatWidget" class="fixed bottom-24 right-6 w-[380px] h-[550px] bg-white rounded-2xl shadow-2xl flex flex-col z-50 transition-all duration-300 origin-bottom-right scale-0 opacity-0 pointer-events-none">
+        <!-- Widget Header -->
+        <div class="bg-gradient-to-r from-primary to-primary-dark text-white px-4 py-3.5 rounded-t-2xl flex justify-between items-center shadow-md">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center relative">
+                    <span class="text-white font-bold text-lg">AI</span>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-primary rounded-full"></span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-sm tracking-wide">Trợ lý ảo HTtech</h4>
+                    <p class="text-xs text-white/80 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-ping"></span>
+                        Đang trực tuyến
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="aiChatConfigBtn" class="p-2 hover:bg-white/10 rounded-lg transition-colors relative group" title="Cấu hình API Key">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span id="aiChatKeyAlert" class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border border-white hidden"></span>
+                </button>
+                <button id="aiChatCloseBtn" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- API Config Drawer -->
+        <div id="aiChatConfigDrawer" class="absolute top-[68px] left-0 right-0 bg-gray-50 border-b border-gray-200 px-4 py-4 z-20 shadow-inner flex flex-col gap-3 transition-all duration-300 max-h-0 overflow-hidden opacity-0">
+            <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1 flex items-center justify-between">
+                    <span>GEMINI API KEY</span>
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-primary hover:underline text-[10px] flex items-center gap-0.5">
+                        Lấy Key tại đây
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </a>
+                </label>
+                <div class="relative">
+                    <input type="password" id="aiApiKeyInput" class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-primary pr-8" placeholder="AIzaSy...">
+                    <button id="toggleShowKeyBtn" class="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-[10px] text-gray-500 mt-1.5">
+                    💡 Key được lưu hoàn toàn ở client (localStorage) của bạn, đảm bảo tuyệt đối bảo mật.
+                </p>
+            </div>
+            <div class="flex gap-2">
+                <button id="saveApiKeyBtn" class="flex-1 bg-primary hover:bg-primary-dark text-white text-xs font-semibold py-2 rounded-lg transition-colors">
+                    Lưu cấu hình
+                </button>
+                <button id="clearApiKeyBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded-lg transition-colors">
+                    Xóa
+                </button>
+            </div>
+            <div id="aiConfigStatus" class="text-xs font-medium text-center hidden"></div>
+        </div>
+
+        <!-- Chat Area -->
+        <div id="aiChatArea" class="flex-1 overflow-y-auto p-4 bg-slate-50 space-y-4 scrollbar-none">
+            <div class="flex gap-2.5 items-start">
+                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">
+                    HT
+                </div>
+                <div class="bg-white px-3.5 py-2.5 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 max-w-[80%] leading-relaxed">
+                    Xin chào! Tôi là **Trợ lý ảo AI của HTtech** 🤖. 
+                    <br><br>
+                    Tôi am hiểu toàn bộ các thiết bị tự động hóa (Biến tần, PLC, HMI, cảm biến...) và dịch vụ thiết kế thi công tủ điện của HTtech.
+                    <br><br>
+                    Tôi có thể giúp gì cho bạn hôm nay?
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggested Questions -->
+        <div id="aiChatSuggestions" class="px-4 py-2 bg-slate-50 border-t border-gray-100 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-none">
+            <button class="ai-suggestion-chip bg-white border border-gray-200 hover:border-primary hover:text-primary text-gray-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0">
+                HTtech cung cấp sản phẩm gì?
+            </button>
+            <button class="ai-suggestion-chip bg-white border border-gray-200 hover:border-primary hover:text-primary text-gray-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0">
+                Tư vấn dịch vụ tủ điện
+            </button>
+            <button class="ai-suggestion-chip bg-white border border-gray-200 hover:border-primary hover:text-primary text-gray-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0">
+                Chính sách bảo hành?
+            </button>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-3 bg-white border-t border-gray-200 flex gap-2 items-center rounded-b-2xl">
+            <textarea id="aiChatInput" rows="1" class="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-primary resize-none max-h-24 scrollbar-none" placeholder="Nhập tin nhắn..."></textarea>
+            <button id="aiSendBtn" class="w-9 h-9 bg-primary hover:bg-primary-dark text-white rounded-xl flex items-center justify-center transition-all shadow-md shadow-primary/20 flex-shrink-0 hover:scale-105">
+                <svg class="w-4 h-4 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // AI CHATBOT CODE INTEGRATION
+        // ==========================================
+        const aiChatBtn = document.getElementById('aiChatBtn');
+        const aiChatWidget = document.getElementById('aiChatWidget');
+        const aiChatCloseBtn = document.getElementById('aiChatCloseBtn');
+        const aiChatConfigBtn = document.getElementById('aiChatConfigBtn');
+        const aiChatConfigDrawer = document.getElementById('aiChatConfigDrawer');
+        const aiApiKeyInput = document.getElementById('aiApiKeyInput');
+        const toggleShowKeyBtn = document.getElementById('toggleShowKeyBtn');
+        const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
+        const clearApiKeyBtn = document.getElementById('clearApiKeyBtn');
+        const aiConfigStatus = document.getElementById('aiConfigStatus');
+        const aiChatArea = document.getElementById('aiChatArea');
+        const aiChatInput = document.getElementById('aiChatInput');
+        const aiSendBtn = document.getElementById('aiSendBtn');
+        const aiChatKeyAlert = document.getElementById('aiChatKeyAlert');
+
+        // Chat session state
+        let chatHistory = [];
+
+        // Check if API Key exists on startup
+        function checkApiKey() {
+            const key = localStorage.getItem('GEMINI_API_KEY');
+            if (key) {
+                aiChatKeyAlert.classList.add('hidden');
+                aiApiKeyInput.value = key;
+                return true;
+            } else {
+                aiChatKeyAlert.classList.remove('hidden');
+                return false;
+            }
+        }
+
+        // System Instruction context compiled from index.html content
+        const SYSTEM_INSTRUCTION = `Bạn là "Trợ lý ảo HTtech" - Chuyên viên tư vấn kỹ thuật tự động hóa chuyên nghiệp của công ty HTtech (Kỹ Thuật Công Nghiệp).
+Nhiệm vụ của bạn là tư vấn tận tình, chuyên nghiệp cho khách hàng về các sản phẩm và dịch vụ của HTtech dựa trên thông tin chính xác dưới đây:
+
+THÔNG TIN VỀ CÔNG TY HTTECH:
+- Địa chỉ: Số 45, Đường Công Nghiệp, Quận Bình Tân, TP.HCM.
+- Hotline hỗ trợ 24/7: 1900 6868 | Zalo: 090 123 4567.
+- Email liên hệ: contact@httech.vn | sales@httech.vn.
+- Thời gian làm việc: Từ 8:00 - 17:30 (Thứ 2 đến Thứ 7).
+- Đặc điểm: Là đối tác tin cậy của hơn 500+ doanh nghiệp, đã hoàn thành 1000+ dự án với đội ngũ 50+ kỹ sư chuyên nghiệp. Hỗ trợ kỹ thuật 24/7 và bảo hành dài hạn lên đến 24 tháng.
+
+DANH MỤC SẢN PHẨM CHÍNH HÃNG (Siemens, ABB, Mitsubishi, Schneider, Delta, Omron, Autonics, Weintek, Sick, Keyence, Cadivi):
+1. Biến tần (Inverters):
+   - Siemens SINAMICS V20 (1.5kW, 3 pha 380V, điều khiển chính xác, tiết kiệm điện 30%).
+   - Biến tần ABB ACS580 (2.2kW, 3 pha 380V, tích hợp bộ lọc EMC, Modbus).
+   - Biến tần Mitsubishi FR-E840 (2.2kW, 3 pha 400V, compact).
+   - Biến tần Delta VFD-E (2.2kW, 3 pha 380V, tích hợp PLC).
+   - Biến tần Schneider ATV320 (2.2kW, bơm quạt chuyên dụng).
+   - Biến tần Siemens G120C (5.5kW, EMC Class A, Safety STO).
+   - Biến tần ABB ACS880 (3.7kW, Industrial drive, tích hợp PLC).
+   - Servo Mitsubishi MR-J4 (2kW, encoder 22-bit, SSCNET III/H).
+2. PLC & HMI:
+   - PLC Siemens S7-1200 CPU 1214C DC/DC/DC (14DI/10DO/2AI, 100KB, Profinet).
+   - PLC Mitsubishi FX5U (32 I/O, 16DI/16DO, 64K steps, motion built-in).
+   - HMI Siemens KTP700 Basic (7 inch TFT, 65K màu, 800x480).
+   - HMI Weintek MT8071iE (7 inch TFT, Ethernet, COM, 128MB).
+   - PLC Omron CP1E (40 I/O, 24DI/16DO, 8K steps).
+   - PLC Siemens S7-1500 CPU 1515-2PN (hiệu năng cao cho ứng dụng phức tạp).
+3. Thiết bị đóng cắt:
+   - MCCB Schneider NSX100F (100A, 3P, 36kA).
+   - ACB ABB Emax2 E1.2 (800A, 3P, 66kA, Ekip Touch).
+   - Contactor Schneider LC1D25 (25A, coil 220VAC, 3P).
+   - MCCB LS SUSOL TS400N (400A, 3P, 65kA).
+   - Relay nhiệt Schneider LRD32 (dải chỉnh 23-32A).
+4. Cảm biến (Sensors):
+   - Cảm biến tiệm cận Omron E2E (Inductive M18, 5mm, NPN NO).
+   - Cảm biến quang Sick WL12L (Phản xạ gương, 0-8m).
+   - Cảm biến nhiệt độ PT100 (đầu dò 100mm, ren M8, -50~400°C).
+   - Cảm biến áp suất Autonics (0-1MPa, ngõ ra 4-20mA).
+   - Encoder Autonics E40H (1000 xung, Totem Pole, 12-24VDC).
+   - Cảm biến Laser Keyence LR-Z (Laser Class 2, 35-250mm).
+5. Vật tư tủ điện:
+   - Thanh cái đồng 40x5mm, máng điện nhựa Omega 40x40, cầu đấu Phoenix UK5N (4mm², 32A), đầu cos đồng DT-50, dây điện CADIVI CV 2.5.
+
+DỊCH VỤ KỸ THUẬT CHUYÊN NGHIỆP:
+1. Thiết kế & Thi công tủ điện: Lắp ráp tủ điện điều khiển PLC, tủ phân phối MDB/DB, tủ điện ATS/AMF theo tiêu chuẩn IEC quốc tế.
+2. Nâng cấp hệ thống nhà máy: Cải tạo nâng cấp SCADA, tích hợp giải pháp IoT công nghiệp, nâng cấp dây chuyền sản xuất.
+3. Bảo trì định kỳ: Bảo dưỡng thiết bị tự động hóa theo định kỳ hợp đồng.
+4. Đào tạo kỹ thuật: Đào tạo vận hành và lập trình PLC, HMI cho kỹ sư của đối tác.
+
+HƯỚNG DẪN ỨNG XỬ CHO TRỢ LÝ:
+- Luôn chào khách hàng lịch sự bằng tiếng Việt, xưng hô thân thiện, chuyên nghiệp.
+- Khi khách hàng hỏi về giá cả, hãy trả lời giá của các thiết bị và dịch vụ là "Liên hệ" (hoặc báo giá tùy thuộc quy mô) và hướng dẫn khách hàng để lại thông tin hoặc gọi điện trực tiếp tới Hotline 1900 6868 / Zalo 090 123 4567 để các kỹ sư của HTtech báo giá chính xác kèm các chương trình ưu đãi tốt nhất.
+- Trình bày câu trả lời gọn gàng, sử dụng định dạng Markdown (như in đậm **, gạch đầu dòng -, hoặc xuống dòng) để khách hàng dễ đọc trên màn hình điện thoại hoặc máy tính.
+- Tuyệt đối không bịa đặt các thông tin ngoài phạm vi tự động hóa và các sản phẩm dịch vụ của HTtech. Nếu câu hỏi không liên quan, hãy hướng dẫn khách liên hệ hotline để được hỗ trợ tốt nhất.`;
+
+        // Toggle widget open/close
+        aiChatBtn.addEventListener('click', () => {
+            const isOpen = !aiChatWidget.classList.contains('scale-0');
+            if (isOpen) {
+                aiChatWidget.classList.add('scale-0', 'opacity-0', 'pointer-events-none');
+                aiChatWidget.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+            } else {
+                aiChatWidget.classList.remove('scale-0', 'opacity-0', 'pointer-events-none');
+                aiChatWidget.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
+                checkApiKey();
+                setTimeout(() => aiChatInput.focus(), 150);
+            }
+        });
+
+        aiChatCloseBtn.addEventListener('click', () => {
+            aiChatWidget.classList.add('scale-0', 'opacity-0', 'pointer-events-none');
+            aiChatWidget.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+        });
+
+        // Toggle API config drawer
+        aiChatConfigBtn.addEventListener('click', () => {
+            const isOpen = aiChatConfigDrawer.style.maxHeight !== '0px' && aiChatConfigDrawer.style.maxHeight !== '';
+            if (isOpen) {
+                closeConfigDrawer();
+            } else {
+                aiChatConfigDrawer.classList.remove('opacity-0');
+                aiChatConfigDrawer.classList.add('opacity-100');
+                aiChatConfigDrawer.style.maxHeight = '250px';
+                aiApiKeyInput.focus();
+            }
+        });
+
+        function closeConfigDrawer() {
+            aiChatConfigDrawer.style.maxHeight = '0px';
+            aiChatConfigDrawer.classList.remove('opacity-100');
+            aiChatConfigDrawer.classList.add('opacity-0');
+            aiConfigStatus.classList.add('hidden');
+        }
+
+        // Toggle show/hide API key
+        let showKey = false;
+        toggleShowKeyBtn.addEventListener('click', () => {
+            showKey = !showKey;
+            aiApiKeyInput.type = showKey ? 'text' : 'password';
+            toggleShowKeyBtn.innerHTML = showKey 
+                ? `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.024 10.024 0 012.302-3.794M21 21l-19-19" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.88 9.88a3 3 0 104.24 4.24M10.73 5.08A10.43 10.43 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.4M9.88 9.88L1.5 1.5" /></svg>` 
+                : `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>`;
+        });
+
+        // Save API Key
+        saveApiKeyBtn.addEventListener('click', () => {
+            const key = aiApiKeyInput.value.trim();
+            if (!key) {
+                showConfigStatus('Vui lòng nhập API Key', 'text-red-600');
+                return;
+            }
+            localStorage.setItem('GEMINI_API_KEY', key);
+            showConfigStatus('Đã lưu API Key thành công!', 'text-green-600');
+            checkApiKey();
+            setTimeout(() => closeConfigDrawer(), 1000);
+        });
+
+        // Clear API Key
+        clearApiKeyBtn.addEventListener('click', () => {
+            localStorage.removeItem('GEMINI_API_KEY');
+            aiApiKeyInput.value = '';
+            showConfigStatus('Đã xóa API Key.', 'text-orange-600');
+            checkApiKey();
+        });
+
+        function showConfigStatus(text, colorClass) {
+            aiConfigStatus.textContent = text;
+            aiConfigStatus.className = `text-xs font-medium text-center mt-2 ${colorClass}`;
+            aiConfigStatus.classList.remove('hidden');
+        }
+
+        // Render markdown helper (bold, linebreaks, lists)
+        function formatMarkdown(text) {
+            let formatted = text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code class="bg-gray-100 px-1 rounded text-xs text-red-600">$1</code>')
+                .replace(/\n/g, '<br>');
+            
+            const lines = formatted.split('<br>');
+            let inList = false;
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].trim().startsWith('- ')) {
+                    if (!inList) {
+                        lines[i] = '<ul class="list-disc pl-5 mt-1.5 space-y-1">' + lines[i].replace('- ', '<li>') + '</li>';
+                        inList = true;
+                    } else {
+                        lines[i] = lines[i].replace('- ', '<li>') + '</li>';
+                    }
+                } else if (inList) {
+                    lines[i-1] += '</ul>';
+                    inList = false;
+                }
+            }
+            if (inList) {
+                lines[lines.length-1] += '</ul>';
+            }
+            return lines.join('<br>');
+        }
+
+        // Add message to chat view
+        function appendMessage(sender, text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'flex gap-2.5 items-start fade-in';
+            
+            if (sender === 'user') {
+                msgDiv.innerHTML = `
+                    <div class="flex gap-2.5 items-start justify-end w-full">
+                        <div class="bg-primary text-white px-3.5 py-2.5 rounded-2xl rounded-tr-none shadow-sm text-sm max-w-[80%] leading-relaxed">
+                            ${formatMarkdown(text)}
+                        </div>
+                    </div>
+                `;
+            } else {
+                msgDiv.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">
+                        HT
+                    </div>
+                    <div class="bg-white px-3.5 py-2.5 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 max-w-[80%] leading-relaxed">
+                        ${formatMarkdown(text)}
+                    </div>
+                `;
+            }
+            aiChatArea.appendChild(msgDiv);
+            aiChatArea.scrollTop = aiChatArea.scrollHeight;
+        }
+
+        // Add typing indicator
+        let typingIndicator = null;
+        function showTypingIndicator() {
+            if (typingIndicator) return;
+            typingIndicator = document.createElement('div');
+            typingIndicator.className = 'flex gap-2.5 items-start fade-in';
+            typingIndicator.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">
+                    HT
+                </div>
+                <div class="bg-white px-4 py-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-400 flex items-center gap-1">
+                    <span class="w-2 h-2 bg-gray-400 rounded-full dot-bounce"></span>
+                    <span class="w-2 h-2 bg-gray-400 rounded-full dot-bounce"></span>
+                    <span class="w-2 h-2 bg-gray-400 rounded-full dot-bounce"></span>
+                </div>
+            `;
+            aiChatArea.appendChild(typingIndicator);
+            aiChatArea.scrollTop = aiChatArea.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            if (typingIndicator) {
+                typingIndicator.remove();
+                typingIndicator = null;
+            }
+        }
+
+        // Call Gemini API with automatic fallback from 2.5-flash to 1.5-flash upon high-demand errors
+        async function fetchGeminiResponse(userMessage) {
+            const apiKey = localStorage.getItem('GEMINI_API_KEY');
+            if (!apiKey) {
+                throw new Error('KEY_MISSING');
+            }
+
+            const contents = [
+                ...chatHistory,
+                { role: 'user', parts: [{ text: userMessage }] }
+            ];
+
+            const tryModel = async (modelName) => {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: contents,
+                        systemInstruction: {
+                            parts: [{ text: SYSTEM_INSTRUCTION }]
+                        },
+                        generationConfig: {
+                            temperature: 0.7,
+                            maxOutputTokens: 1000
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errMsg = errorData.error?.message || '';
+                    return { ok: false, status: response.status, message: errMsg };
+                }
+
+                const data = await response.json();
+                return { ok: true, text: data.candidates[0].content.parts[0].text };
+            };
+
+            // First attempt: try gemini-2.5-flash (State of the art)
+            console.log('Sending request to Gemini 2.5 Flash...');
+            let result = await tryModel('gemini-2.5-flash');
+            
+            // If failed due to Google's temporary server load/congestion (503 / 429 / high demand), fall back to stable gemini-1.5-flash
+            if (!result.ok && (result.status === 503 || result.status === 429 || result.message.includes('high demand') || result.message.includes('overloaded'))) {
+                console.warn('Gemini 2.5 Flash is overloaded. Falling back to Gemini 1.5 Flash...');
+                result = await tryModel('gemini-1.5-flash');
+            }
+
+            if (!result.ok) {
+                throw new Error(result.message || 'Có lỗi xảy ra khi gọi Gemini API.');
+            }
+
+            return result.text;
+        }
+
+        // Handle sending messages
+        async function handleSendMessage(text) {
+            const messageText = text || aiChatInput.value.trim();
+            if (!messageText) return;
+
+            aiChatInput.value = '';
+            aiChatInput.rows = 1;
+
+            const hasKey = checkApiKey();
+            if (!hasKey) {
+                appendMessage('user', messageText);
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    appendMessage('ai', '⚠️ **Cảnh báo:** Bạn chưa cấu hình `GEMINI_API_KEY`. \n\nVui lòng bấm vào biểu tượng bánh răng (⚙️) ở góc phải trên cùng của khung chat để điền API Key trước khi trò chuyện.');
+                }, 600);
+                return;
+            }
+
+            appendMessage('user', messageText);
+            showTypingIndicator();
+
+            try {
+                const aiResponse = await fetchGeminiResponse(messageText);
+                removeTypingIndicator();
+                appendMessage('ai', aiResponse);
+
+                chatHistory.push({ role: 'user', parts: [{ text: messageText }] });
+                chatHistory.push({ role: 'model', parts: [{ text: aiResponse }] });
+                
+                if (chatHistory.length > 20) {
+                    chatHistory = chatHistory.slice(-20);
+                }
+            } catch (err) {
+                removeTypingIndicator();
+                console.error(err);
+                if (err.message === 'KEY_MISSING') {
+                    appendMessage('ai', '⚠️ **Lỗi:** API Key chưa được cài đặt. Vui lòng nhập key bằng cách nhấn vào nút cài đặt (⚙️).');
+                } else {
+                    appendMessage('ai', `❌ **Lỗi kết nối:** ${err.message}`);
+                }
+            }
+        }
+
+        aiSendBtn.addEventListener('click', () => handleSendMessage());
+
+        aiChatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
+            }
+        });
+
+        // Suggestion chips handler
+        document.querySelectorAll('.ai-suggestion-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                const prompt = this.textContent.trim();
+                handleSendMessage(prompt);
+            });
+        });
+
+        // Auto grow input textarea
+        aiChatInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
+        // Initialize key status checking
+        checkApiKey();
+
+        // Initialize products rendering
         renderProducts();
     </script>
 </body>
