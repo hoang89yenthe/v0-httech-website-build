@@ -31,15 +31,16 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-16 md:py-24 bg-muted/30">
+    <section id="contact" className="py-24 md:py-32 bg-muted/30">
       <div className="container mx-auto px-4">
         {/* Section header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Liên Hệ <span className="text-primary">Với Chúng Tôi</span>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
+            Bắt đầu<br />
+            <span className="text-primary">ngay hôm nay.</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Để lại thông tin, đội ngũ tư vấn của HT TECH sẽ liên hệ và hỗ trợ bạn trong thời gian sớm nhất.
+          <p className="text-muted-foreground text-lg md:text-xl max-w-md mx-auto">
+            Để lại thông tin — HT TECH phản hồi trong vòng 30 phút.
           </p>
         </div>
 

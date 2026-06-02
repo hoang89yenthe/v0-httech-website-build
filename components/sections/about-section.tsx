@@ -1,96 +1,90 @@
-import { Award, Users, Building, Clock } from "lucide-react";
-
 const stats = [
-  { icon: Clock, value: "10+", label: "Năm kinh nghiệm" },
-  { icon: Users, value: "1000+", label: "Khách hàng tin tưởng" },
-  { icon: Building, value: "500+", label: "Dự án hoàn thành" },
-  { icon: Award, value: "50+", label: "Đối tác thương hiệu" },
+  { value: "10+", label: "Năm kinh nghiệm" },
+  { value: "1.000+", label: "Dự án hoàn thành" },
+  { value: "500+", label: "Khách hàng tin dùng" },
+  { value: "50+", label: "Thương hiệu đối tác" },
 ];
 
 const brands = [
-  "Siemens",
-  "ABB",
-  "Mitsubishi",
-  "Schneider",
-  "Omron",
-  "Delta",
-  "LS Electric",
-  "Phoenix Contact",
+  "Siemens", "ABB", "Mitsubishi", "Schneider",
+  "Omron", "Delta", "LS Electric", "Phoenix Contact",
 ];
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-16 md:py-24 pb-20 md:pb-32">
+    <section id="about" className="pt-24 md:pt-32 pb-20 md:pb-24 overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Về <span className="text-primary">HT TECH</span>
-            </h2>
-            <p className="text-muted-foreground mb-4 leading-relaxed">
-              <strong className="text-foreground">HT TECH</strong> là đơn vị chuyên cung cấp thiết bị điện công nghiệp
-              và giải pháp tự động hóa hàng đầu tại Việt Nam. Với hơn 10 năm kinh nghiệm trong ngành,
-              chúng tôi tự hào là đối tác tin cậy của hàng ngàn doanh nghiệp sản xuất.
-            </p>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
-              Chúng tôi cung cấp đầy đủ các dòng sản phẩm từ biến tần, PLC, HMI, thiết bị đóng cắt
-              đến vật tư tủ điện từ các thương hiệu hàng đầu thế giới. Đội ngũ kỹ sư giàu kinh nghiệm
-              của HT TECH sẵn sàng tư vấn và triển khai giải pháp tự động hóa toàn diện cho doanh nghiệp.
-            </p>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="text-center p-4 bg-muted rounded-xl"
-                >
-                  <stat.icon className="w-6 h-6 text-primary mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-primary">{stat.value}</div>
-                  <div className="text-xs text-muted-foreground">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+        {/* Header */}
+        <div className="text-center mb-20 md:mb-24">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
+            Chính xác từng chi tiết.<br />
+            <span className="text-primary">Không ngừng cải tiến.</span>
+          </h2>
+          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+            HT TECH là đối tác kỹ thuật tin cậy cho hàng nghìn doanh nghiệp sản xuất Việt Nam —
+            từ tư vấn đến vận hành, từ thiết kế đến bảo trì.
+          </p>
+        </div>
 
-            {/* Brands */}
-            <div>
-              <p className="text-sm font-medium mb-3">Đối tác thương hiệu:</p>
-              <div className="flex flex-wrap gap-2">
-                {brands.map((brand) => (
-                  <span
-                    key={brand}
-                    className="px-3 py-1 bg-background border rounded-full text-sm"
-                  >
-                    {brand}
-                  </span>
-                ))}
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 mb-24 md:mb-28">
+          {stats.map((stat) => (
+            <div key={stat.label} className="text-center p-6 rounded-2xl bg-muted/50">
+              <div className="text-4xl md:text-5xl font-bold text-primary mb-2 tracking-tight">
+                {stat.value}
               </div>
+              <div className="text-sm text-muted-foreground">{stat.label}</div>
             </div>
-          </div>
+          ))}
+        </div>
 
-          {/* Image */}
+        {/* Image + Brands */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+
+          {/* Images */}
           <div className="relative">
             <div className="grid grid-cols-2 gap-4">
               <img
-                src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=300&h=400&fit=crop"
-                alt="Kho hàng HT TECH"
-                className="rounded-xl shadow-lg"
+                src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=320&h=420&fit=crop&q=85"
+                alt="Xưởng sản xuất HT TECH"
+                className="rounded-2xl shadow-lg w-full h-60 md:h-80 object-cover"
               />
               <img
-                src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=300&h=400&fit=crop"
+                src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=320&h=420&fit=crop&q=85"
                 alt="Tủ điện công nghiệp HT TECH"
-                className="rounded-xl shadow-lg mt-8"
+                className="rounded-2xl shadow-lg w-full h-60 md:h-80 object-cover mt-8"
               />
             </div>
-            {/* Floating badge */}
-            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-primary-foreground px-6 py-3 rounded-xl shadow-lg">
+            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-primary-foreground px-6 py-3 rounded-2xl shadow-lg">
               <div className="text-center">
-                <div className="text-xl font-bold">ISO 9001:2015</div>
-                <div className="text-xs opacity-90">Chứng nhận chất lượng</div>
+                <div className="text-lg font-bold">ISO 9001:2015</div>
+                <div className="text-xs opacity-80">Chứng nhận chất lượng</div>
               </div>
             </div>
           </div>
+
+          {/* Brands */}
+          <div>
+            <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight">
+              Đối tác thương hiệu<br />hàng đầu thế giới.
+            </h3>
+            <p className="text-muted-foreground mb-8 leading-relaxed">
+              Phân phối chính hãng và chính ngạch — mỗi thiết bị đều có
+              đầy đủ chứng từ nguồn gốc xuất xứ và tem bảo hành nhà sản xuất.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {brands.map((brand) => (
+                <span
+                  key={brand}
+                  className="px-4 py-2 bg-background border rounded-full text-sm font-medium hover:border-primary hover:text-primary transition-colors duration-200 cursor-default"
+                >
+                  {brand}
+                </span>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

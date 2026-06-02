@@ -5,6 +5,7 @@ import { ProductGrid } from "@/components/sections/product-grid";
 import { ServicesSection } from "@/components/sections/services-section";
 import { AboutSection } from "@/components/sections/about-section";
 import { ContactSection } from "@/components/sections/contact-section";
+import { AnimateOnScroll } from "@/components/ui/animate-on-scroll";
 import { fetchProducts } from "@/lib/sanity/fetch";
 
 export default async function HomePage() {
@@ -15,10 +16,18 @@ export default async function HomePage() {
       <Header />
       <main>
         <HeroSection />
-        <AboutSection />
-        <ProductGrid products={products} />
-        <ServicesSection />
-        <ContactSection />
+        <AnimateOnScroll>
+          <AboutSection />
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <ProductGrid products={products} />
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <ServicesSection />
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <ContactSection />
+        </AnimateOnScroll>
       </main>
       <Footer />
     </div>

@@ -44,17 +44,18 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
   };
 
   return (
-    <section id="products" className={`bg-muted/30 ${isPage ? "py-10 md:py-14" : "py-16 md:py-24"}`}>
+    <section id="products" className={`bg-muted/30 ${isPage ? "py-10 md:py-14" : "pt-14 md:pt-20 pb-16 md:pb-24"}`}>
       <div className="container mx-auto px-4">
         {/* Section header — chỉ hiện trên homepage */}
         {!isPage && (
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Sản Phẩm <span className="text-primary">Nổi Bật</span>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
+              Chính hãng.<br />
+              <span className="text-primary">Không ngoại lệ.</span>
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Thiết bị điện công nghiệp chính hãng từ các thương hiệu hàng đầu thế giới:
-              Siemens, ABB, Mitsubishi, Schneider, Omron, Delta...
+            <p className="text-muted-foreground text-lg md:text-xl max-w-xl mx-auto">
+              Siemens, ABB, Mitsubishi, Schneider, Omron, Delta — toàn bộ nhập khẩu
+              chính ngạch, giao hàng toàn quốc.
             </p>
           </div>
         )}
