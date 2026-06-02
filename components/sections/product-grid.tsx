@@ -7,7 +7,7 @@ import { getProductImageUrl } from "@/lib/sanity/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { ShoppingCart, Eye, Check } from "lucide-react";
+import { Phone, Eye, Check } from "lucide-react";
 
 const categories = [
   { value: "all", label: "Tất cả" },
@@ -21,9 +21,10 @@ const categories = [
 interface ProductGridProps {
   products: Product[];
   initialCategory?: string;
+  isPage?: boolean;
 }
 
-export function ProductGrid({ products, initialCategory }: ProductGridProps) {
+export function ProductGrid({ products, initialCategory, isPage = false }: ProductGridProps) {
   const [activeCategory, setActiveCategory] = useState(
     initialCategory && initialCategory !== "" ? initialCategory : "all"
   );
@@ -43,18 +44,20 @@ export function ProductGrid({ products, initialCategory }: ProductGridProps) {
   };
 
   return (
-    <section id="products" className="py-16 md:py-24 bg-muted/30">
+    <section id="products" className={`bg-muted/30 ${isPage ? "py-10 md:py-14" : "py-16 md:py-24"}`}>
       <div className="container mx-auto px-4">
-        {/* Section header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Sản Phẩm <span className="text-primary">Nổi Bật</span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Thiết bị điện công nghiệp chính hãng từ các thương hiệu hàng đầu thế giới: 
-            Siemens, ABB, Mitsubishi, Schneider, Omron, Delta...
-          </p>
-        </div>
+        {/* Section header — chỉ hiện trên homepage */}
+        {!isPage && (
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Sản Phẩm <span className="text-primary">Nổi Bật</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Thiết bị điện công nghiệp chính hãng từ các thương hiệu hàng đầu thế giới:
+              Siemens, ABB, Mitsubishi, Schneider, Omron, Delta...
+            </p>
+          </div>
+        )}
 
         {/* Category tabs */}
         <div className="flex flex-wrap justify-center gap-2 mb-10">
@@ -108,14 +111,16 @@ export function ProductGrid({ products, initialCategory }: ProductGridProps) {
                   <Link
                     href={`/san-pham/${product.slug.current}`}
                     className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                    title="Xem chi tiết"
                   >
                     <Eye className="w-5 h-5" />
                   </Link>
                   <Link
                     href="/#contact"
                     className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                    title="Liên hệ báo giá"
                   >
-                    <ShoppingCart className="w-5 h-5" />
+                    <Phone className="w-5 h-5" />
                   </Link>
                 </div>
               </div>
@@ -163,12 +168,14 @@ export function ProductGrid({ products, initialCategory }: ProductGridProps) {
           </div>
         )}
 
-        {/* View all link */}
-        <div className="text-center mt-8">
-          <Link href="/san-pham" className="text-primary hover:underline font-medium">
-            Xem tất cả sản phẩm &rarr;
-          </Link>
-        </div>
+        {/* View all link — chỉ hiện trên homepage */}
+        {!isPage && (
+          <div className="text-center mt-8">
+            <Link href="/san-pham" className="text-primary hover:underline font-medium">
+              Xem tất cả sản phẩm &rarr;
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

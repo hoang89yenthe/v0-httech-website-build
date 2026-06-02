@@ -50,7 +50,7 @@ export function ServicesSection() {
             Dịch Vụ <span className="text-primary">Kỹ Thuật</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            HTtech cung cấp giải pháp tự động hóa và dịch vụ kỹ thuật toàn diện, 
+            HT TECH cung cấp giải pháp tự động hóa và dịch vụ kỹ thuật toàn diện,
             đáp ứng mọi nhu cầu của doanh nghiệp sản xuất.
           </p>
         </div>
@@ -83,7 +83,7 @@ export function ServicesSection() {
                 Bạn cần tư vấn giải pháp tự động hóa?
               </h3>
               <p className="text-primary-foreground/80 mb-6">
-                Đội ngũ kỹ sư giàu kinh nghiệm của HTtech sẵn sàng hỗ trợ bạn 24/7. 
+                Đội ngũ kỹ sư giàu kinh nghiệm của HT TECH sẵn sàng hỗ trợ bạn 24/7.
                 Liên hệ ngay để được tư vấn miễn phí!
               </p>
               <div className="flex flex-col sm:flex-row gap-4">

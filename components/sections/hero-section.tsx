@@ -19,7 +19,7 @@ export function HeroSection() {
               Kỹ Thuật Công Nghiệp Toàn Diện
             </h1>
             <p className="text-lg text-slate-300 mb-8 max-w-xl mx-auto lg:mx-0">
-              HTtech cung cấp thiết bị điện công nghiệp chính hãng từ các thương hiệu hàng đầu: 
+              HT TECH cung cấp thiết bị điện công nghiệp chính hãng từ các thương hiệu hàng đầu:
               Siemens, ABB, Mitsubishi, Schneider. Dịch vụ tư vấn, thiết kế và thi công tủ điện chuyên nghiệp.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">

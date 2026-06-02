@@ -13,7 +13,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   ChevronRight,
   Phone,
-  ShoppingCart,
+  FileText,
   Check,
   Truck,
   Shield,
@@ -33,16 +33,16 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   
   if (!product) {
     return {
-      title: "Sản phẩm không tồn tại - HTtech",
+      title: "Sản phẩm không tồn tại - HT TECH",
     };
   }
 
-  const description = product.description || `Mua ${product.title} chính hãng tại HTtech với giá tốt nhất.`;
+  const description = product.description || `Mua ${product.title} chính hãng tại HT TECH với giá tốt nhất.`;
   return {
-    title: `${product.title} - HTtech`,
+    title: `${product.title} - HT TECH`,
     description,
     openGraph: {
-      title: `${product.title} - HTtech`,
+      title: `${product.title} - HT TECH`,
       description,
       type: 'website',
     },
@@ -176,9 +176,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Button size="lg" className="gap-2 flex-1">
-                  <ShoppingCart className="w-5 h-5" />
-                  Thêm vào giỏ hàng
+                <Button size="lg" className="gap-2 flex-1" asChild>
+                  <a href="/#contact">
+                    <FileText className="w-5 h-5" />
+                    Yêu cầu báo giá
+                  </a>
                 </Button>
                 <Button size="lg" variant="outline" className="gap-2" asChild>
                   <a href="tel:19006868">

@@ -20,23 +20,23 @@ const brands = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="py-16 md:py-24">
+    <section id="about" className="py-16 md:py-24 pb-20 md:pb-32">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Về <span className="text-primary">HTtech</span>
+              Về <span className="text-primary">HT TECH</span>
             </h2>
             <p className="text-muted-foreground mb-4 leading-relaxed">
-              <strong className="text-foreground">HTtech</strong> là đơn vị chuyên cung cấp thiết bị điện công nghiệp 
-              và giải pháp tự động hóa hàng đầu tại Việt Nam. Với hơn 10 năm kinh nghiệm trong ngành, 
+              <strong className="text-foreground">HT TECH</strong> là đơn vị chuyên cung cấp thiết bị điện công nghiệp
+              và giải pháp tự động hóa hàng đầu tại Việt Nam. Với hơn 10 năm kinh nghiệm trong ngành,
               chúng tôi tự hào là đối tác tin cậy của hàng ngàn doanh nghiệp sản xuất.
             </p>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              Chúng tôi cung cấp đầy đủ các dòng sản phẩm từ biến tần, PLC, HMI, thiết bị đóng cắt 
-              đến vật tư tủ điện từ các thương hiệu hàng đầu thế giới. Đội ngũ kỹ sư giàu kinh nghiệm 
-              của HTtech sẵn sàng tư vấn và triển khai giải pháp tự động hóa toàn diện cho doanh nghiệp.
+              Chúng tôi cung cấp đầy đủ các dòng sản phẩm từ biến tần, PLC, HMI, thiết bị đóng cắt
+              đến vật tư tủ điện từ các thương hiệu hàng đầu thế giới. Đội ngũ kỹ sư giàu kinh nghiệm
+              của HT TECH sẵn sàng tư vấn và triển khai giải pháp tự động hóa toàn diện cho doanh nghiệp.
             </p>
 
             {/* Stats */}
@@ -74,20 +74,20 @@ export function AboutSection() {
             <div className="grid grid-cols-2 gap-4">
               <img
                 src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=300&h=400&fit=crop"
-                alt="Kho hàng HTtech"
+                alt="Kho hàng HT TECH"
                 className="rounded-xl shadow-lg"
               />
               <img
-                src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=300&h=400&fit=crop"
-                alt="Đội ngũ kỹ thuật HTtech"
+                src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=300&h=400&fit=crop"
+                alt="Tủ điện công nghiệp HT TECH"
                 className="rounded-xl shadow-lg mt-8"
               />
             </div>
             {/* Floating badge */}
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-6 py-3 rounded-xl shadow-lg">
+            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-primary text-primary-foreground px-6 py-3 rounded-xl shadow-lg">
               <div className="text-center">
-                <div className="text-2xl font-bold">ISO 9001:2015</div>
-                <div className="text-sm opacity-90">Chứng nhận chất lượng</div>
+                <div className="text-xl font-bold">ISO 9001:2015</div>
+                <div className="text-xs opacity-90">Chứng nhận chất lượng</div>
               </div>
             </div>
           </div>

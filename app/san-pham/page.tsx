@@ -7,11 +7,11 @@ import { fetchProducts } from "@/lib/sanity/fetch";
 import { ChevronRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Sản Phẩm - HTtech Thiết Bị Điện Công Nghiệp",
-  description: "Khám phá đầy đủ các sản phẩm biến tần, PLC, HMI, thiết bị đóng cắt, cảm biến và vật tư tủ điện chính hãng tại HTtech.",
+  title: "Sản Phẩm - HT TECH Thiết Bị Điện Công Nghiệp",
+  description: "Khám phá đầy đủ các sản phẩm biến tần, PLC, HMI, thiết bị đóng cắt, cảm biến và vật tư tủ điện chính hãng tại HT TECH.",
   openGraph: {
-    title: "Sản Phẩm - HTtech Thiết Bị Điện Công Nghiệp",
-    description: "Khám phá đầy đủ các sản phẩm biến tần, PLC, HMI, thiết bị đóng cắt, cảm biến và vật tư tủ điện chính hãng tại HTtech.",
+    title: "Sản Phẩm - HT TECH Thiết Bị Điện Công Nghiệp",
+    description: "Khám phá đầy đủ các sản phẩm biến tần, PLC, HMI, thiết bị đóng cắt, cảm biến và vật tư tủ điện chính hãng tại HT TECH.",
     type: "website",
   },
 };
@@ -46,7 +46,7 @@ export default async function ProductsPage({
         </div>
 
         {/* Products */}
-        <ProductGrid products={products} initialCategory={category} />
+        <ProductGrid products={products} initialCategory={category} isPage />
       </main>
       <Footer />
     </div>

@@ -39,7 +39,7 @@ export function ContactSection() {
             Liên Hệ <span className="text-primary">Với Chúng Tôi</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Để lại thông tin, đội ngũ tư vấn của HTtech sẽ liên hệ và hỗ trợ bạn trong thời gian sớm nhất.
+            Để lại thông tin, đội ngũ tư vấn của HT TECH sẽ liên hệ và hỗ trợ bạn trong thời gian sớm nhất.
           </p>
         </div>
 
@@ -240,7 +240,7 @@ export function ContactSection() {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="HTtech location"
+            title="HT TECH location"
           />
         </div>
       </div>
