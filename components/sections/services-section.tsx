@@ -41,12 +41,12 @@ export function ServicesSection() {
         {/* Section header */}
         <div className="text-center mb-16 md:mb-20">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
-            Chúng tôi lo<br />
-            <span className="text-primary">phần còn lại.</span>
+            Dịch Vụ Kỹ Thuật<br />
+            <span className="text-primary">Toàn Diện.</span>
           </h2>
           <p className="text-muted-foreground text-lg md:text-xl max-w-xl mx-auto">
-            Từ thiết kế đến vận hành — HT TECH đồng hành
-            suốt toàn bộ vòng đời dự án của bạn.
+            Từ thiết kế, thi công đến bảo trì và đào tạo —
+            HT TECH đồng hành cùng doanh nghiệp của bạn.
           </p>
         </div>
 
@@ -75,10 +75,10 @@ export function ServicesSection() {
           <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-5" />
           <div className="relative z-10 max-w-2xl mx-auto">
             <h3 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
-              Sẵn sàng tự động hóa<br />nhà máy của bạn?
+              Cần tư vấn giải pháp<br />tự động hóa?
             </h3>
             <p className="text-white/55 mb-8 text-lg">
-              Đội ngũ kỹ sư HT TECH tư vấn miễn phí — phản hồi trong 30 phút.
+              Đội ngũ kỹ sư HT TECH hỗ trợ miễn phí — phản hồi trong 30 phút.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a

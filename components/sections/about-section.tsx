@@ -18,12 +18,12 @@ export function AboutSection() {
         {/* Header */}
         <div className="text-center mb-20 md:mb-24">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
-            Chính xác từng chi tiết.<br />
-            <span className="text-primary">Không ngừng cải tiến.</span>
+            Được tin dùng bởi<br />
+            <span className="text-primary">hàng nghìn doanh nghiệp.</span>
           </h2>
           <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            HT TECH là đối tác kỹ thuật tin cậy cho hàng nghìn doanh nghiệp sản xuất Việt Nam —
-            từ tư vấn đến vận hành, từ thiết kế đến bảo trì.
+            HT TECH phân phối thiết bị điện công nghiệp chính hãng và cung cấp
+            giải pháp tự động hóa cho doanh nghiệp sản xuất tại Việt Nam.
           </p>
         </div>
 

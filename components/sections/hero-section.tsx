@@ -18,14 +18,13 @@ export function HeroSection() {
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-8">
-              Kỹ Thuật<br />
-              <span className="text-primary">Không<br />Thoả Hiệp.</span>
+              Thiết Bị Điện<br />
+              <span className="text-primary">Công Nghiệp<br />Chính Hãng.</span>
             </h1>
 
             <p className="text-lg md:text-xl text-white/55 mb-12 max-w-md leading-relaxed font-light">
-              Thiết bị điện công nghiệp chính hãng từ Siemens, ABB,
-              Mitsubishi, Schneider — giải pháp tự động hóa toàn diện
-              cho nhà máy Việt Nam.
+              Biến tần, PLC, HMI, cảm biến từ Siemens, ABB, Mitsubishi,
+              Schneider. Tư vấn miễn phí — giao hàng toàn quốc.
             </p>
 
             <div className="flex flex-wrap items-center gap-5">

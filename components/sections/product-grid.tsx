@@ -50,12 +50,12 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
         {!isPage && (
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
-              Chính hãng.<br />
-              <span className="text-primary">Không ngoại lệ.</span>
+              Sản Phẩm<br />
+              <span className="text-primary">Chính Hãng.</span>
             </h2>
             <p className="text-muted-foreground text-lg md:text-xl max-w-xl mx-auto">
-              Siemens, ABB, Mitsubishi, Schneider, Omron, Delta — toàn bộ nhập khẩu
-              chính ngạch, giao hàng toàn quốc.
+              Nhập khẩu chính ngạch từ Siemens, ABB, Mitsubishi, Schneider,
+              Omron, Delta — đầy đủ chứng từ, bảo hành nhà sản xuất.
             </p>
           </div>
         )}

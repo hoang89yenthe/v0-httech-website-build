@@ -36,11 +36,11 @@ export function ContactSection() {
         {/* Section header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
-            Bắt đầu<br />
-            <span className="text-primary">ngay hôm nay.</span>
+            Liên Hệ<br />
+            <span className="text-primary">Với Chúng Tôi.</span>
           </h2>
           <p className="text-muted-foreground text-lg md:text-xl max-w-md mx-auto">
-            Để lại thông tin — HT TECH phản hồi trong vòng 30 phút.
+            Để lại thông tin, đội ngũ kỹ sư HT TECH sẽ phản hồi trong vòng 30 phút.
           </p>
         </div>
 
