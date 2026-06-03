@@ -3,7 +3,6 @@ import { Be_Vietnam_Pro } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ScrollToTop } from '@/components/scroll-to-top'
 import { FloatingCTA } from '@/components/floating-cta'
-import { BackToTop } from '@/components/back-to-top'
 import './globals.css'
 
 const beVietnamPro = Be_Vietnam_Pro({ 
@@ -63,7 +62,6 @@ export default function RootLayout({
         <ScrollToTop />
         {children}
         <FloatingCTA />
-        <BackToTop />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

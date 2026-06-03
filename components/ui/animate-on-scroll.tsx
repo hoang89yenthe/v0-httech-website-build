@@ -19,6 +19,13 @@ export function AnimateOnScroll({
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    // Nếu đã trong viewport khi mount thì hiện ngay
+    if (node.getBoundingClientRect().top < window.innerHeight) {
+      setVisible(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -26,9 +33,9 @@ export function AnimateOnScroll({
           observer.disconnect();
         }
       },
-      { threshold: 0.08 }
+      { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
     );
-    if (ref.current) observer.observe(ref.current);
+    observer.observe(node);
     return () => observer.disconnect();
   }, []);
 

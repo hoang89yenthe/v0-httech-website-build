@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone, Mail } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import { PHONE, formatPhoneDisplay } from "@/lib/constants";
 
 const navItems = [
@@ -37,26 +37,6 @@ export function Header() {
           : "bg-background shadow-sm"
       }`}
     >
-      {/* Top bar — thông tin liên hệ nhanh */}
-      <div className="hidden md:block bg-primary text-primary-foreground py-1.5">
-        <div className="container mx-auto px-4 flex justify-between items-center text-xs">
-          <a
-            href="mailto:Httechbn@gmail.com"
-            className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity"
-          >
-            <Mail className="w-3 h-3" aria-hidden="true" />
-            Httechbn@gmail.com
-          </a>
-          <a
-            href={`tel:${PHONE}`}
-            className="flex items-center gap-1.5 font-semibold hover:opacity-90 transition-opacity"
-          >
-            <Phone className="w-3 h-3" aria-hidden="true" />
-            Hotline: {formatPhoneDisplay(PHONE)}
-          </a>
-        </div>
-      </div>
-
       {/* Main navbar */}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-18">

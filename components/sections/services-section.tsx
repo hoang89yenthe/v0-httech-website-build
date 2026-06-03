@@ -76,44 +76,6 @@ export function ServicesSection() {
           ))}
         </ul>
 
-        {/* CTA Banner */}
-        <aside
-          aria-label="Liên hệ tư vấn kỹ thuật"
-          className="mt-16 rounded-3xl bg-slate-950 p-10 md:p-14 text-center text-white overflow-hidden relative"
-        >
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0"
-            style={{
-              backgroundImage: `linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)`,
-              backgroundSize: "60px 60px",
-            }}
-          />
-          <div className="relative z-10 max-w-xl mx-auto">
-            <h3 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">
-              Cần tư vấn giải pháp tự động hóa?
-            </h3>
-            <p className="text-white/55 mb-8 text-base">
-              Đội ngũ kỹ sư HT TECH hỗ trợ miễn phí — phản hồi trong 30 phút.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="tel:0972916382"
-                className="inline-flex items-center justify-center px-7 py-3 bg-white text-slate-950 font-semibold rounded-full hover:bg-white/90 transition-colors text-sm"
-              >
-                Gọi ngay: 0972 916 382
-              </a>
-              <a
-                href="/#contact"
-                className="inline-flex items-center justify-center px-7 py-3 border border-white/25 text-white font-semibold rounded-full hover:bg-white/8 transition-colors text-sm"
-              >
-                Gửi yêu cầu báo giá
-              </a>
-            </div>
-          </div>
-        </aside>
-
       </div>
     </section>
   );

@@ -13,7 +13,7 @@ import { PHONE, ZALO } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  ChevronRight, Phone, FileText, Check,
+  ChevronRight, Phone, Check,
   Truck, Shield, RotateCcw, MessageCircle,
 } from "lucide-react";
 
@@ -193,33 +193,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3 mb-5">
                   <Button size="lg" className="gap-2 flex-1 rounded-xl" asChild>
-                    <a href="/#contact">
-                      <FileText className="w-4 h-4" aria-hidden="true" />
-                      Yêu cầu báo giá
-                    </a>
-                  </Button>
-                  <Button size="lg" variant="outline" className="gap-2 rounded-xl" asChild>
                     <a href={`tel:${PHONE}`}>
                       <Phone className="w-4 h-4" aria-hidden="true" />
-                      Gọi đặt hàng
+                      Gọi đặt hàng ngay
+                    </a>
+                  </Button>
+                  <Button size="lg" variant="outline" className="gap-2 flex-1 rounded-xl" asChild>
+                    <a href={`https://zalo.me/${ZALO}`} target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="w-4 h-4" aria-hidden="true" />
+                      Chat Zalo báo giá
                     </a>
                   </Button>
                 </div>
-
-                {/* Zalo */}
-                <a
-                  href={`https://zalo.me/${ZALO}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-4 bg-[#0068FF]/8 border border-[#0068FF]/20 rounded-xl hover:bg-[#0068FF]/12 transition-colors mb-5"
-                  aria-label="Chat Zalo với HT TECH để được tư vấn"
-                >
-                  <MessageCircle className="w-5 h-5 text-[#0068FF] shrink-0" aria-hidden="true" />
-                  <div>
-                    <p className="font-semibold text-[#0047CC] text-sm">Chat Zalo để được tư vấn</p>
-                    <p className="text-xs text-[#0068FF]/70">Phản hồi trong 5 phút</p>
-                  </div>
-                </a>
 
                 {/* Benefits */}
                 <ul
