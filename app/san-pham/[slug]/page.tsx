@@ -8,6 +8,8 @@ import { getRelatedProducts } from "@/lib/sanity/mock-data";
 import { fetchProductBySlug, fetchProducts } from "@/lib/sanity/fetch";
 import { categoryLabels, tagLabels, getTagClass } from "@/lib/sanity/schema";
 import { getProductImageUrl } from "@/lib/sanity/image";
+import { formatPrice } from "@/lib/utils";
+import { PHONE, ZALO } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,8 +17,7 @@ import {
   Truck, Shield, RotateCcw, MessageCircle,
 } from "lucide-react";
 
-const ZALO_NUMBER = process.env.NEXT_PUBLIC_ZALO_NUMBER ?? "0972916382";
-const SITE_URL    = process.env.NEXT_PUBLIC_SITE_URL ?? "https://httech.vn";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://httech.vn";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -50,9 +51,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (!product) notFound();
 
   const relatedProducts = getRelatedProducts(product, 4);
-
-  const formatPrice = (price?: number) =>
-    price ? new Intl.NumberFormat("vi-VN").format(price) + "đ" : "Liên hệ";
 
   // JSON-LD structured data cho Google Shopping / SEO
   const jsonLd = {
@@ -142,13 +140,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <span className="text-3xl font-bold text-primary">
                     {formatPrice(product.price)}
                   </span>
-                  {product.originalPrice && product.originalPrice > (product.price ?? 0) && (
+                  {product.price && product.originalPrice && product.originalPrice > product.price && (
                     <>
                       <span className="text-lg text-muted-foreground line-through">
                         {formatPrice(product.originalPrice)}
                       </span>
                       <Badge variant="destructive" className="text-xs">
-                        −{Math.round((1 - (product.price ?? 0) / product.originalPrice) * 100)}%
+                        −{Math.round((1 - product.price / product.originalPrice) * 100)}%
                       </Badge>
                     </>
                   )}
@@ -201,7 +199,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     </a>
                   </Button>
                   <Button size="lg" variant="outline" className="gap-2 rounded-xl" asChild>
-                    <a href="tel:0972916382">
+                    <a href={`tel:${PHONE}`}>
                       <Phone className="w-4 h-4" aria-hidden="true" />
                       Gọi đặt hàng
                     </a>
@@ -210,7 +208,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                 {/* Zalo */}
                 <a
-                  href={`https://zalo.me/${ZALO_NUMBER}`}
+                  href={`https://zalo.me/${ZALO}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 p-4 bg-[#0068FF]/8 border border-[#0068FF]/20 rounded-xl hover:bg-[#0068FF]/12 transition-colors mb-5"
@@ -282,7 +280,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                           </h3>
                           <div className="flex items-baseline gap-1.5 mt-2 flex-wrap">
                             <span className="text-sm font-bold text-primary">{formatPrice(rel.price)}</span>
-                            {rel.originalPrice && rel.originalPrice > (rel.price ?? 0) && (
+                            {rel.price && rel.originalPrice && rel.originalPrice > rel.price && (
                               <span className="text-[11px] text-slate-400 line-through">
                                 {formatPrice(rel.originalPrice)}
                               </span>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Phone, Mail } from "lucide-react";
+import { PHONE, formatPhoneDisplay } from "@/lib/constants";
 
 const navItems = [
   { label: "Trang chủ",  href: "/" },
@@ -47,11 +48,11 @@ export function Header() {
             Httechbn@gmail.com
           </a>
           <a
-            href="tel:0972916382"
+            href={`tel:${PHONE}`}
             className="flex items-center gap-1.5 font-semibold hover:opacity-90 transition-opacity"
           >
             <Phone className="w-3 h-3" aria-hidden="true" />
-            Hotline: 0972 916 382
+            Hotline: {formatPhoneDisplay(PHONE)}
           </a>
         </div>
       </div>
@@ -103,12 +104,12 @@ export function Header() {
           {/* CTA + toggle */}
           <div className="flex items-center gap-3">
             <a
-              href="tel:0972916382"
+              href={`tel:${PHONE}`}
               className="hidden sm:flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
-              aria-label="Gọi ngay 0972 916 382"
+              aria-label={`Gọi ngay ${formatPhoneDisplay(PHONE)}`}
             >
               <Phone className="w-3.5 h-3.5" aria-hidden="true" />
-              0972 916 382
+              {formatPhoneDisplay(PHONE)}
             </a>
             <button
               className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
@@ -142,11 +143,11 @@ export function Header() {
               ))}
             </ul>
             <a
-              href="tel:0972916382"
+              href={`tel:${PHONE}`}
               className="mt-3 flex items-center justify-center gap-2 bg-accent text-accent-foreground px-4 py-3 rounded-xl font-semibold text-sm"
             >
               <Phone className="w-4 h-4" aria-hidden="true" />
-              Gọi ngay: 0972 916 382
+              Gọi ngay: {formatPhoneDisplay(PHONE)}
             </a>
           </nav>
         )}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { PHONE, ZALO, formatPhoneDisplay } from "@/lib/constants";
 
 const companyLinks = [
   { label: "Giới thiệu", href: "/#about" },
@@ -44,8 +45,8 @@ export function Footer() {
               </p>
               <p className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
-                <a href="tel:0972916382" className="hover:text-white transition-colors">
-                  0972 916 382
+                <a href={`tel:${PHONE}`} className="hover:text-white transition-colors">
+                  {formatPhoneDisplay(PHONE)}
                 </a>
               </p>
               <p className="flex items-center gap-2">
@@ -63,7 +64,7 @@ export function Footer() {
             {/* Quick contact icons */}
             <div className="flex gap-2.5 mt-5">
               <a
-                href="https://zalo.me/0972916382"
+                href={`https://zalo.me/${ZALO}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Chat Zalo HT TECH"
@@ -72,7 +73,7 @@ export function Footer() {
                 Za
               </a>
               <a
-                href="tel:0972916382"
+                href={`tel:${PHONE}`}
                 aria-label="Gọi điện HT TECH"
                 className="w-9 h-9 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary transition-colors"
               >

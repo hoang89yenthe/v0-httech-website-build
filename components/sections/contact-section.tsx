@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import { PHONE, ZALO, formatPhoneDisplay } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -70,11 +71,11 @@ export function ContactSection() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Hotline / Zalo</h3>
-                    <a href="tel:0972916382" className="text-sm text-muted-foreground hover:text-primary transition-colors block">
-                      0972 916 382
+                    <a href={`tel:${PHONE}`} className="text-sm text-muted-foreground hover:text-primary transition-colors block">
+                      {formatPhoneDisplay(PHONE)}
                     </a>
                     <a
-                      href="https://zalo.me/0972916382"
+                      href={`https://zalo.me/${ZALO}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm text-[#0068FF] hover:underline mt-0.5 block"

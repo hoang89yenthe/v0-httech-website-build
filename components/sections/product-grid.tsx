@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { Product, tagLabels, getTagClass } from "@/lib/sanity/schema";
 import { getProductImageUrl } from "@/lib/sanity/image";
+import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const categories = [
@@ -26,6 +28,18 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
     initialCategory && initialCategory !== "" ? initialCategory : "all"
   );
   const [visibleCount, setVisibleCount] = useState(8);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleCategoryChange = (value: string) => {
+    if (value === activeCategory) return;
+    setActiveCategory(value);
+    setVisibleCount(8);
+    if (isPage) {
+      const url = value === "all" ? pathname : `${pathname}?category=${value}`;
+      router.replace(url, { scroll: false });
+    }
+  };
 
   const filteredProducts =
     activeCategory === "all"
@@ -34,9 +48,6 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
 
   const displayedProducts = filteredProducts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProducts.length;
-
-  const formatPrice = (price?: number) =>
-    price ? new Intl.NumberFormat("vi-VN").format(price) + "đ" : "Liên hệ";
 
   return (
     <section
@@ -76,7 +87,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                 key={cat.value}
                 role="tab"
                 aria-selected={isActive}
-                onClick={() => { setActiveCategory(cat.value); setVisibleCount(12); }}
+                onClick={() => handleCategoryChange(cat.value)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap shrink-0 ${
                   isActive
                     ? "bg-primary text-primary-foreground shadow-sm"
@@ -163,7 +174,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                     <span className="text-base font-bold text-primary">
                       {formatPrice(product.price)}
                     </span>
-                    {product.originalPrice && product.originalPrice > (product.price || 0) && (
+                    {product.price && product.originalPrice && product.originalPrice > product.price && (
                       <span className="text-xs text-slate-400 line-through">
                         {formatPrice(product.originalPrice)}
                       </span>

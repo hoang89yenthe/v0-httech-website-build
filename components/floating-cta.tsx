@@ -1,8 +1,6 @@
 "use client";
 import { Phone, MessageCircle } from "lucide-react";
-
-const PHONE = "0972916382";
-const ZALO = process.env.NEXT_PUBLIC_ZALO_NUMBER ?? PHONE;
+import { PHONE, ZALO } from "@/lib/constants";
 
 export function FloatingCTA() {
   return (
