@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Product, tagLabels, getTagClass } from "@/lib/sanity/schema";
 import { getProductImageUrl } from "@/lib/sanity/image";
 import { formatPrice } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 
 const categories = [
   { value: "all",      label: "Tất cả" },
@@ -17,6 +16,9 @@ const categories = [
   { value: "cam-bien", label: "Cảm biến" },
   { value: "vat-tu",   label: "Vật tư tủ điện" },
 ];
+
+const CARD_WIDTH = 300; // px
+const GAP = 16;         // px
 
 interface ProductGridProps {
   products: Product[];
@@ -28,27 +30,55 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
   const [activeCategory, setActiveCategory] = useState(
     initialCategory && initialCategory !== "" ? initialCategory : "all"
   );
-  const [visibleCount, setVisibleCount] = useState(9);
-  const router = useRouter();
-  const pathname = usePathname();
+  const [canLeft,  setCanLeft]  = useState(false);
+  const [canRight, setCanRight] = useState(true);
 
-  const handleCategoryChange = (value: string) => {
-    if (value === activeCategory) return;
-    setActiveCategory(value);
-    setVisibleCount(9);
-    if (isPage) {
-      const url = value === "all" ? pathname : `${pathname}?category=${value}`;
-      router.replace(url, { scroll: false });
-    }
-  };
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const router    = useRouter();
+  const pathname  = usePathname();
 
   const filteredProducts =
     activeCategory === "all"
       ? products
       : products.filter((p) => p.category === activeCategory);
 
-  const displayedProducts = filteredProducts.slice(0, visibleCount);
-  const hasMore = visibleCount < filteredProducts.length;
+  /* ── Scroll helpers ────────────────────────────────────────── */
+  const updateArrows = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 4);
+    setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+  }, []);
+
+  const scrollBy = (dir: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const step = (CARD_WIDTH + GAP) * 2;
+    el.scrollBy({ left: dir === "right" ? step : -step, behavior: "smooth" });
+  };
+
+  // Reset scroll + arrows khi đổi category
+  const handleCategoryChange = (value: string) => {
+    if (value === activeCategory) return;
+    setActiveCategory(value);
+    if (scrollRef.current) scrollRef.current.scrollLeft = 0;
+    setCanLeft(false);
+    setCanRight(true);
+    if (isPage) {
+      const url = value === "all" ? pathname : `${pathname}?category=${value}`;
+      router.replace(url, { scroll: false });
+    }
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateArrows();
+    el.addEventListener("scroll", updateArrows, { passive: true });
+    const ro = new ResizeObserver(updateArrows);
+    ro.observe(el);
+    return () => { el.removeEventListener("scroll", updateArrows); ro.disconnect(); };
+  }, [updateArrows, filteredProducts]);
 
   return (
     <section
@@ -58,7 +88,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
     >
       <div className="container mx-auto px-4">
 
-        {/* Section heading — chỉ trên homepage */}
+        {/* Section heading — homepage only */}
         {!isPage && (
           <header className="text-center mb-12">
             <h2
@@ -105,58 +135,81 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
         {filteredProducts.length === 0 && (
           <div className="text-center py-20 text-muted-foreground" role="status" aria-live="polite">
             <p className="font-medium mb-2">Không tìm thấy sản phẩm nào.</p>
-            <button
-              onClick={() => setActiveCategory("all")}
-              className="text-primary text-sm hover:underline"
-            >
+            <button onClick={() => handleCategoryChange("all")} className="text-primary text-sm hover:underline">
               Xem tất cả sản phẩm
             </button>
           </div>
         )}
 
-        {/* Products grid — Apple style: 3 cột, card dọc */}
-        <ul
-          role="list"
-          aria-label="Danh sách sản phẩm"
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5"
-        >
-          {displayedProducts.map((product, index) => (
-            <li
-              key={product._id}
-              className="reveal-on-scroll"
-              style={{ animationDelay: `${(index % 3) * 80}ms` }}
-            >
+        {/* ── Carousel ──────────────────────────────────────── */}
+        <div className="relative">
+
+          {/* Left arrow */}
+          <button
+            onClick={() => scrollBy("left")}
+            aria-label="Cuộn trái"
+            className={`
+              absolute -left-5 top-1/2 -translate-y-1/2 z-20
+              w-11 h-11 rounded-full bg-background border border-border/60
+              flex items-center justify-center shadow-md
+              hover:shadow-lg hover:scale-105 active:scale-95
+              transition-all duration-200
+              ${canLeft ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+            `}
+          >
+            <ChevronLeft className="w-5 h-5 text-foreground/80" />
+          </button>
+
+          {/* Fade left */}
+          <div
+            aria-hidden="true"
+            className={`absolute left-0 top-0 bottom-4 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none transition-opacity duration-200 ${canLeft ? "opacity-100" : "opacity-0"}`}
+          />
+
+          {/* Scrollable row */}
+          <div
+            ref={scrollRef}
+            className="flex gap-4 overflow-x-auto scrollbar-none pb-4 -mb-4"
+            style={{ scrollSnapType: "x mandatory" }}
+          >
+            {filteredProducts.map((product) => (
               <Link
+                key={product._id}
                 href={`/san-pham/${product.slug.current}`}
                 aria-label={`${product.title} — ${formatPrice(product.price)}`}
-                className="group flex flex-col bg-muted/50 rounded-3xl overflow-hidden h-full transition-shadow duration-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.10)]"
+                className={`
+                  group flex-none flex flex-col bg-muted/50 rounded-3xl overflow-hidden
+                  w-[78vw] sm:w-[300px] md:w-[300px] lg:w-[${CARD_WIDTH}px]
+                  transition-all duration-200 ease-out
+                  hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.13)]
+                  cursor-pointer
+                `}
+                style={{ scrollSnapAlign: "start" }}
               >
-                {/* Header — brand + tên sản phẩm (Apple: tên ở trên) */}
+                {/* Header: brand + name */}
                 <div className="px-5 pt-5 pb-0">
                   {product.brand && (
                     <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.06em] mb-1.5">
                       {product.brand}
                     </p>
                   )}
-                  <h3 className="text-base font-semibold leading-snug tracking-tight line-clamp-2 min-h-[2.6rem]">
+                  <h3 className="text-[15px] font-semibold leading-snug tracking-tight line-clamp-2 min-h-[2.5rem]">
                     {product.title}
                   </h3>
                 </div>
 
-                {/* Ảnh — chiếm phần giữa card, square + rounded */}
-                <div className="relative flex-1 mx-5 my-4 min-h-[180px]">
-                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-background/70">
+                {/* Image */}
+                <div className="relative mx-5 my-4">
+                  <div className="aspect-square rounded-2xl overflow-hidden bg-background/70">
                     <img
                       src={getProductImageUrl(product)}
                       alt=""
                       aria-hidden="true"
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-300 ease-out"
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.07]"
                     />
-                    {/* Gradient overlay dưới ảnh */}
-                    <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
-                    {/* Tag badge */}
+                    {/* Tag */}
                     {product.tag && (
                       <span className={`absolute top-2.5 left-2.5 text-[10px] font-medium px-2 py-0.5 rounded-full ${getTagClass(product.tag)}`}>
                         {tagLabels[product.tag]}
@@ -170,10 +223,9 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                   </div>
                 </div>
 
-                {/* Footer — giá + CTA (Apple: giá trái, nút phải) */}
-                <div className="px-5 pb-5">
-                  <div className="flex items-end justify-between gap-3">
-                    {/* Giá */}
+                {/* Footer: giá + CTA */}
+                <div className="px-5 pb-5 mt-auto">
+                  <div className="flex items-end justify-between gap-2">
                     <div className="min-w-0">
                       {product.price ? (
                         <>
@@ -183,7 +235,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                           </p>
                         </>
                       ) : (
-                        <p className="text-sm font-semibold text-foreground">Liên hệ</p>
+                        <p className="text-sm font-semibold">Liên hệ</p>
                       )}
                       {product.price && product.originalPrice && product.originalPrice > product.price && (
                         <p className="text-[10px] text-muted-foreground line-through mt-0.5">
@@ -191,8 +243,6 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                         </p>
                       )}
                     </div>
-
-                    {/* CTA pill — giống nút "Mua" của Apple */}
                     <span className="shrink-0 inline-flex items-center gap-1 bg-primary text-primary-foreground rounded-full px-4 py-2 text-xs font-medium group-hover:opacity-85 transition-opacity duration-200">
                       Xem ngay
                       <ArrowRight className="w-3 h-3" />
@@ -200,25 +250,33 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                   </div>
                 </div>
               </Link>
-            </li>
-          ))}
-        </ul>
-
-        {/* Load more */}
-        {isPage && hasMore && (
-          <div className="text-center mt-10">
-            <Button
-              variant="outline"
-              size="lg"
-              className="rounded-full px-8"
-              onClick={() => setVisibleCount((prev) => prev + 9)}
-            >
-              Xem thêm sản phẩm
-            </Button>
+            ))}
           </div>
-        )}
 
-        {/* View all — homepage */}
+          {/* Fade right */}
+          <div
+            aria-hidden="true"
+            className={`absolute right-0 top-0 bottom-4 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none transition-opacity duration-200 ${canRight ? "opacity-100" : "opacity-0"}`}
+          />
+
+          {/* Right arrow */}
+          <button
+            onClick={() => scrollBy("right")}
+            aria-label="Cuộn phải"
+            className={`
+              absolute -right-5 top-1/2 -translate-y-1/2 z-20
+              w-11 h-11 rounded-full bg-background border border-border/60
+              flex items-center justify-center shadow-md
+              hover:shadow-lg hover:scale-105 active:scale-95
+              transition-all duration-200
+              ${canRight ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+            `}
+          >
+            <ChevronRight className="w-5 h-5 text-foreground/80" />
+          </button>
+        </div>
+
+        {/* View all link — homepage */}
         {!isPage && (
           <p className="text-center mt-10">
             <Link
