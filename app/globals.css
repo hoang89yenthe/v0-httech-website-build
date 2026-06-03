@@ -152,6 +152,31 @@
   50%       { transform: translateY(-10px); }
 }
 
+/* Float nhịp chậm hơn — cho ảnh phụ stack */
+@keyframes hero-float-b {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-7px); }
+}
+@keyframes hero-float-c {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-5px); }
+}
+
+/* Glow pulse nhẹ cho ambient */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50%       { opacity: 0.28; transform: scale(1.06); }
+}
+
+/* Scan light — quét qua ảnh chính định kỳ */
+@keyframes img-scan {
+  0%   { transform: translateX(-180%) skewX(-18deg); opacity: 0; }
+  4%   { opacity: 1; }
+  38%  { opacity: 1; transform: translateX(280%) skewX(-18deg); }
+  40%  { opacity: 0; transform: translateX(300%) skewX(-18deg); }
+  100% { opacity: 0; transform: translateX(-180%) skewX(-18deg); }
+}
+
 /* ─── CSS Utilities ─────────────────────────────────────────── */
 
 /* Shimmer text — dùng trên accent headings */
