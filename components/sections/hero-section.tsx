@@ -61,20 +61,29 @@ export function HeroSection() {
           {/* Text column */}
           <div className="flex flex-col justify-center">
             {/* Label */}
-            <div className="inline-flex items-center gap-2 mb-6 self-start">
+            <div
+              className="inline-flex items-center gap-2 mb-6 self-start"
+              style={{ animation: "hero-in 0.6s cubic-bezier(0.19,1,0.22,1) 0ms both" }}
+            >
               <span className="w-6 h-px bg-primary" />
               <span className="text-xs font-semibold text-primary uppercase tracking-[0.15em]">
                 Nhà phân phối chính hãng
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold leading-[1.04] mb-6">
+            <h1
+              className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold leading-[1.04] mb-6"
+              style={{ animation: "hero-in 0.75s cubic-bezier(0.19,1,0.22,1) 120ms both" }}
+            >
               Thiết Bị Điện<br />
               Công Nghiệp<br />
               <span className="text-shimmer">Chính Hãng.</span>
             </h1>
 
-            <p className="text-base md:text-lg text-white/65 mb-10 max-w-[420px] leading-relaxed">
+            <p
+              className="text-base md:text-lg text-white/65 mb-10 max-w-[420px] leading-relaxed"
+              style={{ animation: "hero-in 0.7s cubic-bezier(0.19,1,0.22,1) 280ms both" }}
+            >
               Biến tần, PLC, HMI, cảm biến từ{" "}
               <strong className="text-white/85 font-medium">
                 Siemens, ABB, Mitsubishi, Schneider.
@@ -83,10 +92,13 @@ export function HeroSection() {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-4 mb-10">
+            <div
+              className="flex flex-wrap items-center gap-4 mb-10"
+              style={{ animation: "hero-in 0.65s cubic-bezier(0.19,1,0.22,1) 420ms both" }}
+            >
               <Link
                 href="/san-pham"
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3.5 rounded-full text-sm font-semibold hover:opacity-90 active:scale-[0.97] transition-all shadow-lg shadow-primary/25"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3.5 rounded-full text-sm font-semibold hover:opacity-90 hover:scale-[1.03] active:scale-[0.97] transition-all shadow-lg shadow-primary/25"
               >
                 Khám phá sản phẩm
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
@@ -100,7 +112,12 @@ export function HeroSection() {
             </div>
 
             {/* Trust badges */}
-            <ul className="flex flex-wrap gap-5" role="list" aria-label="Cam kết dịch vụ">
+            <ul
+              className="flex flex-wrap gap-5"
+              role="list"
+              aria-label="Cam kết dịch vụ"
+              style={{ animation: "hero-in 0.6s cubic-bezier(0.19,1,0.22,1) 560ms both" }}
+            >
               {trustBadges.map(({ icon: Icon, text }) => (
                 <li key={text} className="flex items-center gap-2 text-white/50 text-xs">
                   <Icon className="w-3.5 h-3.5 text-primary shrink-0" aria-hidden="true" />
@@ -114,6 +131,7 @@ export function HeroSection() {
           <figure
             aria-hidden="true"
             className="hidden lg:flex items-center justify-end"
+            style={{ animation: "hero-img-in 0.9s cubic-bezier(0.19,1,0.22,1) 200ms both" }}
           >
             <div className="relative w-full max-w-[540px]">
               {/* Glow halo phía sau ảnh — cam amber match ánh lửa hàn */}
@@ -125,10 +143,13 @@ export function HeroSection() {
                 height={580}
                 loading="eager"
                 decoding="async"
-                className="relative rounded-3xl shadow-[0_32px_80px_rgba(0,0,0,0.6)] w-full h-auto block"
+                className="relative rounded-3xl shadow-[0_32px_80px_rgba(0,0,0,0.6)] w-full h-auto block hover:scale-[1.02] transition-transform duration-700"
               />
               {/* Badge nổi */}
-              <div className="absolute -bottom-4 -left-4 bg-white text-slate-900 rounded-2xl px-4 py-2.5 shadow-xl text-xs font-semibold">
+              <div
+                className="absolute -bottom-4 -left-4 bg-white text-slate-900 rounded-2xl px-4 py-2.5 shadow-xl text-xs font-semibold"
+                style={{ animation: "badge-in 0.5s cubic-bezier(0.34,1.56,0.64,1) 700ms both" }}
+              >
                 <span className="text-primary font-bold text-sm">30+</span>
                 {" "}sản phẩm chính hãng
               </div>

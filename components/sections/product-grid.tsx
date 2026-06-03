@@ -120,8 +120,12 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
           aria-label="Danh sách sản phẩm"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
         >
-          {displayedProducts.map((product) => (
-            <li key={product._id} className="reveal-on-scroll">
+          {displayedProducts.map((product, index) => (
+            <li
+              key={product._id}
+              className="reveal-on-scroll"
+              style={{ animationDelay: `${(index % 4) * 80}ms` }}
+            >
               <Link
                 href={`/san-pham/${product.slug.current}`}
                 aria-label={`${product.title} — ${formatPrice(product.price)}`}
