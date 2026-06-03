@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Be_Vietnam_Pro } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { ScrollToTop } from '@/components/scroll-to-top'
+import { FloatingCTA } from '@/components/floating-cta'
+import { BackToTop } from '@/components/back-to-top'
 import './globals.css'
 
 const beVietnamPro = Be_Vietnam_Pro({ 
@@ -55,9 +58,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="vi" className="bg-background scroll-smooth">
+    <html lang="vi" className="bg-background">
       <body className={`${beVietnamPro.variable} font-sans antialiased`}>
+        <ScrollToTop />
         {children}
+        <FloatingCTA />
+        <BackToTop />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

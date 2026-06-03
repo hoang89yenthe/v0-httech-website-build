@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -9,19 +10,13 @@ import { categoryLabels, tagLabels, getTagClass } from "@/lib/sanity/schema";
 import { getProductImageUrl } from "@/lib/sanity/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import {
-  ChevronRight,
-  Phone,
-  FileText,
-  Check,
-  Truck,
-  Shield,
-  RotateCcw,
-  MessageCircle
+  ChevronRight, Phone, FileText, Check,
+  Truck, Shield, RotateCcw, MessageCircle,
 } from "lucide-react";
 
 const ZALO_NUMBER = process.env.NEXT_PUBLIC_ZALO_NUMBER ?? "0972916382";
+const SITE_URL    = process.env.NEXT_PUBLIC_SITE_URL ?? "https://httech.vn";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
@@ -30,244 +25,287 @@ interface ProductPageProps {
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = await fetchProductBySlug(slug);
-  
-  if (!product) {
-    return {
-      title: "Sản phẩm không tồn tại - HT TECH",
-    };
-  }
+  if (!product) return { title: "Sản phẩm không tồn tại - HT TECH" };
 
-  const description = product.description || `Mua ${product.title} chính hãng tại HT TECH với giá tốt nhất.`;
+  const description =
+    product.description ?? `Mua ${product.title} chính hãng tại HT TECH với giá tốt nhất.`;
+  const imageUrl = getProductImageUrl(product, 800);
+
   return {
     title: `${product.title} - HT TECH`,
     description,
     openGraph: {
       title: `${product.title} - HT TECH`,
       description,
-      type: 'website',
+      type: "website",
+      images: [{ url: imageUrl, width: 800, height: 800, alt: product.title }],
     },
+    alternates: { canonical: `${SITE_URL}/san-pham/${slug}` },
   };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
   const product = await fetchProductBySlug(slug);
-
-  if (!product) {
-    notFound();
-  }
+  if (!product) notFound();
 
   const relatedProducts = getRelatedProducts(product, 4);
 
-  const formatPrice = (price?: number) => {
-    if (!price) return "Liên hệ";
-    return new Intl.NumberFormat("vi-VN").format(price) + "đ";
+  const formatPrice = (price?: number) =>
+    price ? new Intl.NumberFormat("vi-VN").format(price) + "đ" : "Liên hệ";
+
+  // JSON-LD structured data cho Google Shopping / SEO
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.description ?? "",
+    image: getProductImageUrl(product, 800),
+    brand: { "@type": "Brand", name: product.brand ?? "HT TECH" },
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "VND",
+      price: product.price ?? 0,
+      availability: product.inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      seller: { "@type": "Organization", name: "HT TECH" },
+    },
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="py-8">
-        <div className="container mx-auto px-4">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
-            <Link href="/" className="hover:text-primary">
-              Trang chủ
-            </Link>
-            <ChevronRight className="w-4 h-4" />
-            <Link href="/san-pham" className="hover:text-primary">
-              Sản phẩm
-            </Link>
-            <ChevronRight className="w-4 h-4" />
-            <Link 
-              href={`/san-pham?category=${product.category}`} 
-              className="hover:text-primary"
+    <>
+      <Script
+        id={`json-ld-${slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <div className="min-h-screen bg-background">
+        <Header />
+
+        <main>
+          <div className="container mx-auto px-4 py-8">
+
+            {/* Breadcrumb — BreadcrumbList schema */}
+            <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-1.5 text-sm text-muted-foreground mb-8">
+              <Link href="/" className="hover:text-primary transition-colors">Trang chủ</Link>
+              <ChevronRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+              <Link href="/san-pham" className="hover:text-primary transition-colors">Sản phẩm</Link>
+              <ChevronRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+              <Link href={`/san-pham?category=${product.category}`} className="hover:text-primary transition-colors">
+                {categoryLabels[product.category] ?? product.category}
+              </Link>
+              <ChevronRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+              <span className="text-foreground font-medium line-clamp-1">{product.title}</span>
+            </nav>
+
+            {/* Product detail — dùng article cho semantic đúng chuẩn */}
+            <article
+              aria-label={product.title}
+              className="grid lg:grid-cols-2 gap-8 lg:gap-14 mb-16"
             >
-              {categoryLabels[product.category] || product.category}
-            </Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-foreground">{product.title}</span>
-          </nav>
-
-          {/* Product detail */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
-            {/* Product image */}
-            <div className="relative">
-              <div className="aspect-square rounded-2xl overflow-hidden bg-muted">
-                <img
-                  src={getProductImageUrl(product, 800)}
-                  alt={product.title}
-                  loading="eager"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              {product.tag && (
-                <Badge
-                  className={`absolute top-4 left-4 ${getTagClass(product.tag)} text-sm px-3 py-1`}
-                >
-                  {tagLabels[product.tag] || product.tag}
-                </Badge>
-              )}
-            </div>
-
-            {/* Product info */}
-            <div>
-              {product.brand && (
-                <p className="text-sm text-muted-foreground mb-2">
-                  Thương hiệu: <span className="font-medium text-primary">{product.brand}</span>
-                </p>
-              )}
-              <h1 className="text-2xl md:text-3xl font-bold mb-4">{product.title}</h1>
-              
-              {/* Price */}
-              <div className="flex items-center gap-4 mb-6">
-                <span className="text-3xl font-bold text-primary">
-                  {formatPrice(product.price)}
-                </span>
-                {product.originalPrice && product.originalPrice > (product.price || 0) && (
-                  <>
-                    <span className="text-xl text-muted-foreground line-through">
-                      {formatPrice(product.originalPrice)}
-                    </span>
-                    <Badge variant="destructive">
-                      -{Math.round((1 - (product.price || 0) / product.originalPrice) * 100)}%
-                    </Badge>
-                  </>
+              {/* Image */}
+              <div className="relative">
+                <div className="aspect-square rounded-2xl overflow-hidden bg-muted">
+                  <img
+                    src={getProductImageUrl(product, 800)}
+                    alt={`${product.title} — ảnh sản phẩm`}
+                    width={800}
+                    height={800}
+                    loading="eager"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                {product.tag && (
+                  <Badge className={`absolute top-4 left-4 ${getTagClass(product.tag)} text-sm px-3 py-1`}>
+                    {tagLabels[product.tag] ?? product.tag}
+                  </Badge>
                 )}
               </div>
 
-              {/* Stock status */}
-              <div className="flex items-center gap-2 mb-6">
-                {product.inStock ? (
-                  <span className="flex items-center gap-2 text-green-600">
-                    <Check className="w-5 h-5" />
-                    Còn hàng - Giao hàng trong 24h
+              {/* Info */}
+              <div className="flex flex-col">
+                {product.brand && (
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2">
+                    {product.brand}
+                  </p>
+                )}
+
+                <h1 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">
+                  {product.title}
+                </h1>
+
+                {/* Price */}
+                <div className="flex items-baseline gap-3 mb-5">
+                  <span className="text-3xl font-bold text-primary">
+                    {formatPrice(product.price)}
                   </span>
-                ) : (
-                  <span className="text-amber-600">Đặt hàng trước - Giao trong 3-5 ngày</span>
-                )}
-              </div>
+                  {product.originalPrice && product.originalPrice > (product.price ?? 0) && (
+                    <>
+                      <span className="text-lg text-muted-foreground line-through">
+                        {formatPrice(product.originalPrice)}
+                      </span>
+                      <Badge variant="destructive" className="text-xs">
+                        −{Math.round((1 - (product.price ?? 0) / product.originalPrice) * 100)}%
+                      </Badge>
+                    </>
+                  )}
+                </div>
 
-              {/* Description */}
-              {product.description && (
-                <p className="text-muted-foreground mb-6 leading-relaxed">
-                  {product.description}
+                {/* Stock */}
+                <p className="flex items-center gap-2 text-sm mb-5">
+                  {product.inStock ? (
+                    <span className="flex items-center gap-1.5 text-green-600 font-medium">
+                      <Check className="w-4 h-4" aria-hidden="true" />
+                      Còn hàng — Giao hàng trong 24h
+                    </span>
+                  ) : (
+                    <span className="text-amber-600">Đặt hàng trước — Giao trong 3–5 ngày</span>
+                  )}
                 </p>
-              )}
 
-              {/* Specs */}
-              {product.specs && product.specs.length > 0 && (
-                <div className="mb-6">
-                  <h3 className="font-semibold mb-3">Thông số kỹ thuật:</h3>
-                  <div className="bg-muted rounded-lg p-4">
-                    <table className="w-full text-sm">
+                {/* Description */}
+                {product.description && (
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                    {product.description}
+                  </p>
+                )}
+
+                {/* Specs table */}
+                {product.specs && product.specs.length > 0 && (
+                  <div className="mb-6">
+                    <h2 className="text-sm font-semibold mb-2.5 uppercase tracking-wider text-muted-foreground">
+                      Thông số kỹ thuật
+                    </h2>
+                    <table className="w-full text-sm border border-border rounded-xl overflow-hidden">
                       <tbody>
-                        {product.specs.map((spec, index) => (
-                          <tr key={index} className="border-b border-border last:border-0">
-                            <td className="py-2 text-muted-foreground w-1/3">{spec.label}</td>
-                            <td className="py-2 font-medium">{spec.value}</td>
+                        {product.specs.map((spec, i) => (
+                          <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : "bg-background"}>
+                            <td className="py-2.5 px-4 text-muted-foreground w-2/5 font-medium">{spec.label}</td>
+                            <td className="py-2.5 px-4">{spec.value}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Actions */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Button size="lg" className="gap-2 flex-1" asChild>
-                  <a href="/#contact">
-                    <FileText className="w-5 h-5" />
-                    Yêu cầu báo giá
-                  </a>
-                </Button>
-                <Button size="lg" variant="outline" className="gap-2" asChild>
-                  <a href="tel:0972916382">
-                    <Phone className="w-5 h-5" />
-                    Gọi đặt hàng
-                  </a>
-                </Button>
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row gap-3 mb-5">
+                  <Button size="lg" className="gap-2 flex-1 rounded-xl" asChild>
+                    <a href="/#contact">
+                      <FileText className="w-4 h-4" aria-hidden="true" />
+                      Yêu cầu báo giá
+                    </a>
+                  </Button>
+                  <Button size="lg" variant="outline" className="gap-2 rounded-xl" asChild>
+                    <a href="tel:0972916382">
+                      <Phone className="w-4 h-4" aria-hidden="true" />
+                      Gọi đặt hàng
+                    </a>
+                  </Button>
+                </div>
+
+                {/* Zalo */}
+                <a
+                  href={`https://zalo.me/${ZALO_NUMBER}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-4 bg-[#0068FF]/8 border border-[#0068FF]/20 rounded-xl hover:bg-[#0068FF]/12 transition-colors mb-5"
+                  aria-label="Chat Zalo với HT TECH để được tư vấn"
+                >
+                  <MessageCircle className="w-5 h-5 text-[#0068FF] shrink-0" aria-hidden="true" />
+                  <div>
+                    <p className="font-semibold text-[#0047CC] text-sm">Chat Zalo để được tư vấn</p>
+                    <p className="text-xs text-[#0068FF]/70">Phản hồi trong 5 phút</p>
+                  </div>
+                </a>
+
+                {/* Benefits */}
+                <ul
+                  className="grid grid-cols-3 gap-3"
+                  role="list"
+                  aria-label="Cam kết dịch vụ"
+                >
+                  {[
+                    { icon: Truck,      label: "Giao hàng toàn quốc" },
+                    { icon: Shield,     label: "Bảo hành chính hãng" },
+                    { icon: RotateCcw,  label: "Đổi trả 7 ngày" },
+                  ].map(({ icon: Icon, label }) => (
+                    <li key={label} className="text-center p-3 bg-muted/60 rounded-xl">
+                      <Icon className="w-5 h-5 mx-auto mb-1.5 text-primary" aria-hidden="true" />
+                      <p className="text-[11px] text-muted-foreground leading-tight">{label}</p>
+                    </li>
+                  ))}
+                </ul>
               </div>
+            </article>
 
-              {/* Zalo contact */}
-              <a
-                href={`https://zalo.me/${ZALO_NUMBER}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors mb-6"
-              >
-                <MessageCircle className="w-6 h-6 text-blue-500" />
-                <div>
-                  <div className="font-medium text-blue-700">Chat Zalo để được tư vấn</div>
-                  <div className="text-sm text-blue-600">Phản hồi trong 5 phút</div>
-                </div>
-              </a>
-
-              {/* Benefits */}
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center p-3 bg-muted rounded-lg">
-                  <Truck className="w-6 h-6 mx-auto mb-2 text-primary" />
-                  <p className="text-xs">Giao hàng toàn quốc</p>
-                </div>
-                <div className="text-center p-3 bg-muted rounded-lg">
-                  <Shield className="w-6 h-6 mx-auto mb-2 text-primary" />
-                  <p className="text-xs">Bảo hành chính hãng</p>
-                </div>
-                <div className="text-center p-3 bg-muted rounded-lg">
-                  <RotateCcw className="w-6 h-6 mx-auto mb-2 text-primary" />
-                  <p className="text-xs">Đổi trả 7 ngày</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Related products */}
-          {relatedProducts.length > 0 && (
-            <section>
-              <h2 className="text-2xl font-bold mb-6">Sản phẩm liên quan</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedProducts.map((relatedProduct) => (
-                  <Card key={relatedProduct._id} className="group overflow-hidden">
-                    <div className="relative aspect-square bg-muted overflow-hidden">
-                      <img
-                        src={getProductImageUrl(relatedProduct)}
-                        alt={relatedProduct.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <CardContent className="p-4">
-                      {relatedProduct.brand && (
-                        <p className="text-xs text-muted-foreground mb-1">
-                          {relatedProduct.brand}
-                        </p>
-                      )}
-                      <Link href={`/san-pham/${relatedProduct.slug.current}`}>
-                        <h3 className="font-semibold line-clamp-2 hover:text-primary transition-colors">
-                          {relatedProduct.title}
-                        </h3>
+            {/* Related products */}
+            {relatedProducts.length > 0 && (
+              <section aria-labelledby="related-heading">
+                <h2 id="related-heading" className="text-xl font-bold mb-5">
+                  Sản phẩm liên quan
+                </h2>
+                <ul
+                  className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+                  role="list"
+                  aria-label="Sản phẩm cùng danh mục"
+                >
+                  {relatedProducts.map((rel) => (
+                    <li key={rel._id}>
+                      <Link
+                        href={`/san-pham/${rel.slug.current}`}
+                        className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:ring-2 hover:ring-primary/20 transition-all h-full"
+                        aria-label={`${rel.title} — ${formatPrice(rel.price)}`}
+                      >
+                        <div className="relative aspect-square bg-muted overflow-hidden">
+                          <img
+                            src={getProductImageUrl(rel)}
+                            alt=""
+                            aria-hidden="true"
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-400"
+                          />
+                        </div>
+                        <div className="p-3">
+                          {rel.brand && (
+                            <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mb-1">
+                              {rel.brand}
+                            </p>
+                          )}
+                          <h3 className="text-xs font-semibold line-clamp-2 group-hover:text-primary transition-colors leading-snug">
+                            {rel.title}
+                          </h3>
+                          <div className="flex items-baseline gap-1.5 mt-2 flex-wrap">
+                            <span className="text-sm font-bold text-primary">{formatPrice(rel.price)}</span>
+                            {rel.originalPrice && rel.originalPrice > (rel.price ?? 0) && (
+                              <span className="text-[11px] text-slate-400 line-through">
+                                {formatPrice(rel.originalPrice)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </Link>
-                      <p className="text-primary font-bold mt-2">
-                        {formatPrice(relatedProduct.price)}
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </section>
-          )}
-        </div>
-      </main>
-      <Footer />
-    </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    </>
   );
 }
 
-// Generate static params for build time
 export async function generateStaticParams() {
   const products = await fetchProducts();
-  return products.map((product) => ({
-    slug: product.slug.current,
-  }));
+  return products.map((p) => ({ slug: p.slug.current }));
 }

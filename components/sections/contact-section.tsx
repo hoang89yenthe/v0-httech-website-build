@@ -70,9 +70,17 @@ export function ContactSection() {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Hotline / Zalo</h3>
-                    <p className="text-sm text-muted-foreground">
+                    <a href="tel:0972916382" className="text-sm text-muted-foreground hover:text-primary transition-colors block">
                       0972 916 382
-                    </p>
+                    </a>
+                    <a
+                      href="https://zalo.me/0972916382"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-[#0068FF] hover:underline mt-0.5 block"
+                    >
+                      Chat Zalo ngay →
+                    </a>
                   </div>
                 </div>
               </CardContent>
