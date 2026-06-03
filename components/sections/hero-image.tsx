@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const IMAGES = [
@@ -144,7 +145,15 @@ export function HeroImage() {
         <div className="relative w-full">
           <div className="absolute inset-6 rounded-xl bg-amber-400/20 blur-2xl" style={{ animation: "glow-pulse 4s ease-in-out infinite" }} />
           <div className="relative overflow-hidden rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.4)]">
-            <img src={IMAGES[activeIdx].thumb} alt={IMAGES[activeIdx].alt} className="w-full h-auto object-cover" draggable={false} />
+            <Image
+              src={IMAGES[activeIdx].thumb}
+              alt={IMAGES[activeIdx].alt}
+              width={700}
+              height={580}
+              priority
+              className="w-full h-auto object-cover"
+              draggable={false}
+            />
           </div>
         </div>
       </div>
@@ -187,11 +196,14 @@ export function HeroImage() {
                     : "0 12px 32px rgba(0,0,0,0.4)",
                 }}
               >
-                <img
+                <Image
                   src={img.thumb}
                   alt={img.alt}
+                  fill
+                  sizes="460px"
+                  priority={isCenter}
                   draggable={false}
-                  className="w-full h-full object-cover select-none"
+                  className="object-cover select-none"
                 />
                 {isCenter && (
                   <div className="absolute inset-0 pointer-events-none" style={{
@@ -235,7 +247,7 @@ export function HeroImage() {
         </div>
 
         {/* Drag hint */}
-        <p className="absolute -bottom-14 left-1/2 -translate-x-1/2 text-white/30 text-[10px] whitespace-nowrap select-none">
+        <p className="absolute -bottom-14 left-1/2 -translate-x-1/2 text-white/50 text-[11px] whitespace-nowrap select-none">
           Kéo để xoay ảnh
         </p>
 

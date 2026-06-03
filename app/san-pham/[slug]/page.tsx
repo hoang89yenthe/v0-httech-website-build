@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import Script from "next/script";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
@@ -105,15 +106,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
             >
               {/* Image */}
               <div className="relative">
-                <div className="aspect-square rounded-2xl overflow-hidden bg-muted">
-                  <img
+                <div className="relative aspect-square rounded-2xl overflow-hidden bg-muted">
+                  <Image
                     src={getProductImageUrl(product, 800)}
                     alt={`${product.title} — ảnh sản phẩm`}
-                    width={800}
-                    height={800}
-                    loading="eager"
-                    decoding="async"
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                    className="object-cover"
                   />
                 </div>
                 {product.tag && (
@@ -245,13 +245,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         aria-label={`${rel.title} — ${formatPrice(rel.price)}`}
                       >
                         <div className="relative aspect-square bg-muted overflow-hidden">
-                          <img
+                          <Image
                             src={getProductImageUrl(rel)}
                             alt=""
                             aria-hidden="true"
+                            fill
+                            sizes="(max-width: 640px) 50vw, 200px"
                             loading="lazy"
-                            decoding="async"
-                            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-200"
+                            className="object-cover group-hover:scale-[1.03] transition-transform duration-200"
                           />
                         </div>
                         <div className="p-3">

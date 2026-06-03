@@ -16,12 +16,14 @@ export function AnimateOnScroll({
   direction = "up",
 }: AnimateOnScrollProps) {
   const ref = useRef<HTMLDivElement>(null);
+  // mounted=false → SSR/crawler thấy content bình thường, không bị opacity-0
+  const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const node = ref.current;
     if (!node) return;
-    // Nếu đã trong viewport khi mount thì hiện ngay
     if (node.getBoundingClientRect().top < window.innerHeight) {
       setVisible(true);
       return;
@@ -52,7 +54,7 @@ export function AnimateOnScroll({
     <div
       ref={ref}
       className={`transition-all duration-700 ease-out ${
-        visible ? "opacity-100 translate-x-0 translate-y-0" : initial
+        !mounted || visible ? "opacity-100 translate-x-0 translate-y-0" : initial
       } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >

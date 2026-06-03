@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Product, tagLabels, getTagClass } from "@/lib/sanity/schema";
@@ -186,7 +187,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                 draggable={false}
                 className="
                   group shrink-0 flex flex-col
-                  w-[87vw] sm:w-[340px] md:w-[360px] lg:w-[380px]
+                  w-[87vw] sm:w-[320px] md:w-[320px] lg:w-[320px]
                   bg-card shadow-[0_2px_8px_rgba(0,0,0,0.06)] rounded-3xl overflow-hidden
                   transition-all duration-200 ease-out
                   hover:-translate-y-2
@@ -209,15 +210,16 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
 
                 {/* ── Ảnh — lớn, chiếm phần giữa card ── */}
                 <div className="relative flex-1 px-7 pt-5 pb-0">
-                  <div className="aspect-square w-full overflow-hidden rounded-2xl bg-muted/60">
-                    <img
+                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-muted/60">
+                    <Image
                       src={getProductImageUrl(product)}
                       alt=""
                       aria-hidden="true"
+                      fill
+                      sizes="(max-width: 640px) 87vw, 320px"
                       loading="lazy"
-                      decoding="async"
                       draggable={false}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.06]"
+                      className="object-cover transition-transform duration-300 group-hover:scale-[1.06]"
                     />
                   </div>
                   {/* Tag badge */}

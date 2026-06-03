@@ -323,11 +323,20 @@ export function AIChatbot() {
 
   return (
     <>
-      {/* Chatbot Floating Button */}
+      {/* Backdrop mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 sm:hidden"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Chatbot Floating Button — ẩn trên mobile khi chat đang mở */}
       <button
         id="aiChatBtn"
         onClick={handleToggleChat}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-110 active:scale-95 z-50 group"
+        className={`fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-110 active:scale-95 z-50 group ${isOpen ? "hidden sm:flex" : "flex"}`}
         aria-label="Trợ lý ảo HTtech"
       >
         <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-red-500 rounded-full border-2 border-white flex items-center justify-center animate-bounce">
@@ -339,9 +348,11 @@ export function AIChatbot() {
       {/* AI Chat Widget */}
       <div
         id="aiChatWidget"
-        className={`fixed bottom-24 right-6 w-[380px] h-[550px] bg-white rounded-2xl shadow-2xl flex flex-col z-50 transition-all duration-300 origin-bottom-right ${
-          isOpen ? "scale-100 opacity-100 pointer-events-auto" : "scale-0 opacity-0 pointer-events-none"
-        }`}
+        className={`fixed z-50 bg-white shadow-2xl flex flex-col transition-all duration-300
+          bottom-0 left-0 right-0 h-[85vh] rounded-t-2xl rounded-b-none
+          sm:bottom-24 sm:left-auto sm:right-6 sm:w-[380px] sm:h-[550px] sm:rounded-2xl sm:origin-bottom-right
+          ${isOpen ? "translate-y-0 opacity-100 pointer-events-auto sm:scale-100" : "translate-y-full opacity-0 pointer-events-none sm:translate-y-0 sm:scale-0"}
+        `}
       >
         {/* Widget Header */}
         <div className="bg-gradient-to-r from-primary to-primary-light text-white px-4 py-3.5 rounded-t-2xl flex justify-between items-center shadow-md">

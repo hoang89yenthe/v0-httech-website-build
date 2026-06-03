@@ -17,11 +17,27 @@ export function ContactSection() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setFormData({ name: "", phone: "", email: "", product: "", message: "" });
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error("Gửi thất bại");
+      setSubmitted(true);
+      setFormData({ name: "", phone: "", email: "", product: "", message: "" });
+    } catch {
+      setError("Có lỗi xảy ra, vui lòng thử lại hoặc gọi trực tiếp 0972 916 382.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (
@@ -195,9 +211,12 @@ export function ContactSection() {
                     />
                   </div>
 
-                  <Button type="submit" size="lg" className="w-full gap-2">
+                  {error && (
+                    <p className="text-sm text-red-500 text-center">{error}</p>
+                  )}
+                  <Button type="submit" size="lg" className="w-full gap-2" disabled={loading}>
                     <Send className="w-4 h-4" />
-                    Gửi yêu cầu
+                    {loading ? "Đang gửi..." : "Gửi yêu cầu"}
                   </Button>
                 </form>
                 )}

@@ -55,7 +55,7 @@ export function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav aria-label="Điều hướng chính" className="hidden md:flex items-center gap-1">
+          <nav aria-label="Điều hướng chính" className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => {
               const isActive =
                 item.href === "/san-pham"
@@ -92,7 +92,7 @@ export function Header() {
               {formatPhoneDisplay(PHONE)}
             </a>
             <button
-              className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+              className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
               onClick={() => setOpen(!open)}
               aria-expanded={open}
               aria-controls="mobile-menu"
@@ -108,7 +108,7 @@ export function Header() {
           <nav
             id="mobile-menu"
             aria-label="Điều hướng mobile"
-            className="md:hidden py-4 border-t border-border/60"
+            className="lg:hidden py-4 border-t border-border/60"
           >
             <ul className="flex flex-col gap-1" role="list">
               {navItems.map((item) => (

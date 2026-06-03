@@ -51,17 +51,18 @@ export function ServicesSection() {
           {services.map((service) => (
             <li key={service.title}>
               <article
-                className="glow-card group rounded-2xl bg-card border border-border/60 h-full p-6 hover:border-primary/25 transition-all duration-200"
-                style={{ transitionDelay: service.delay }}
+                className="group rounded-2xl bg-card border border-border/60 h-full p-6
+                  transition-all duration-200 ease-out
+                  hover:-translate-y-2 hover:shadow-[0_24px_64px_rgba(0,0,0,0.13)] hover:border-transparent"
               >
                 <div
-                  className="w-11 h-11 bg-primary/8 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-white transition-all duration-200 group-hover:animate-float"
+                  className="w-11 h-11 bg-primary/8 rounded-xl flex items-center justify-center mb-5 transition-colors duration-200 group-hover:bg-primary"
                   aria-hidden="true"
                 >
-                  <service.icon className="w-5 h-5 text-primary group-hover:text-white transition-colors duration-200" />
+                  <service.icon className="w-5 h-5 text-primary transition-colors duration-200 group-hover:text-white" />
                 </div>
 
-                <h3 className="text-sm font-semibold mb-2 tracking-tight group-hover:text-primary transition-colors duration-200">
+                <h3 className="text-sm font-semibold mb-2 tracking-tight">
                   {service.title}
                 </h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
