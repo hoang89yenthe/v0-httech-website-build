@@ -5,7 +5,7 @@ const brands = [
 
 export function AboutSection() {
   return (
-    <section id="about" aria-labelledby="about-heading" className="py-20 md:py-28 overflow-hidden">
+    <section id="about" aria-labelledby="about-heading" className="pt-20 pb-20 md:pt-24 md:pb-28 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto text-center mb-14">
           <h2

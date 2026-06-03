@@ -51,8 +51,7 @@ export function HeroSection() {
             backgroundSize: "72px 72px",
           }}
         />
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-background to-transparent" />
+        {/* Không dùng bottom fade để tránh white overlap với section bên dưới */}
       </div>
 
       {/* ── Content ───────────────────────────────────────── */}
