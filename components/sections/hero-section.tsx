@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ShieldCheck, Truck, Headphones } from "lucide-react";
+import { HeroImage } from "./hero-image";
 
 const trustBadges = [
   { icon: ShieldCheck, text: "Chính hãng 100%" },
@@ -127,33 +128,8 @@ export function HeroSection() {
             </ul>
           </div>
 
-          {/* Image column */}
-          <figure
-            aria-hidden="true"
-            className="hidden lg:flex items-center justify-end"
-            style={{ animation: "hero-img-in 0.5s cubic-bezier(0,0,0.2,1) 100ms both" }}
-          >
-            <div className="relative w-full max-w-[520px]">
-              <div className="absolute inset-6 rounded-2xl bg-amber-500/15 blur-3xl" />
-              <img
-                src="https://images.unsplash.com/photo-1647427060118-4911c9821b82?w=700&h=580&fit=crop&q=90"
-                alt="Cánh tay robot tự động trong nhà máy công nghiệp"
-                width={700}
-                height={580}
-                loading="eager"
-                decoding="async"
-                className="relative rounded-2xl shadow-[0_20px_48px_rgba(0,0,0,0.45)] w-full h-auto block"
-              />
-              {/* Badge nổi */}
-              <div
-                className="absolute -bottom-4 -left-4 bg-white/95 backdrop-blur-sm text-slate-900 rounded-2xl px-4 py-2.5 shadow-md text-xs font-medium border border-white/50"
-                style={{ animation: "badge-in 0.4s cubic-bezier(0.34,1.56,0.64,1) 400ms both" }}
-              >
-                <span className="text-primary font-semibold text-sm">30+</span>
-                {" "}sản phẩm chính hãng
-              </div>
-            </div>
-          </figure>
+          {/* Image column — client component với mouse parallax tilt */}
+          <HeroImage />
 
         </div>
       </div>
