@@ -31,10 +31,10 @@ export function Header() {
   return (
     <header
       role="banner"
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`sticky top-0 z-50 transition-all duration-200 ${
         scrolled
-          ? "bg-background/85 backdrop-blur-xl shadow-sm border-b border-border/60"
-          : "bg-background shadow-sm"
+          ? "bg-background/80 backdrop-blur-md border-b border-border/40"
+          : "bg-background"
       }`}
     >
       {/* Main navbar */}
@@ -43,7 +43,7 @@ export function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0" aria-label="HT TECH — Trang chủ">
-            <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center shadow-sm">
+            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-base leading-none select-none">HT</span>
             </div>
             <div>
@@ -85,7 +85,7 @@ export function Header() {
           <div className="flex items-center gap-3">
             <a
               href={`tel:${PHONE}`}
-              className="hidden sm:flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm"
+              className="hidden sm:flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-medium hover:opacity-85 active:scale-[0.97] transition-all duration-200"
               aria-label={`Gọi ngay ${formatPhoneDisplay(PHONE)}`}
             >
               <Phone className="w-3.5 h-3.5" aria-hidden="true" />

@@ -126,18 +126,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {/* Info */}
               <div className="flex flex-col">
                 {product.brand && (
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mb-2">
+                  <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.06em] mb-2">
                     {product.brand}
                   </p>
                 )}
 
-                <h1 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">
+                <h1 className="text-2xl md:text-3xl font-semibold mb-4">
                   {product.title}
                 </h1>
 
                 {/* Price */}
                 <div className="flex items-baseline gap-3 mb-5">
-                  <span className="text-3xl font-bold text-primary">
+                  <span className="text-2xl font-semibold text-primary">
                     {formatPrice(product.price)}
                   </span>
                   {product.price && product.originalPrice && product.originalPrice > product.price && (
@@ -174,15 +174,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {/* Specs table */}
                 {product.specs && product.specs.length > 0 && (
                   <div className="mb-6">
-                    <h2 className="text-sm font-semibold mb-2.5 uppercase tracking-wider text-muted-foreground">
+                    <h2 className="text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground mb-2.5">
                       Thông số kỹ thuật
                     </h2>
-                    <table className="w-full text-sm border border-border rounded-xl overflow-hidden">
+                    <table className="w-full text-sm border border-border/60 rounded-xl overflow-hidden">
                       <tbody>
                         {product.specs.map((spec, i) => (
-                          <tr key={i} className={i % 2 === 0 ? "bg-muted/40" : "bg-background"}>
-                            <td className="py-2.5 px-4 text-muted-foreground w-2/5 font-medium">{spec.label}</td>
-                            <td className="py-2.5 px-4">{spec.value}</td>
+                          <tr key={i} className={i % 2 === 0 ? "bg-muted/30" : "bg-background"}>
+                            <td className="py-2.5 px-4 text-muted-foreground w-2/5 text-xs font-medium">{spec.label}</td>
+                            <td className="py-2.5 px-4 text-sm">{spec.value}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -192,13 +192,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3 mb-5">
-                  <Button size="lg" className="gap-2 flex-1 rounded-xl" asChild>
+                  <Button size="lg" className="gap-2 flex-1 rounded-full" asChild>
                     <a href={`tel:${PHONE}`}>
                       <Phone className="w-4 h-4" aria-hidden="true" />
                       Gọi đặt hàng ngay
                     </a>
                   </Button>
-                  <Button size="lg" variant="outline" className="gap-2 flex-1 rounded-xl" asChild>
+                  <Button size="lg" variant="outline" className="gap-2 flex-1 rounded-full border-border/60" asChild>
                     <a href={`https://zalo.me/${ZALO}`} target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="w-4 h-4" aria-hidden="true" />
                       Chat Zalo báo giá
@@ -241,7 +241,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <li key={rel._id}>
                       <Link
                         href={`/san-pham/${rel.slug.current}`}
-                        className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:ring-2 hover:ring-primary/20 transition-all h-full"
+                        className="group block bg-card rounded-2xl overflow-hidden border border-border/60 hover:border-primary/20 hover:shadow-md transition-all duration-200 h-full"
                         aria-label={`${rel.title} — ${formatPrice(rel.price)}`}
                       >
                         <div className="relative aspect-square bg-muted overflow-hidden">
@@ -251,20 +251,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             aria-hidden="true"
                             loading="lazy"
                             decoding="async"
-                            className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-400"
+                            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-200"
                           />
                         </div>
                         <div className="p-3">
                           {rel.brand && (
-                            <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mb-1">
+                            <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-[0.06em] mb-1">
                               {rel.brand}
                             </p>
                           )}
-                          <h3 className="text-xs font-semibold line-clamp-2 group-hover:text-primary transition-colors leading-snug">
+                          <h3 className="text-xs font-medium line-clamp-2 group-hover:text-primary transition-colors duration-200 leading-snug">
                             {rel.title}
                           </h3>
                           <div className="flex items-baseline gap-1.5 mt-2 flex-wrap">
-                            <span className="text-sm font-bold text-primary">{formatPrice(rel.price)}</span>
+                            <span className="text-sm font-semibold text-primary">{formatPrice(rel.price)}</span>
                             {rel.price && rel.originalPrice && rel.originalPrice > rel.price && (
                               <span className="text-[11px] text-slate-400 line-through">
                                 {formatPrice(rel.originalPrice)}

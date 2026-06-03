@@ -62,18 +62,18 @@ export function HeroSection() {
           <div className="flex flex-col justify-center">
             {/* Label */}
             <div
-              className="inline-flex items-center gap-2 mb-6 self-start"
-              style={{ animation: "hero-in 0.6s cubic-bezier(0.19,1,0.22,1) 0ms both" }}
+              className="inline-flex items-center gap-2 mb-5 self-start"
+              style={{ animation: "hero-in 0.3s cubic-bezier(0,0,0.2,1) 0ms both" }}
             >
-              <span className="w-6 h-px bg-primary" />
-              <span className="text-xs font-semibold text-primary uppercase tracking-[0.15em]">
+              <span className="w-5 h-px bg-primary" />
+              <span className="text-[11px] font-medium text-primary uppercase tracking-[0.08em]">
                 Nhà phân phối chính hãng
               </span>
             </div>
 
             <h1
-              className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold leading-[1.04] mb-6"
-              style={{ animation: "hero-in 0.75s cubic-bezier(0.19,1,0.22,1) 120ms both" }}
+              className="text-4xl md:text-5xl lg:text-[3.5rem] font-semibold mb-5"
+              style={{ animation: "hero-in 0.4s cubic-bezier(0,0,0.2,1) 80ms both" }}
             >
               Thiết Bị Điện<br />
               Công Nghiệp<br />
@@ -81,8 +81,8 @@ export function HeroSection() {
             </h1>
 
             <p
-              className="text-base md:text-lg text-white/65 mb-10 max-w-[420px] leading-relaxed"
-              style={{ animation: "hero-in 0.7s cubic-bezier(0.19,1,0.22,1) 280ms both" }}
+              className="text-base text-white/65 mb-8 max-w-[400px]"
+              style={{ animation: "hero-in 0.35s cubic-bezier(0,0,0.2,1) 160ms both" }}
             >
               Biến tần, PLC, HMI, cảm biến từ{" "}
               <strong className="text-white/85 font-medium">
@@ -93,34 +93,34 @@ export function HeroSection() {
 
             {/* CTAs */}
             <div
-              className="flex flex-wrap items-center gap-4 mb-10"
-              style={{ animation: "hero-in 0.65s cubic-bezier(0.19,1,0.22,1) 420ms both" }}
+              className="flex flex-wrap items-center gap-3 mb-8"
+              style={{ animation: "hero-in 0.3s cubic-bezier(0,0,0.2,1) 240ms both" }}
             >
               <Link
                 href="/san-pham"
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3.5 rounded-full text-sm font-semibold hover:opacity-90 hover:scale-[1.03] active:scale-[0.97] transition-all shadow-lg shadow-primary/25"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-full text-sm font-medium hover:opacity-85 active:scale-[0.97] transition-all duration-200 shadow-md shadow-primary/20"
               >
                 Khám phá sản phẩm
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/#contact"
-                className="inline-flex items-center gap-2 text-white/60 hover:text-white border-b border-white/25 hover:border-white/60 pb-px text-sm font-medium transition-all"
+                className="inline-flex items-center gap-2 text-white/60 hover:text-white/90 text-sm font-medium transition-colors duration-200"
               >
-                Nhận báo giá
+                Nhận báo giá →
               </Link>
             </div>
 
             {/* Trust badges */}
             <ul
-              className="flex flex-wrap gap-5"
+              className="flex flex-wrap gap-4"
               role="list"
               aria-label="Cam kết dịch vụ"
-              style={{ animation: "hero-in 0.6s cubic-bezier(0.19,1,0.22,1) 560ms both" }}
+              style={{ animation: "hero-in 0.3s cubic-bezier(0,0,0.2,1) 320ms both" }}
             >
               {trustBadges.map(({ icon: Icon, text }) => (
-                <li key={text} className="flex items-center gap-2 text-white/50 text-xs">
-                  <Icon className="w-3.5 h-3.5 text-primary shrink-0" aria-hidden="true" />
+                <li key={text} className="flex items-center gap-1.5 text-white/45 text-xs">
+                  <Icon className="w-3.5 h-3.5 text-primary/70 shrink-0" aria-hidden="true" />
                   {text}
                 </li>
               ))}
@@ -131,11 +131,10 @@ export function HeroSection() {
           <figure
             aria-hidden="true"
             className="hidden lg:flex items-center justify-end"
-            style={{ animation: "hero-img-in 0.9s cubic-bezier(0.19,1,0.22,1) 200ms both" }}
+            style={{ animation: "hero-img-in 0.5s cubic-bezier(0,0,0.2,1) 100ms both" }}
           >
-            <div className="relative w-full max-w-[540px]">
-              {/* Glow halo phía sau ảnh — cam amber match ánh lửa hàn */}
-              <div className="absolute inset-4 rounded-2xl bg-amber-500/20 blur-2xl" />
+            <div className="relative w-full max-w-[520px]">
+              <div className="absolute inset-6 rounded-2xl bg-amber-500/15 blur-3xl" />
               <img
                 src="https://images.unsplash.com/photo-1647427060118-4911c9821b82?w=700&h=580&fit=crop&q=90"
                 alt="Cánh tay robot tự động trong nhà máy công nghiệp"
@@ -143,14 +142,14 @@ export function HeroSection() {
                 height={580}
                 loading="eager"
                 decoding="async"
-                className="relative rounded-3xl shadow-[0_32px_80px_rgba(0,0,0,0.6)] w-full h-auto block hover:scale-[1.02] transition-transform duration-700"
+                className="relative rounded-2xl shadow-[0_20px_48px_rgba(0,0,0,0.45)] w-full h-auto block"
               />
               {/* Badge nổi */}
               <div
-                className="absolute -bottom-4 -left-4 bg-white text-slate-900 rounded-2xl px-4 py-2.5 shadow-xl text-xs font-semibold"
-                style={{ animation: "badge-in 0.5s cubic-bezier(0.34,1.56,0.64,1) 700ms both" }}
+                className="absolute -bottom-4 -left-4 bg-white/95 backdrop-blur-sm text-slate-900 rounded-2xl px-4 py-2.5 shadow-md text-xs font-medium border border-white/50"
+                style={{ animation: "badge-in 0.4s cubic-bezier(0.34,1.56,0.64,1) 400ms both" }}
               >
-                <span className="text-primary font-bold text-sm">30+</span>
+                <span className="text-primary font-semibold text-sm">30+</span>
                 {" "}sản phẩm chính hãng
               </div>
             </div>

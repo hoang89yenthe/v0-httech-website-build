@@ -62,12 +62,12 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
           <header className="text-center mb-14">
             <h2
               id="products-heading"
-              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-5 leading-tight"
+              className="text-4xl md:text-5xl font-semibold tracking-tight mb-4"
             >
               Sản Phẩm<br />
               <span className="text-primary">Chính Hãng.</span>
             </h2>
-            <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+            <p className="text-muted-foreground text-base max-w-lg mx-auto">
               Nhập khẩu chính ngạch từ Siemens, ABB, Mitsubishi, Schneider,
               Omron, Delta — đầy đủ chứng từ, bảo hành nhà sản xuất.
             </p>
@@ -88,10 +88,10 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => handleCategoryChange(cat.value)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap shrink-0 ${
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap shrink-0 ${
                   isActive
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "bg-background hover:bg-muted border border-border"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background hover:bg-muted/80 border border-border/60 text-foreground/70 hover:text-foreground"
                 }`}
               >
                 {cat.label}
@@ -129,7 +129,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
               <Link
                 href={`/san-pham/${product.slug.current}`}
                 aria-label={`${product.title} — ${formatPrice(product.price)}`}
-                className="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:ring-2 hover:ring-primary/25 transition-all duration-200 h-full"
+                className="group block bg-card rounded-2xl overflow-hidden border border-border/60 hover:border-primary/20 hover:shadow-md transition-all duration-200 h-full"
               >
                 {/* Image */}
                 <div className="relative w-full aspect-[4/3] overflow-hidden bg-muted">
@@ -139,12 +139,12 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                     aria-hidden="true"
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out"
+                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-200 ease-out"
                   />
                   {/* Spotlight overlay on hover */}
                   <div
                     aria-hidden="true"
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                     style={{
                       background:
                         "radial-gradient(circle at 50% 0%, rgba(255,255,255,0.12) 0%, transparent 65%)",
@@ -167,15 +167,15 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                 {/* Info */}
                 <div className="p-4">
                   {product.brand && (
-                    <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-widest mb-1">
+                    <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-[0.06em] mb-1">
                       {product.brand}
                     </p>
                   )}
-                  <h3 className="text-sm font-semibold leading-snug line-clamp-2 group-hover:text-primary transition-colors mb-3">
+                  <h3 className="text-sm font-medium leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-200 mb-2.5">
                     {product.title}
                   </h3>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-base font-bold text-primary">
+                    <span className="text-sm font-semibold text-primary">
                       {formatPrice(product.price)}
                     </span>
                     {product.price && product.originalPrice && product.originalPrice > product.price && (

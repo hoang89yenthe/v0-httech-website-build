@@ -18,7 +18,7 @@ const productLinks = [
 
 export function Footer() {
   return (
-    <footer role="contentinfo" className="bg-slate-950 text-slate-400 border-t-2 border-primary/40">
+    <footer role="contentinfo" className="bg-slate-950 text-slate-400 border-t border-primary/20">
       <div className="container mx-auto px-4 py-12 md:py-14">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
@@ -34,7 +34,7 @@ export function Footer() {
               </div>
             </Link>
 
-            <p className="text-xs text-slate-500 mb-4 uppercase tracking-wider">
+            <p className="text-xs text-slate-500 mb-4">
               Công ty TNHH Kỹ Thuật Công Nghiệp HT TECH
             </p>
 
@@ -84,7 +84,7 @@ export function Footer() {
 
           {/* Company nav */}
           <nav aria-label="Điều hướng công ty">
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Công ty</h3>
+            <h3 className="text-white font-semibold mb-4 text-sm">Công ty</h3>
             <ul className="space-y-2.5" role="list">
               {companyLinks.map((link) => (
                 <li key={link.label}>
@@ -102,7 +102,7 @@ export function Footer() {
 
           {/* Products nav */}
           <nav aria-label="Điều hướng sản phẩm">
-            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Sản phẩm</h3>
+            <h3 className="text-white font-semibold mb-4 text-sm">Sản phẩm</h3>
             <ul className="space-y-2.5" role="list">
               {productLinks.map((link) => (
                 <li key={link.label}>

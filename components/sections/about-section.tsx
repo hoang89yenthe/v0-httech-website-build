@@ -10,12 +10,12 @@ export function AboutSection() {
         <div className="max-w-2xl mx-auto text-center mb-14">
           <h2
             id="about-heading"
-            className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-5 leading-tight"
+            className="text-4xl md:text-5xl font-semibold tracking-tight mb-4"
           >
             Được tin dùng bởi<br />
             <span className="text-primary">hàng nghìn doanh nghiệp.</span>
           </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed">
+          <p className="text-muted-foreground text-base leading-relaxed">
             HT TECH phân phối thiết bị điện công nghiệp chính hãng và cung cấp
             giải pháp tự động hóa cho doanh nghiệp sản xuất tại Việt Nam.
             Mỗi thiết bị đều có đầy đủ chứng từ nguồn gốc xuất xứ và tem bảo hành nhà sản xuất.
@@ -23,11 +23,10 @@ export function AboutSection() {
         </div>
       </div>
 
-      {/* Brand marquee — full-width, tràn ra ngoài container */}
+      {/* Brand marquee — full-width */}
       <div aria-label="Thương hiệu đối tác" className="relative">
-        {/* Fade gradient hai bên */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
         <div className="flex overflow-hidden">
           <ul
