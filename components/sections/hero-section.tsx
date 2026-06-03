@@ -116,11 +116,11 @@ export function HeroSection() {
             className="hidden lg:flex items-center justify-end"
           >
             <div className="relative w-full max-w-[540px]">
-              {/* Glow halo phía sau ảnh */}
-              <div className="absolute inset-4 rounded-2xl bg-primary/20 blur-2xl" />
+              {/* Glow halo phía sau ảnh — cam amber match ánh lửa hàn */}
+              <div className="absolute inset-4 rounded-2xl bg-amber-500/20 blur-2xl" />
               <img
-                src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=700&h=580&fit=crop&q=90"
-                alt="Kỹ thuật viên HT TECH lắp đặt tủ điện công nghiệp"
+                src="https://images.unsplash.com/photo-1647427060118-4911c9821b82?w=700&h=580&fit=crop&q=90"
+                alt="Cánh tay robot tự động trong nhà máy công nghiệp"
                 width={700}
                 height={580}
                 loading="eager"
