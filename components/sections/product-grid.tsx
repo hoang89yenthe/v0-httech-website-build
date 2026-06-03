@@ -17,9 +17,6 @@ const categories = [
   { value: "vat-tu",   label: "Vật tư tủ điện" },
 ];
 
-const CARD_WIDTH = 300; // px
-const GAP = 16;         // px
-
 interface ProductGridProps {
   products: Product[];
   initialCategory?: string;
@@ -42,7 +39,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
       ? products
       : products.filter((p) => p.category === activeCategory);
 
-  /* ── Scroll helpers ────────────────────────────────────────── */
+  /* ── Scroll logic ──────────────────────────────────────────── */
   const updateArrows = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -50,14 +47,15 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
     setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
   }, []);
 
-  const scrollBy = (dir: "left" | "right") => {
+  const scrollByCards = (dir: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
-    const step = (CARD_WIDTH + GAP) * 2;
-    el.scrollBy({ left: dir === "right" ? step : -step, behavior: "smooth" });
+    // Scroll chính xác 1 card mỗi lần (như Apple)
+    const card = el.querySelector("[data-card]") as HTMLElement | null;
+    const cardW = card ? card.offsetWidth + 20 : 380;
+    el.scrollBy({ left: dir === "right" ? cardW : -cardW, behavior: "smooth" });
   };
 
-  // Reset scroll + arrows khi đổi category
   const handleCategoryChange = (value: string) => {
     if (value === activeCategory) return;
     setActiveCategory(value);
@@ -84,11 +82,11 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
     <section
       id="products"
       aria-labelledby={!isPage ? "products-heading" : undefined}
-      className={isPage ? "py-10 md:py-14" : "pt-14 md:pt-20 pb-16 md:pb-24"}
+      className={`bg-muted/40 ${isPage ? "py-10 md:py-14" : "pt-14 md:pt-20 pb-16 md:pb-24"}`}
     >
       <div className="container mx-auto px-4">
 
-        {/* Section heading — homepage only */}
+        {/* Section heading */}
         {!isPage && (
           <header className="text-center mb-12">
             <h2
@@ -105,11 +103,11 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
           </header>
         )}
 
-        {/* Category filter tabs */}
+        {/* Category tabs */}
         <div
           role="tablist"
           aria-label="Lọc theo danh mục"
-          className="flex gap-2 mb-8 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center"
+          className="flex gap-2 mb-10 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center"
         >
           {categories.map((cat) => {
             const isActive = activeCategory === cat.value;
@@ -119,10 +117,10 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => handleCategoryChange(cat.value)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap shrink-0 ${
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap shrink-0 ${
                   isActive
                     ? "bg-primary text-primary-foreground"
-                    : "bg-background hover:bg-muted/80 border border-border/60 text-foreground/70 hover:text-foreground"
+                    : "bg-muted/60 hover:bg-muted text-foreground/70 hover:text-foreground"
                 }`}
               >
                 {cat.label}
@@ -144,108 +142,123 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
         {/* ── Carousel ──────────────────────────────────────── */}
         <div className="relative">
 
-          {/* Left arrow */}
+          {/* Left arrow — Apple style: tròn, nổi trên card */}
           <button
-            onClick={() => scrollBy("left")}
+            onClick={() => scrollByCards("left")}
             aria-label="Cuộn trái"
             className={`
-              absolute -left-5 top-1/2 -translate-y-1/2 z-20
-              w-11 h-11 rounded-full bg-background border border-border/60
-              flex items-center justify-center shadow-md
-              hover:shadow-lg hover:scale-105 active:scale-95
+              absolute -left-4 top-1/2 -translate-y-8 z-20
+              w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm
+              border border-border/50 shadow-lg
+              flex items-center justify-center
+              hover:shadow-xl hover:scale-105 active:scale-95
               transition-all duration-200
               ${canLeft ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
             `}
           >
-            <ChevronLeft className="w-5 h-5 text-foreground/80" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
 
-          {/* Fade left */}
+          {/* Gradient trái */}
           <div
             aria-hidden="true"
-            className={`absolute left-0 top-0 bottom-4 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none transition-opacity duration-200 ${canLeft ? "opacity-100" : "opacity-0"}`}
+            className={`absolute left-0 top-0 bottom-4 w-16 z-10 pointer-events-none
+              bg-gradient-to-r from-background to-transparent
+              transition-opacity duration-200 ${canLeft ? "opacity-100" : "opacity-0"}`}
           />
 
-          {/* Scrollable row */}
+          {/* Scrollable container */}
           <div
             ref={scrollRef}
-            className="flex gap-4 overflow-x-auto scrollbar-none pb-4 -mb-4"
-            style={{ scrollSnapType: "x mandatory" }}
+            className="flex gap-5 overflow-x-auto scrollbar-none pb-6"
+            style={{
+              scrollSnapType: "x mandatory",
+              WebkitOverflowScrolling: "touch",
+              overscrollBehaviorX: "contain",
+            }}
           >
             {filteredProducts.map((product) => (
               <Link
                 key={product._id}
+                data-card
                 href={`/san-pham/${product.slug.current}`}
-                aria-label={`${product.title} — ${formatPrice(product.price)}`}
-                className={`
-                  group flex-none flex flex-col bg-muted/50 rounded-3xl overflow-hidden
-                  w-[78vw] sm:w-[300px] md:w-[300px] lg:w-[${CARD_WIDTH}px]
+                aria-label={product.title}
+                draggable={false}
+                className="
+                  group shrink-0 flex flex-col
+                  w-[87vw] sm:w-[340px] md:w-[360px] lg:w-[380px]
+                  bg-card shadow-[0_2px_8px_rgba(0,0,0,0.06)] rounded-3xl overflow-hidden
                   transition-all duration-200 ease-out
-                  hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,0,0,0.13)]
-                  cursor-pointer
-                `}
+                  hover:-translate-y-2
+                  hover:shadow-[0_24px_64px_rgba(0,0,0,0.13)]
+                  select-none
+                "
                 style={{ scrollSnapAlign: "start" }}
               >
-                {/* Header: brand + name */}
-                <div className="px-5 pt-5 pb-0">
+                {/* ── Header: brand + tên (Apple: tên to, nằm trên) ── */}
+                <div className="px-8 pt-8 pb-0">
                   {product.brand && (
-                    <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-[0.06em] mb-1.5">
+                    <p className="text-xs font-medium text-muted-foreground mb-2">
                       {product.brand}
                     </p>
                   )}
-                  <h3 className="text-[15px] font-semibold leading-snug tracking-tight line-clamp-2 min-h-[2.5rem]">
+                  <h3 className="text-[21px] font-semibold leading-snug tracking-tight line-clamp-2 min-h-[3.2rem]">
                     {product.title}
                   </h3>
                 </div>
 
-                {/* Image */}
-                <div className="relative mx-5 my-4">
-                  <div className="aspect-square rounded-2xl overflow-hidden bg-background/70">
+                {/* ── Ảnh — lớn, chiếm phần giữa card ── */}
+                <div className="relative flex-1 px-7 pt-5 pb-0">
+                  <div className="aspect-square w-full overflow-hidden rounded-2xl bg-muted/60">
                     <img
                       src={getProductImageUrl(product)}
                       alt=""
                       aria-hidden="true"
                       loading="lazy"
                       decoding="async"
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.07]"
+                      draggable={false}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.06]"
                     />
-                    {/* Tag */}
-                    {product.tag && (
-                      <span className={`absolute top-2.5 left-2.5 text-[10px] font-medium px-2 py-0.5 rounded-full ${getTagClass(product.tag)}`}>
-                        {tagLabels[product.tag]}
-                      </span>
-                    )}
-                    {!product.inStock && (
-                      <span className="absolute top-2.5 right-2.5 bg-black/55 text-white text-[10px] px-2 py-0.5 rounded-full backdrop-blur-sm">
-                        Hết hàng
-                      </span>
-                    )}
                   </div>
+                  {/* Tag badge */}
+                  {product.tag && (
+                    <span className={`absolute top-7 left-10 text-[10px] font-semibold px-2.5 py-1 rounded-full ${getTagClass(product.tag)}`}>
+                      {tagLabels[product.tag]}
+                    </span>
+                  )}
+                  {!product.inStock && (
+                    <span className="absolute top-7 right-10 bg-black/50 text-white text-[10px] px-2.5 py-1 rounded-full backdrop-blur-sm">
+                      Hết hàng
+                    </span>
+                  )}
                 </div>
 
-                {/* Footer: giá + CTA */}
-                <div className="px-5 pb-5 mt-auto">
-                  <div className="flex items-end justify-between gap-2">
+                {/* ── Footer: giá trái, nút phải (y hệt Apple) ── */}
+                <div className="px-8 py-7">
+                  <div className="flex items-end justify-between gap-3">
+                    {/* Giá */}
                     <div className="min-w-0">
                       {product.price ? (
                         <>
-                          <p className="text-[10px] text-muted-foreground mb-0.5">Từ</p>
-                          <p className="text-sm font-semibold text-foreground truncate">
+                          <p className="text-xs text-muted-foreground mb-1">Từ</p>
+                          <p className="text-base font-semibold text-foreground truncate">
                             {formatPrice(product.price)}
                           </p>
                         </>
                       ) : (
-                        <p className="text-sm font-semibold">Liên hệ</p>
+                        <p className="text-base font-semibold">Liên hệ</p>
                       )}
                       {product.price && product.originalPrice && product.originalPrice > product.price && (
-                        <p className="text-[10px] text-muted-foreground line-through mt-0.5">
+                        <p className="text-xs text-muted-foreground line-through mt-0.5">
                           {formatPrice(product.originalPrice)}
                         </p>
                       )}
                     </div>
-                    <span className="shrink-0 inline-flex items-center gap-1 bg-primary text-primary-foreground rounded-full px-4 py-2 text-xs font-medium group-hover:opacity-85 transition-opacity duration-200">
-                      Xem ngay
-                      <ArrowRight className="w-3 h-3" />
+
+                    {/* Nút CTA — pill xanh như Apple */}
+                    <span className="shrink-0 inline-flex items-center gap-1.5 bg-primary text-primary-foreground rounded-full px-5 py-2.5 text-sm font-medium group-hover:opacity-85 transition-opacity duration-200">
+                      Mua
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
@@ -253,36 +266,38 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
             ))}
           </div>
 
-          {/* Fade right */}
+          {/* Gradient phải */}
           <div
             aria-hidden="true"
-            className={`absolute right-0 top-0 bottom-4 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none transition-opacity duration-200 ${canRight ? "opacity-100" : "opacity-0"}`}
+            className={`absolute right-0 top-0 bottom-4 w-20 z-10 pointer-events-none
+              bg-gradient-to-l from-background to-transparent
+              transition-opacity duration-200 ${canRight ? "opacity-100" : "opacity-0"}`}
           />
 
           {/* Right arrow */}
           <button
-            onClick={() => scrollBy("right")}
+            onClick={() => scrollByCards("right")}
             aria-label="Cuộn phải"
             className={`
-              absolute -right-5 top-1/2 -translate-y-1/2 z-20
-              w-11 h-11 rounded-full bg-background border border-border/60
-              flex items-center justify-center shadow-md
-              hover:shadow-lg hover:scale-105 active:scale-95
+              absolute -right-4 top-1/2 -translate-y-8 z-20
+              w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm
+              border border-border/50 shadow-lg
+              flex items-center justify-center
+              hover:shadow-xl hover:scale-105 active:scale-95
               transition-all duration-200
               ${canRight ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
             `}
           >
-            <ChevronRight className="w-5 h-5 text-foreground/80" />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
 
-        {/* View all link — homepage */}
+        {/* View all */}
         {!isPage && (
-          <p className="text-center mt-10">
+          <p className="text-center mt-8">
             <Link
               href="/san-pham"
               className="text-primary hover:underline font-medium text-sm"
-              aria-label={`Xem tất cả ${products.length} sản phẩm`}
             >
               Xem tất cả {products.length} sản phẩm &rarr;
             </Link>
