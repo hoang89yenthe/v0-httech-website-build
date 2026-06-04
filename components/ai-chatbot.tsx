@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { MessageSquare, Settings, X, Send, Eye, EyeOff, Trash2 } from "lucide-react";
+import { MessageSquare, X, Send } from "lucide-react";
 import { PHONE, ZALO, formatPhoneDisplay } from "@/lib/constants";
 
 // System Instruction context compiled from website brand info (Bắc Ninh branch)
@@ -66,11 +66,6 @@ interface Message {
 
 export function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showConfig, setShowConfig] = useState(false);
-  const [apiKey, setApiKey] = useState("");
-  const [hasApiKey, setHasApiKey] = useState(false);
-  const [showKey, setShowKey] = useState(false);
-  const [configStatus, setConfigStatus] = useState({ text: "", type: "" }); // type: "success" | "error"
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "model",
@@ -82,13 +77,6 @@ export function AIChatbot() {
 
   const chatAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-
-  // Load API Key from localStorage
-  useEffect(() => {
-    const savedKey = localStorage.getItem("GEMINI_API_KEY") || "";
-    setApiKey(savedKey);
-    setHasApiKey(!!savedKey);
-  }, []);
 
   // Toggle class on body to allow hiding other floating CTAs when chat widget is open
   useEffect(() => {
@@ -113,31 +101,6 @@ export function AIChatbot() {
     if (nextState) {
       setTimeout(() => inputRef.current?.focus(), 150);
     }
-  };
-
-  const handleSaveApiKey = () => {
-    const trimmedKey = apiKey.trim();
-    if (!trimmedKey) {
-      setConfigStatus({ text: "Vui lòng nhập API Key", type: "error" });
-      return;
-    }
-    localStorage.setItem("GEMINI_API_KEY", trimmedKey);
-    setHasApiKey(true);
-    setConfigStatus({ text: "Đã lưu API Key thành công!", type: "success" });
-    setTimeout(() => {
-      setShowConfig(false);
-      setConfigStatus({ text: "", type: "" });
-    }, 3000);
-  };
-
-  const handleClearApiKey = () => {
-    localStorage.removeItem("GEMINI_API_KEY");
-    setApiKey("");
-    setHasApiKey(false);
-    setConfigStatus({ text: "Đã xóa API Key thành công!", type: "success" });
-    setTimeout(() => {
-      setConfigStatus({ text: "", type: "" });
-    }, 1000);
   };
 
   // Convert custom simplified Markdown to HTML safely (fully robust)
@@ -184,76 +147,24 @@ export function AIChatbot() {
   };
 
   const fetchGeminiResponse = async (userMsg: string, history: Message[]) => {
-    const key = localStorage.getItem("GEMINI_API_KEY");
-    if (!key) {
-      throw new Error("KEY_MISSING");
-    }
-
-    // Filter out system instructions AND the very first welcome message of model (Gemini requires first message in contents to be user!)
-    const contents = history
-      .filter((m, idx) => m.role !== "system" && !(idx === 0 && m.role === "model"))
-      .map((m) => ({
-        role: m.role === "model" ? "model" : "user",
-        parts: [{ text: m.text }],
-      }));
-
-    contents.push({
-      role: "user",
-      parts: [{ text: userMsg }],
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: userMsg,
+        history: history,
+      }),
     });
 
-    const tryModel = async (modelName: string) => {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${key}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            contents: contents,
-            systemInstruction: {
-              parts: [{ text: SYSTEM_INSTRUCTION }],
-            },
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 1000,
-            },
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const errMsg = errorData.error?.message || "";
-        return { ok: false, status: response.status, message: errMsg };
-      }
-
-      const data = await response.json();
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-      return { ok: true, text: responseText };
-    };
-
-    // First attempt: try gemini-2.5-flash
-    let result = await tryModel("gemini-2.5-flash");
-
-    // Fallback: if failed due to overloaded/rate limits, try gemini-1.5-flash
-    if (
-      !result.ok &&
-      (result.status === 503 ||
-        result.status === 429 ||
-        result.message?.includes("high demand") ||
-        result.message?.includes("overloaded"))
-    ) {
-      console.warn("Gemini 2.5 Flash is overloaded. Falling back to Gemini 1.5 Flash...");
-      result = await tryModel("gemini-1.5-flash");
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.error || "Lỗi kết nối đến tổng đài AI.");
     }
 
-    if (!result.ok) {
-      throw new Error(result.message || "Có lỗi xảy ra khi gọi Gemini API.");
-    }
-
-    return result.text;
+    const data = await response.json();
+    return data.text;
   };
 
   const handleSendMessage = async (text?: string) => {
@@ -263,25 +174,6 @@ export function AIChatbot() {
     setInputValue("");
     if (inputRef.current) {
       inputRef.current.style.height = "auto";
-    }
-
-    if (!hasApiKey) {
-      setMessages((prev) => [
-        ...prev,
-        { role: "user", text: messageText },
-      ]);
-      setIsTyping(true);
-      setTimeout(() => {
-        setIsTyping(false);
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "model",
-            text: "⚠️ Cảnh báo: Bạn chưa cấu hình `GEMINI_API_KEY`. \n\nVui lòng bấm vào biểu tượng bánh răng (⚙️) ở góc phải trên cùng của khung chat để điền API Key trước khi trò chuyện.",
-          },
-        ]);
-      }, 600);
-      return;
     }
 
     setMessages((prev) => [...prev, { role: "user", text: messageText }]);
@@ -297,20 +189,10 @@ export function AIChatbot() {
     } catch (err: any) {
       setIsTyping(false);
       console.error(err);
-      if (err.message === "KEY_MISSING") {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "model",
-            text: "⚠️ **Lỗi:** API Key chưa được cài đặt. Vui lòng nhập key bằng cách nhấn vào nút cài đặt (⚙️).",
-          },
-        ]);
-      } else {
-        setMessages((prev) => [
-          ...prev,
-          { role: "model", text: `❌ **Lỗi kết nối:** ${err.message}` },
-        ]);
-      }
+      setMessages((prev) => [
+        ...prev,
+        { role: "model", text: `❌ **Lỗi:** ${err.message}` },
+      ]);
     }
   };
 
@@ -378,20 +260,6 @@ export function AIChatbot() {
           </div>
           <div className="flex items-center gap-1">
             <button
-              id="aiChatConfigBtn"
-              onClick={() => setShowConfig(!showConfig)}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors relative"
-              title="Cấu hình API Key"
-            >
-              <Settings className="w-4 h-4 text-white" />
-              <span
-                id="aiChatKeyAlert"
-                className={`absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white ${
-                  hasApiKey ? "hidden" : "block"
-                }`}
-              ></span>
-            </button>
-            <button
               id="aiChatCloseBtn"
               onClick={() => setIsOpen(false)}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -399,71 +267,6 @@ export function AIChatbot() {
             >
               <X className="w-4 h-4 text-white" />
             </button>
-          </div>
-        </div>
-
-        {/* API Config Drawer */}
-        <div
-          id="aiChatConfigDrawer"
-          className={`absolute top-[68px] left-0 right-0 bg-slate-50 border-b border-slate-200 px-4 py-4 z-20 shadow-inner flex flex-col gap-3 transition-all duration-300 overflow-hidden ${
-            showConfig ? "max-h-[250px] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
-          }`}
-        >
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center justify-between">
-              <span>GEMINI API KEY</span>
-              <a
-                href="https://aistudio.google.com/app/apikey"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline text-[10px] flex items-center gap-0.5 font-medium"
-              >
-                Lấy Key tại đây
-              </a>
-            </label>
-            <div className="flex gap-2">
-              <div className="relative flex-1">
-                <input
-                  id="aiApiKeyInput"
-                  type={showKey ? "text" : "password"}
-                  value={apiKey}
-                  onChange={(e) => setApiKey(e.target.value)}
-                  placeholder="AIzaSy..."
-                  className="w-full pl-3 pr-9 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-primary bg-white text-slate-800"
-                />
-                <button
-                  type="button"
-                  id="toggleShowKeyBtn"
-                  onClick={() => setShowKey(!showKey)}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                >
-                  {showKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                </button>
-              </div>
-              <button
-                id="saveApiKeyBtn"
-                onClick={handleSaveApiKey}
-                className="bg-primary hover:bg-primary-light text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors flex items-center gap-1 shadow-sm"
-              >
-                Lưu
-              </button>
-              <button
-                id="clearApiKeyBtn"
-                onClick={handleClearApiKey}
-                className="border border-red-200 hover:bg-red-50 text-red-600 p-2 rounded-lg transition-colors"
-                title="Xóa Key"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-          <div
-            id="aiConfigStatus"
-            className={`text-xs font-semibold text-center ${
-              configStatus.text ? "block" : "hidden"
-            } ${configStatus.type === "success" ? "text-green-600" : "text-red-600"}`}
-          >
-            {configStatus.text}
           </div>
         </div>
 
