@@ -163,7 +163,22 @@ export async function POST(req: NextRequest) {
     // Thử model chính gemini-2.5-flash
     let result = await tryModel("gemini-2.5-flash");
 
-    // Nếu quá tải, tự động chuyển hướng sang gemini-1.5-flash
+    // Kiểm tra lỗi thanh toán/hết số dư từ Google AI Studio
+    const isBillingError = !result.ok && (
+      result.message?.toLowerCase().includes("prepayment") ||
+      result.message?.toLowerCase().includes("credit") ||
+      result.message?.toLowerCase().includes("deplete") ||
+      result.message?.toLowerCase().includes("billing")
+    );
+
+    if (isBillingError) {
+      console.error("[chat] Lỗi thanh toán Google AI Studio:", result.message);
+      return NextResponse.json({
+        text: "⚠️ Tài khoản Google AI Studio (Gemini) của bạn đang bị hết số dư trả trước (prepayment credits are depleted). Vui lòng truy cập https://aistudio.google.com/ để nạp thêm tiền hoặc chuyển dự án sang gói Miễn phí (Free Tier) để tiếp tục sử dụng.",
+      });
+    }
+
+    // Nếu quá tải, tự động chuyển hướng sang gemini-2.0-flash (thay thế cho 1.5-flash)
     if (
       !result.ok &&
       (result.status === 503 ||
@@ -171,8 +186,8 @@ export async function POST(req: NextRequest) {
         result.message?.includes("high demand") ||
         result.message?.includes("overloaded"))
     ) {
-      console.warn("Gemini 2.5 Flash bị quá tải, đang chuyển sang Gemini 1.5 Flash...");
-      result = await tryModel("gemini-1.5-flash");
+      console.warn("Gemini 2.5 Flash bị quá tải, đang chuyển sang Gemini 2.0 Flash...");
+      result = await tryModel("gemini-2.0-flash");
     }
 
     if (!result.ok) {
