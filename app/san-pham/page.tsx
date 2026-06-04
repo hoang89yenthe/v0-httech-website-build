@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
+
+export const dynamic = "force-dynamic";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ProductGrid } from "@/components/sections/product-grid";
