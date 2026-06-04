@@ -76,4 +76,40 @@ test.describe("Homepage E2E Tests", () => {
     const successCard = page.locator("#contact");
     await expect(successCard).toContainText("Gửi yêu cầu thành công!");
   });
+
+  test("should successfully open, interact, and close the AI chatbot widget", async ({ page }) => {
+    // 1. Kiểm tra nút Floating Chatbot hiển thị trên màn hình
+    const chatBtn = page.locator("#aiChatBtn");
+    await expect(chatBtn).toBeVisible();
+
+    // 2. Click mở widget chat
+    await chatBtn.click();
+
+    // 3. Đợi Widget Chat hiển thị
+    const chatWidget = page.locator("#aiChatWidget");
+    await expect(chatWidget).toBeVisible();
+
+    // 4. Nhập tin nhắn vào ô chat
+    const chatInput = page.locator("#aiChatInput");
+    await chatInput.fill("Xin chào Trợ lý ảo HTtech!");
+
+    // 5. Nhấn nút gửi
+    const sendBtn = page.locator("#aiSendBtn");
+    await sendBtn.click();
+
+    // 6. Kiểm tra xem tin nhắn đã gửi có xuất hiện trong khung chat không
+    const chatArea = page.locator("#aiChatArea");
+    await expect(chatArea).toContainText("Xin chào Trợ lý ảo HTtech!");
+
+    // 7. Đợi và kiểm tra phản hồi từ Server (Chạy ở chế độ Playwright Test, route.ts sẽ mock trả về phản hồi giả lập)
+    await expect(chatArea).toContainText("Đây là phản hồi giả lập từ Trợ lý ảo HTtech");
+
+    // 8. Đóng khung chat
+    const closeBtn = page.locator("#aiChatCloseBtn");
+    await closeBtn.click();
+
+    // 9. Kiểm tra xem khung chat đã ẩn đi chưa
+    await expect(chatWidget).not.toBeVisible();
+  });
 });
+
