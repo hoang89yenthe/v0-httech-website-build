@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { fetchProducts } from "@/lib/sanity/fetch";
 
-const SYSTEM_INSTRUCTION = `Bạn là "Trợ lý ảo HTtech" - Chuyên viên tư vấn kỹ thuật tự động hóa chuyên nghiệp của công ty HT TECH (Kỹ Thuật Công Nghiệp).
+const BASE_SYSTEM_INSTRUCTION = `Bạn là "Trợ lý ảo HTtech" - Chuyên viên tư vấn kỹ thuật tự động hóa chuyên nghiệp của công ty HT TECH (Kỹ Thuật Công Nghiệp).
 Nhiệm vụ của bạn là tư vấn tận tình, chuyên nghiệp cho khách hàng về các sản phẩm và dịch vụ của HT TECH dựa trên thông tin chính xác dưới đây:
 
 THÔNG TIN VỀ CÔNG TY HT TECH:
@@ -9,38 +10,8 @@ THÔNG TIN VỀ CÔNG TY HT TECH:
 - Email liên hệ: Httechbn@gmail.com.
 - Đặc điểm: Là đối tác tin cậy của hơn 500+ doanh nghiệp, đã hoàn thành 1000+ dự án với đội ngũ 50+ kỹ sư chuyên nghiệp. Hỗ trợ kỹ thuật 24/7 và bảo hành dài hạn lên đến 24 tháng.
 
-DANH MỤC SẢN PHẨM CHÍNH HÃNG (Siemens, ABB, Mitsubishi, Schneider, Delta, Omron, Autonics, Weintek, Sick, Keyence, Cadivi):
-1. Biến tần (Inverters):
-   - Siemens SINAMICS V20 (1.5kW, 3 pha 380V, điều khiển chính xác, tiết kiệm điện 30%).
-   - Biến tần ABB ACS580 (2.2kW, 3 pha 380V, tích hợp bộ lọc EMC, Modbus).
-   - Biến tần Mitsubishi FR-E840 (2.2kW, 3 pha 400V, compact).
-   - Biến tần Delta VFD-E (2.2kW, 3 pha 380V, tích hợp PLC).
-   - Biến tần Schneider ATV320 (2.2kW, bơm quạt chuyên dụng).
-   - Biến tần Siemens G120C (5.5kW, EMC Class A, Safety STO).
-   - Biến tần ABB ACS880 (3.7kW, Industrial drive, tích hợp PLC).
-   - Servo Mitsubishi MR-J4 (2kW, encoder 22-bit, SSCNET III/H).
-2. PLC & HMI:
-   - PLC Siemens S7-1200 CPU 1214C DC/DC/DC (14DI/10DO/2AI, 100KB, Profinet).
-   - PLC Mitsubishi FX5U (32 I/O, 16DI/16DO, 64K steps, motion built-in).
-   - HMI Siemens KTP700 Basic (7 inch TFT, 65K màu, 800x480).
-   - HMI Weintek MT8071iE (7 inch TFT, Ethernet, COM, 128MB).
-   - PLC Omron CP1E (40 I/O, 24DI/16DO, 8K steps).
-   - PLC Siemens S7-1500 CPU 1515-2PN (hiệu năng cao cho ứng dụng phức tạp).
-3. Thiết bị đóng cắt:
-   - MCCB Schneider NSX100F (100A, 3P, 36kA).
-   - ACB ABB Emax2 E1.2 (800A, 3P, 66kA, Ekip Touch).
-   - Contactor Schneider LC1D25 (25A, coil 220VAC, 3P).
-   - MCCB LS SUSOL TS400N (400A, 3P, 65kA).
-   - Relay nhiệt Schneider LRD32 (dải chỉnh 23-32A).
-4. Cảm biến (Sensors):
-   - Cảm biến tiệm cận Omron E2E (Inductive M18, 5mm, NPN NO).
-   - Cảm biến quang Sick WL12L (Phản xạ gương, 0-8m).
-   - Cảm biến nhiệt độ PT100 (đầu dò 100mm, ren M8, -50~400°C).
-   - Cảm biến áp suất Autonics (0-1MPa, ngõ ra 4-20mA).
-   - Encoder Autonics E40H (1000 xung, Totem Pole, 12-24VDC).
-   - Cảm biến Laser Keyence LR-Z (Laser Class 2, 35-250mm).
-5. Vật tư tủ điện:
-   - Thanh cái đồng 40x5mm, máng điện nhựa Omega 40x40, cầu đấu Phoenix UK5N (4mm², 32A), đầu cos đồng DT-50, dây điện CADIVI CV 2.5.
+DANH MỤC SẢN PHẨM CHÍNH HÃNG ĐANG CÓ TRÊN WEBSITE:
+{CATALOG_TEXT}
 
 DỊCH VỤ KỸ THUẬT CHUYÊN NGHIỆP:
 1. Thiết kế & Thi công tủ điện: Lắp ráp tủ điện điều khiển PLC, tủ phân phối MDB/DB, tủ điện ATS/AMF theo tiêu chuẩn IEC quốc tế.
@@ -53,6 +24,61 @@ HƯỚNG DẪN ỨNG XỬ CHO TRỢ LÝ:
 - Khi khách hàng hỏi về giá cả, hãy trả lời giá của các thiết bị và dịch vụ là "Liên hệ" (hoặc báo giá tùy thuộc quy mô) và hướng dẫn khách hàng để lại thông tin hoặc gọi điện trực tiếp tới Hotline 0972 916 382 / Zalo 0972 916 382 để các kỹ sư của HT TECH báo giá chính xác kèm các chương trình ưu đãi tốt nhất.
 - Trình bày câu trả lời gọn gàng, sử dụng định dạng Markdown (như in đậm **, gạch đầu dòng -, hoặc xuống dòng) để khách hàng dễ đọc trên màn hình điện thoại hoặc máy tính.
 - Tuyệt đối không bịa đặt các thông tin ngoài phạm vi tự động hóa và các sản phẩm dịch vụ của HT TECH. Nếu câu hỏi không liên quan, hãy hướng dẫn khách liên hệ hotline để được hỗ trợ tốt nhất.`;
+
+// In-memory cache for dynamic products list to prevent overloading Sanity API
+let cachedCatalogText = "";
+let lastCacheTime = 0;
+const CACHE_TTL = 300000; // 5 minutes
+
+async function getDynamicCatalogText(): Promise<string> {
+  const now = Date.now();
+  if (cachedCatalogText && (now - lastCacheTime < CACHE_TTL)) {
+    return cachedCatalogText;
+  }
+
+  try {
+    const products = await fetchProducts();
+    if (!products || products.length === 0) {
+      return "Hiện tại danh mục sản phẩm đang được cập nhật. Vui lòng liên hệ Hotline 0972 916 382.";
+    }
+
+    // Group products by category
+    const categories: { [key: string]: any[] } = {};
+    products.forEach((p) => {
+      const cat = p.category || "khác";
+      if (!categories[cat]) categories[cat] = [];
+      categories[cat].push(p);
+    });
+
+    // Format readable catalog text
+    cachedCatalogText = Object.entries(categories)
+      .map(([catName, items]) => {
+        const displayCat = catName === "bien-tan" ? "1. Biến tần (Inverters)" :
+                           catName === "plc-hmi" ? "2. PLC & HMI" :
+                           catName === "dong-cat" ? "3. Thiết bị đóng cắt" :
+                           catName === "cam-bien" ? "4. Cảm biến (Sensors)" :
+                           catName === "vat-tu" ? "5. Vật tư tủ điện" : catName;
+        
+        const itemsText = items
+          .map((item) => {
+            const specList = item.specs ? item.specs.map((s: any) => `${s.label}: ${s.value}`).join(", ") : "";
+            const priceText = item.price ? `${item.price.toLocaleString("vi-VN")} VNĐ` : "Liên hệ";
+            const originalPriceText = item.originalPrice ? ` (Giá gốc: ${item.originalPrice.toLocaleString("vi-VN")} VNĐ)` : "";
+            return `   - ${item.title} (Hãng: ${item.brand || "Chưa rõ"}, Giá bán: ${priceText}${originalPriceText}${specList ? `, Thông số: ${specList}` : ""}${item.description ? `, Mô tả: ${item.description}` : ""})`;
+          })
+          .join("\n");
+
+        return `${displayCat}:\n${itemsText}`;
+      })
+      .join("\n\n");
+
+    lastCacheTime = now;
+    return cachedCatalogText;
+  } catch (err) {
+    console.error("Lỗi khi fetch sản phẩm cho chatbot system instruction:", err);
+    return cachedCatalogText || "Đang tải danh mục sản phẩm...";
+  }
+}
 
 interface Message {
   role: "user" | "model" | "system";
@@ -85,8 +111,11 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    // Lấy dữ liệu sản phẩm động từ Sanity hoặc cache
+    const catalogText = await getDynamicCatalogText();
+    const systemInstruction = BASE_SYSTEM_INSTRUCTION.replace("{CATALOG_TEXT}", catalogText);
+
     // 3. Chuẩn bị dữ liệu gửi lên Gemini API
-    // Loại bỏ tin nhắn system và tin nhắn chào mừng đầu tiên (Gemini yêu cầu tin nhắn đầu trong contents phải của user)
     const contents = history
       .filter((m: Message, idx: number) => m.role !== "system" && !(idx === 0 && m.role === "model"))
       .map((m: Message) => ({
@@ -110,7 +139,7 @@ export async function POST(req: NextRequest) {
           body: JSON.stringify({
             contents: contents,
             systemInstruction: {
-              parts: [{ text: SYSTEM_INSTRUCTION }],
+              parts: [{ text: systemInstruction }],
             },
             generationConfig: {
               temperature: 0.7,
