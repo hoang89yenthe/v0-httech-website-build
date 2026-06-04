@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { rateLimit } from "@/lib/rate-limit";
+import { validateOrigin } from "@/lib/csrf";
 
 const PRODUCT_LABELS: Record<string, string> = {
   "bien-tan":  "Biến tần",
@@ -27,6 +29,19 @@ function sanitizeHeader(str: string): string {
 
 export async function POST(req: NextRequest) {
   try {
+    if (!validateOrigin(req)) {
+      return NextResponse.json({ error: "Yêu cầu không hợp lệ" }, { status: 403 });
+    }
+
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const { allowed, retryAfterSec } = rateLimit(`contact:${ip}`, 10, 60 * 60_000);
+    if (!allowed) {
+      return NextResponse.json(
+        { error: "Quá nhiều yêu cầu. Vui lòng thử lại sau." },
+        { status: 429, headers: { "Retry-After": String(retryAfterSec) } }
+      );
+    }
+
     const { name, phone, email, product, message } = await req.json();
 
     if (!name?.trim() || !phone?.trim()) {
@@ -43,7 +58,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Dữ liệu vượt quá giới hạn cho phép" }, { status: 400 });
     }
 
-    if (process.env.PLAYWRIGHT_TEST === "true") {
+    // Validate phone: chỉ chứa chữ số, dấu +, -, (), khoảng trắng; 7-15 chữ số thực
+    const phoneDigits = phone.replace(/[\s\-().+]/g, "");
+    if (!/^\d{7,15}$/.test(phoneDigits)) {
+      return NextResponse.json({ error: "Số điện thoại không hợp lệ" }, { status: 400 });
+    }
+
+    if (process.env.PLAYWRIGHT_TEST === "true" && process.env.NODE_ENV !== "production") {
       console.log("[contact] Chế độ E2E Test: Tự động Mock gửi email thành công");
       return NextResponse.json({ ok: true });
     }

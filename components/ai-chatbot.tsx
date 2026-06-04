@@ -273,7 +273,7 @@ export function AIChatbot() {
       <button
         id="aiChatBtn"
         onClick={handleToggleChat}
-        className={`fixed top-1/2 translate-y-[40px] right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-110 active:scale-95 z-50 group ${isOpen ? "hidden" : "flex"}`}
+        className={`fixed bottom-[9.5rem] sm:bottom-auto sm:top-1/2 sm:translate-y-[40px] right-4 sm:right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-110 active:scale-95 z-50 group ${isOpen ? "hidden" : "flex"}`}
         aria-label="Trợ lý ảo HTtech"
       >
         <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-red-500 rounded-full border-2 border-white flex items-center justify-center animate-bounce">
@@ -285,7 +285,7 @@ export function AIChatbot() {
       {/* AI Chat Widget */}
       <div
         id="aiChatWidget"
-        className={`fixed z-50 bg-white shadow-2xl flex flex-col transition-all duration-300
+        className={`fixed z-50 bg-background shadow-2xl flex flex-col transition-all duration-300
           bottom-0 left-0 right-0 h-[85vh] rounded-t-2xl rounded-b-none
           sm:bottom-24 sm:left-auto sm:right-6 sm:w-[380px] sm:h-[550px] sm:rounded-2xl sm:origin-bottom-right
           ${isOpen ? "translate-y-0 opacity-100 pointer-events-auto sm:scale-100" : "translate-y-full opacity-0 pointer-events-none sm:translate-y-0 sm:scale-0"}
@@ -319,7 +319,7 @@ export function AIChatbot() {
         <div
           id="aiChatArea"
           ref={chatAreaRef}
-          className="flex-1 overflow-y-auto p-4 bg-slate-50 space-y-4 scrollbar-thin scrollbar-thumb-slate-200"
+          className="flex-1 overflow-y-auto p-4 bg-muted/30 space-y-4 scrollbar-thin scrollbar-thumb-border"
         >
           {messages.map((msg, i) => (
             <div key={i} className="flex gap-2.5 items-start animate-fade-in">
@@ -334,7 +334,7 @@ export function AIChatbot() {
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">
                     HT
                   </div>
-                  <div className="bg-white px-3.5 py-2.5 rounded-2xl rounded-tl-none shadow-sm text-sm text-slate-700 max-w-[80%] leading-relaxed break-words">
+                  <div className="bg-card px-3.5 py-2.5 rounded-2xl rounded-tl-none shadow-sm text-sm text-card-foreground max-w-[80%] leading-relaxed break-words">
                     <span dangerouslySetInnerHTML={{ __html: formatMarkdown(msg.text) }} />
                   </div>
                 </>
@@ -347,10 +347,10 @@ export function AIChatbot() {
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">
                 HT
               </div>
-              <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-slate-400 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
-                <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-100"></span>
-                <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-200"></span>
+              <div className="bg-card px-4 py-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-muted-foreground flex items-center gap-1">
+                <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce delay-100"></span>
+                <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce delay-200"></span>
               </div>
             </div>
           )}
@@ -359,54 +359,54 @@ export function AIChatbot() {
         {/* Suggested Questions */}
         <div
           id="aiChatSuggestions"
-          className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-none"
+          className="px-4 py-2 bg-muted/30 border-t border-border/60 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-none"
         >
           <button
             onClick={() => handleSuggestionClick("HTtech cung cấp những sản phẩm gì?")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+            className="ai-suggestion-chip bg-card border border-border hover:border-primary hover:text-primary text-muted-foreground text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
           >
             Sản phẩm chính hãng
           </button>
           <button
             onClick={() => handleSuggestionClick("Tư vấn dịch vụ thiết kế và thi công tủ điện")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+            className="ai-suggestion-chip bg-card border border-border hover:border-primary hover:text-primary text-muted-foreground text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
           >
             Thiết kế & Thi công tủ điện
           </button>
           <button
             onClick={() => handleSuggestionClick("Thông tin và thông số của Biến tần Siemens V20")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+            className="ai-suggestion-chip bg-card border border-border hover:border-primary hover:text-primary text-muted-foreground text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
           >
             Biến tần Siemens V20
           </button>
           <button
             onClick={() => handleSuggestionClick("Tìm hiểu về PLC Siemens S7-1200 CPU 1214C")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+            className="ai-suggestion-chip bg-card border border-border hover:border-primary hover:text-primary text-muted-foreground text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
           >
             PLC Siemens S7-1200
           </button>
           <button
             onClick={() => handleSuggestionClick("Tư vấn giải pháp nâng cấp hệ thống SCADA nhà máy")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+            className="ai-suggestion-chip bg-card border border-border hover:border-primary hover:text-primary text-muted-foreground text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
           >
             Nâng cấp SCADA & IoT
           </button>
           <button
             onClick={() => handleSuggestionClick("Chính sách bảo hành thiết bị của HTtech")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+            className="ai-suggestion-chip bg-card border border-border hover:border-primary hover:text-primary text-muted-foreground text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
           >
             Chính sách bảo hành
           </button>
           <button
             onClick={() => handleSuggestionClick("Thông tin Hotline liên hệ trực tiếp HTtech")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+            className="ai-suggestion-chip bg-card border border-border hover:border-primary hover:text-primary text-muted-foreground text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
           >
             Hotline liên hệ
           </button>
         </div>
 
         {/* Input Area */}
-        <div className="p-3 bg-white border-t border-slate-200 flex gap-2 items-center rounded-b-2xl">
+        <div className="p-3 bg-background border-t border-border flex gap-2 items-center rounded-b-2xl">
           <textarea
             id="aiChatInput"
             ref={inputRef}
@@ -414,7 +414,7 @@ export function AIChatbot() {
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            className="flex-1 px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-primary resize-none max-h-24 scrollbar-none text-slate-800"
+            className="flex-1 px-3 py-2 text-sm border border-border rounded-xl focus:outline-none focus:border-primary resize-none max-h-24 scrollbar-none text-foreground bg-background"
             placeholder="Nhập tin nhắn..."
           ></textarea>
           <button

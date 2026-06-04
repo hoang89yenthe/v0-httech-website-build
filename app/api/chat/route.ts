@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchProducts } from "@/lib/sanity/fetch";
+import { rateLimit } from "@/lib/rate-limit";
+import { validateOrigin } from "@/lib/csrf";
 
 const BASE_SYSTEM_INSTRUCTION = `Bạn là "Trợ lý ảo HTtech" - Chuyên viên tư vấn kỹ thuật tự động hóa chuyên nghiệp của công ty HT TECH (Kỹ Thuật Công Nghiệp).
 Nhiệm vụ của bạn là tư vấn tận tình, chuyên nghiệp cho khách hàng về các sản phẩm và dịch vụ của HT TECH dựa trên thông tin chính xác dưới đây:
@@ -87,6 +89,19 @@ interface Message {
 
 export async function POST(req: NextRequest) {
   try {
+    if (!validateOrigin(req)) {
+      return NextResponse.json({ error: "Yêu cầu không hợp lệ" }, { status: 403 });
+    }
+
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const { allowed, retryAfterSec } = rateLimit(`chat:${ip}`, 30, 60_000);
+    if (!allowed) {
+      return NextResponse.json(
+        { error: "Quá nhiều yêu cầu. Vui lòng thử lại sau." },
+        { status: 429, headers: { "Retry-After": String(retryAfterSec) } }
+      );
+    }
+
     const { message, history } = await req.json();
 
     if (!message?.trim()) {
@@ -101,8 +116,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Dữ liệu lịch sử không hợp lệ" }, { status: 400 });
     }
 
-    // 1. Kiểm tra xem có đang chạy E2E test tự động không
-    if (process.env.PLAYWRIGHT_TEST === "true") {
+    // 1. Kiểm tra xem có đang chạy E2E test tự động không (chỉ cho phép ngoài production)
+    if (process.env.PLAYWRIGHT_TEST === "true" && process.env.NODE_ENV !== "production") {
       console.log("[chat] Chế độ E2E Test: Trả về phản hồi mock thành công");
       const encoder = new TextEncoder();
       const stream = new ReadableStream({

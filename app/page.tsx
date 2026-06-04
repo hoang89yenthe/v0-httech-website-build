@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 import { HeroSection } from "@/components/sections/hero-section";
 import { ProductGrid } from "@/components/sections/product-grid";
 import { ServicesSection } from "@/components/sections/services-section";

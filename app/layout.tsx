@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Be_Vietnam_Pro } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { ThemeProvider } from '@/components/theme-provider'
+import { AutoThemeProvider } from '@/components/auto-theme'
 import { ScrollToTop } from '@/components/scroll-to-top'
 import { FloatingCTA } from '@/components/floating-cta'
 import { AIChatbot } from '@/components/ai-chatbot'
@@ -58,13 +60,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="vi" className="bg-background">
+    <html lang="vi" className="bg-background" suppressHydrationWarning>
       <body className={`${beVietnamPro.variable} font-sans antialiased`}>
-        <ScrollToTop />
-        {children}
-        <FloatingCTA />
-        <AIChatbot />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <ThemeProvider attribute="class" defaultTheme="light">
+          <AutoThemeProvider>
+            <ScrollToTop />
+            {children}
+            <FloatingCTA />
+            <AIChatbot />
+            {process.env.NODE_ENV === 'production' && <Analytics />}
+          </AutoThemeProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

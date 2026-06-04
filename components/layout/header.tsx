@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Phone } from "lucide-react";
 import { PHONE, formatPhoneDisplay } from "@/lib/constants";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const navItems = [
   { label: "Trang chủ",  href: "/" },
@@ -82,7 +83,8 @@ export function Header() {
           </nav>
 
           {/* CTA + toggle */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
             <a
               href={`tel:${PHONE}`}
               className="hidden sm:flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-medium hover:opacity-85 active:scale-[0.97] transition-all duration-200"
