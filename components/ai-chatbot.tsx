@@ -317,22 +317,46 @@ export function AIChatbot() {
           className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-none"
         >
           <button
-            onClick={() => handleSuggestionClick("HTtech cung cấp sản phẩm gì?")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium"
+            onClick={() => handleSuggestionClick("HTtech cung cấp những sản phẩm gì?")}
+            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
           >
-            HTtech cung cấp sản phẩm gì?
+            Sản phẩm chính hãng
           </button>
           <button
-            onClick={() => handleSuggestionClick("Tư vấn dịch vụ tủ điện")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium"
+            onClick={() => handleSuggestionClick("Tư vấn dịch vụ thiết kế và thi công tủ điện")}
+            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
           >
-            Tư vấn dịch vụ tủ điện
+            Thiết kế & Thi công tủ điện
           </button>
           <button
-            onClick={() => handleSuggestionClick("Hotline liên hệ HTtech")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium"
+            onClick={() => handleSuggestionClick("Thông tin và thông số của Biến tần Siemens V20")}
+            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
           >
-            Hotline liên hệ HTtech
+            Biến tần Siemens V20
+          </button>
+          <button
+            onClick={() => handleSuggestionClick("Tìm hiểu về PLC Siemens S7-1200 CPU 1214C")}
+            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+          >
+            PLC Siemens S7-1200
+          </button>
+          <button
+            onClick={() => handleSuggestionClick("Tư vấn giải pháp nâng cấp hệ thống SCADA nhà máy")}
+            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+          >
+            Nâng cấp SCADA & IoT
+          </button>
+          <button
+            onClick={() => handleSuggestionClick("Chính sách bảo hành thiết bị của HTtech")}
+            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+          >
+            Chính sách bảo hành
+          </button>
+          <button
+            onClick={() => handleSuggestionClick("Thông tin Hotline liên hệ trực tiếp HTtech")}
+            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+          >
+            Hotline liên hệ
           </button>
         </div>
 
