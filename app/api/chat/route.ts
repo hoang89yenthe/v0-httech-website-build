@@ -93,6 +93,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Tin nhắn rỗng" }, { status: 400 });
     }
 
+    if (message.length > 2000) {
+      return NextResponse.json({ error: "Tin nhắn quá dài (tối đa 2000 ký tự)" }, { status: 400 });
+    }
+
+    if (!Array.isArray(history) || history.length > 100) {
+      return NextResponse.json({ error: "Dữ liệu lịch sử không hợp lệ" }, { status: 400 });
+    }
+
     // 1. Kiểm tra xem có đang chạy E2E test tự động không
     if (process.env.PLAYWRIGHT_TEST === "true") {
       console.log("[chat] Chế độ E2E Test: Trả về phản hồi mock thành công");
@@ -128,9 +136,9 @@ export async function POST(req: NextRequest) {
       parts: [{ text: message }],
     });
 
-    const tryModel = async (modelName: string) => {
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+    const startStream = async (modelName: string) => {
+      return await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:streamGenerateContent?key=${apiKey}`,
         {
           method: "POST",
           headers: {
@@ -143,58 +151,115 @@ export async function POST(req: NextRequest) {
             },
             generationConfig: {
               temperature: 0.7,
-              maxOutputTokens: 3000,
+              maxOutputTokens: 8192,
+              thinkingConfig: {
+                thinkingBudget: 0
+              }
             },
           }),
         }
       );
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const errMsg = errorData.error?.message || "";
-        return { ok: false, status: response.status, message: errMsg };
-      }
-
-      const data = await response.json();
-      const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-      return { ok: true, text: responseText };
     };
 
-    // Thử model chính gemini-flash-latest (cực kỳ ổn định và nhanh trên gói Free)
-    let result = await tryModel("gemini-flash-latest");
+    let response = await startStream("gemini-flash-latest");
 
-    // Kiểm tra lỗi thanh toán/hết số dư từ Google AI Studio
-    const isBillingError = !result.ok && (
-      result.message?.toLowerCase().includes("prepayment") ||
-      result.message?.toLowerCase().includes("credit") ||
-      result.message?.toLowerCase().includes("deplete") ||
-      result.message?.toLowerCase().includes("billing")
-    );
+    // Tự động chuyển đổi nếu model chính gặp lỗi quá tải (HTTP 503 / 429) và không phải lỗi hết tiền
+    if (!response.ok && (response.status === 503 || response.status === 429)) {
+      const errorData = await response.clone().json().catch(() => ({}));
+      const errMsg = errorData.error?.message || "";
+      const isBillingError = errMsg.toLowerCase().includes("prepayment") ||
+                             errMsg.toLowerCase().includes("credit") ||
+                             errMsg.toLowerCase().includes("deplete") ||
+                             errMsg.toLowerCase().includes("billing");
 
-    if (isBillingError) {
-      console.error("[chat] Lỗi thanh toán Google AI Studio:", result.message);
-      return NextResponse.json({
-        text: "⚠️ Tài khoản Google AI Studio (Gemini) của bạn đang bị hết số dư trả trước (prepayment credits are depleted). Vui lòng truy cập https://aistudio.google.com/ để nạp thêm tiền hoặc chuyển dự án sang gói Miễn phí (Free Tier) để tiếp tục sử dụng.",
-      });
+      if (!isBillingError) {
+        console.warn("Gemini-flash-latest bị quá tải hoặc lỗi tạm thời, chuyển sang Gemini 3.5 Flash...");
+        response = await startStream("gemini-3.5-flash");
+      }
     }
 
-    // Nếu quá tải, tự động chuyển hướng sang gemini-3.5-flash
-    if (
-      !result.ok &&
-      (result.status === 503 ||
-        result.status === 429 ||
-        result.message?.includes("high demand") ||
-        result.message?.includes("overloaded"))
-    ) {
-      console.warn("Gemini-flash-latest bị quá tải, đang chuyển sang Gemini 3.5 Flash...");
-      result = await tryModel("gemini-3.5-flash");
-    }
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            const errMsg = errorData.error?.message || "";
+            const isBillingError = errMsg.toLowerCase().includes("prepayment") ||
+                                   errMsg.toLowerCase().includes("credit") ||
+                                   errMsg.toLowerCase().includes("deplete") ||
+                                   errMsg.toLowerCase().includes("billing");
 
-    if (!result.ok) {
-      throw new Error(result.message || "Lỗi kết nối Gemini API");
-    }
+            const errorText = isBillingError
+              ? "⚠️ Tài khoản Google AI Studio (Gemini) của bạn đang bị hết số dư trả trước (prepayment credits are depleted). Vui lòng nạp tiền tại https://aistudio.google.com/ hoặc đổi sang gói Miễn phí (Free Tier) để tiếp tục."
+              : `⚠️ Lỗi máy chủ Gemini: ${errMsg || "Lỗi kết nối"}`;
 
-    return NextResponse.json({ text: result.text });
+            controller.enqueue(encoder.encode(JSON.stringify({ error: errorText })));
+            controller.close();
+            return;
+          }
+
+          const reader = response.body?.getReader();
+          if (!reader) {
+            controller.close();
+            return;
+          }
+
+          const decoder = new TextDecoder();
+          let buffer = "";
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const { objects, remaining } = extractJsonObjects(buffer);
+            buffer = remaining;
+
+            for (const objStr of objects) {
+              try {
+                const parsed = JSON.parse(objStr);
+                const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                if (text) {
+                  controller.enqueue(encoder.encode(text));
+                }
+              } catch (e) {
+                console.error("Error parsing object in stream:", e);
+              }
+            }
+          }
+
+          // Xử lý nốt phần buffer còn lại
+          buffer += decoder.decode();
+          const { objects } = extractJsonObjects(buffer);
+          for (const objStr of objects) {
+            try {
+              const parsed = JSON.parse(objStr);
+              const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text || "";
+              if (text) {
+                controller.enqueue(encoder.encode(text));
+              }
+            } catch (e) {
+              console.error("Error parsing object in stream flush:", e);
+            }
+          }
+
+          controller.close();
+        } catch (err: any) {
+          console.error("Error in streaming API controller:", err);
+          controller.enqueue(encoder.encode(JSON.stringify({ error: err.message || "Lỗi máy chủ nội bộ" })));
+          controller.close();
+        }
+      }
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/event-stream; charset=utf-8",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive",
+      },
+    });
   } catch (err: any) {
     console.error("[chat] Lỗi khi xử lý chat:", err);
     return NextResponse.json(
@@ -202,4 +267,49 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function extractJsonObjects(buffer: string): { objects: string[]; remaining: string } {
+  const objects: string[] = [];
+  let braceCount = 0;
+  let inString = false;
+  let escapeNext = false;
+  let startIndex = -1;
+
+  for (let i = 0; i < buffer.length; i++) {
+    const char = buffer[i];
+
+    if (escapeNext) {
+      escapeNext = false;
+      continue;
+    }
+
+    if (char === '\\') {
+      escapeNext = true;
+      continue;
+    }
+
+    if (char === '"') {
+      inString = !inString;
+      continue;
+    }
+
+    if (!inString) {
+      if (char === '{') {
+        if (braceCount === 0) {
+          startIndex = i;
+        }
+        braceCount++;
+      } else if (char === '}') {
+        braceCount--;
+        if (braceCount === 0 && startIndex !== -1) {
+          objects.push(buffer.slice(startIndex, i + 1));
+          startIndex = -1;
+        }
+      }
+    }
+  }
+
+  const remaining = startIndex !== -1 ? buffer.slice(startIndex) : "";
+  return { objects, remaining };
 }

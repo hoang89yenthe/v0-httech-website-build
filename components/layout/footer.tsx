@@ -121,7 +121,7 @@ export function Footer() {
 
         <div className="border-t border-slate-800 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-600">
           <p>&copy; {new Date().getFullYear()} HT TECH. Tất cả quyền được bảo lưu.</p>
-          <p>Thiết kế bởi <span className="text-slate-500">HTtech.vn</span></p>
+          <p>Thiết kế bởi <span className="text-slate-500">HTtechvietnam.vn</span></p>
         </div>
       </div>
     </footer>

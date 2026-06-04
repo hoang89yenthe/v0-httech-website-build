@@ -146,27 +146,6 @@ export function AIChatbot() {
     }
   };
 
-  const fetchGeminiResponse = async (userMsg: string, history: Message[]) => {
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: userMsg,
-        history: history,
-      }),
-    });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
-      throw new Error(data.error || "Lỗi kết nối đến tổng đài AI.");
-    }
-
-    const data = await response.json();
-    return data.text;
-  };
-
   const handleSendMessage = async (text?: string) => {
     const messageText = text || inputValue.trim();
     if (!messageText) return;
@@ -176,23 +155,89 @@ export function AIChatbot() {
       inputRef.current.style.height = "auto";
     }
 
-    setMessages((prev) => [...prev, { role: "user", text: messageText }]);
+    const userMessage: Message = { role: "user", text: messageText };
+    setMessages((prev) => [...prev, userMessage]);
     setIsTyping(true);
 
     try {
-      const responseText = await fetchGeminiResponse(messageText, messages);
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: messageText,
+          history: messages,
+        }),
+      });
+
       setIsTyping(false);
-      setMessages((prev) => [
-        ...prev,
-        { role: "model", text: responseText },
-      ]);
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || "Lỗi kết nối đến tổng đài AI.");
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error("Không thể khởi tạo bộ đọc dữ liệu stream.");
+      }
+
+      // Thêm một tin nhắn trống làm placeholder cho bot
+      setMessages((prev) => [...prev, { role: "model", text: "" }]);
+
+      const decoder = new TextDecoder();
+      let done = false;
+      let botResponseText = "";
+
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        if (value) {
+          const chunk = decoder.decode(value, { stream: true });
+          
+          // Kiểm tra xem chunk có phải là lỗi JSON gửi từ API không
+          if (chunk.startsWith('{"error":')) {
+            try {
+              const parsed = JSON.parse(chunk);
+              throw new Error(parsed.error);
+            } catch (e: any) {
+              throw new Error(e.message || "Lỗi xử lý luồng dữ liệu.");
+            }
+          }
+
+          botResponseText += chunk;
+          
+          // Cập nhật nội dung tin nhắn cuối cùng (model placeholder) theo thời gian thực
+          setMessages((prev) => {
+            const updated = [...prev];
+            if (updated.length > 0) {
+              updated[updated.length - 1] = {
+                role: "model",
+                text: botResponseText,
+              };
+            }
+            return updated;
+          });
+        }
+      }
     } catch (err: any) {
       setIsTyping(false);
       console.error(err);
-      setMessages((prev) => [
-        ...prev,
-        { role: "model", text: `❌ **Lỗi:** ${err.message}` },
-      ]);
+      
+      // Cập nhật placeholder trống thành lỗi hoặc thêm tin nhắn lỗi mới
+      setMessages((prev) => {
+        const updated = [...prev];
+        const lastMsg = updated[updated.length - 1];
+        if (lastMsg && lastMsg.role === "model" && lastMsg.text === "") {
+          updated[updated.length - 1] = {
+            role: "model",
+            text: `❌ **Lỗi:** ${err.message}`,
+          };
+          return updated;
+        }
+        return [...prev, { role: "model", text: `❌ **Lỗi:** ${err.message}` }];
+      });
     }
   };
 
