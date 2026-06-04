@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main, dev ]
 
+env:
+  PLAYWRIGHT_TEST: "true"
+
 jobs:
   test:
     runs-on: ubuntu-latest
