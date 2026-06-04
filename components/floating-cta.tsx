@@ -4,7 +4,7 @@ import { PHONE, ZALO } from "@/lib/constants";
 
 export function FloatingCTA() {
   return (
-    <div className="fixed bottom-6 right-4 z-50 flex flex-col gap-3 md:hidden">
+    <div className="floating-cta-container fixed bottom-6 left-6 z-50 flex flex-col gap-3 transition-all duration-300">
       {/* Zalo — có pulse ring thu hút chú ý */}
       <div className="relative">
         <span
@@ -16,9 +16,9 @@ export function FloatingCTA() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat Zalo"
-          className="relative w-14 h-14 bg-[#0068FF] text-white rounded-full flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity"
+          className="relative w-14 h-14 bg-[#0068FF] text-white rounded-full flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity font-bold text-xs tracking-wider"
         >
-          <MessageCircle className="w-6 h-6" />
+          ZALO
         </a>
       </div>
       <a
