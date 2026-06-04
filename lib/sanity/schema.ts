@@ -86,8 +86,32 @@ export const productSchema = {
     },
     {
       name: "description",
-      title: "Mô tả",
+      title: "Mô tả (Tiếng Việt)",
       type: "text",
+    },
+    {
+      name: "title_en",
+      title: "Product Name (English)",
+      type: "string",
+    },
+    {
+      name: "description_en",
+      title: "Description (English)",
+      type: "text",
+    },
+    {
+      name: "specs_en",
+      title: "Technical Specs (English labels)",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "label", title: "Label (EN)", type: "string" },
+            { name: "value", title: "Value", type: "string" },
+          ],
+        },
+      ],
     },
     {
       name: "tag",
@@ -131,6 +155,9 @@ export interface Product {
     value: string;
   }>;
   description?: string;
+  title_en?: string;
+  description_en?: string;
+  specs_en?: Array<{ label: string; value: string }>;
   tag?: "hot" | "best-seller" | "new";
   inStock: boolean;
 }

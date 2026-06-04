@@ -1,11 +1,14 @@
 import type { Metadata } from 'next'
 import { Be_Vietnam_Pro } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { cookies } from 'next/headers'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AutoThemeProvider } from '@/components/auto-theme'
+import { LanguageProvider } from '@/components/language-provider'
 import { ScrollToTop } from '@/components/scroll-to-top'
 import { FloatingCTA } from '@/components/floating-cta'
 import { AIChatbot } from '@/components/ai-chatbot'
+import { LOCALE_COOKIE, type Locale } from '@/lib/i18n'
 import './globals.css'
 
 const beVietnamPro = Be_Vietnam_Pro({ 
@@ -54,15 +57,19 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cookieStore = await cookies();
+  const locale = (cookieStore.get(LOCALE_COOKIE)?.value ?? "vi") as Locale;
+
   return (
-    <html lang="vi" className="bg-background" suppressHydrationWarning>
+    <html lang={locale} className="bg-background" suppressHydrationWarning>
       <body className={`${beVietnamPro.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light">
+          <LanguageProvider defaultLocale={locale}>
           <AutoThemeProvider>
             <ScrollToTop />
             {children}
@@ -70,6 +77,7 @@ export default function RootLayout({
             <AIChatbot />
             {process.env.NODE_ENV === 'production' && <Analytics />}
           </AutoThemeProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -27,21 +27,51 @@ HƯỚNG DẪN ỨNG XỬ CHO TRỢ LÝ:
 - Trình bày câu trả lời gọn gàng, sử dụng định dạng Markdown (như in đậm **, gạch đầu dòng -, hoặc xuống dòng) để khách hàng dễ đọc trên màn hình điện thoại hoặc máy tính.
 - Tuyệt đối không bịa đặt các thông tin ngoài phạm vi tự động hóa và các sản phẩm dịch vụ của HT TECH. Nếu câu hỏi không liên quan, hãy hướng dẫn khách liên hệ hotline để được hỗ trợ tốt nhất.`;
 
+const BASE_SYSTEM_INSTRUCTION_EN = `You are "HTtech Virtual Assistant" - a professional automation technical consultant of HT TECH (Industrial Engineering) company.
+Your task is to provide dedicated, professional consulting to customers about HT TECH's products and services based on the accurate information below:
+
+HT TECH COMPANY INFORMATION:
+- Address: CL13-16 Him Lam Green Park, Vo Cuong Ward, Bac Ninh Province, Vietnam.
+- 24/7 Support Hotline: 0972 916 382 | Zalo: 0972 916 382.
+- Contact Email: Httechbn@gmail.com.
+- Key figures: Trusted partner of 500+ enterprises, completed 1000+ projects with a team of 50+ professional engineers. 24/7 technical support and long-term warranty up to 24 months.
+
+GENUINE PRODUCT CATALOG AVAILABLE ON WEBSITE:
+{CATALOG_TEXT}
+
+PROFESSIONAL TECHNICAL SERVICES:
+1. Control Panel Design & Installation: Assembly of PLC control panels, main/sub distribution boards (MDB/DB), ATS/AMF panels according to international IEC standards.
+2. Factory System Upgrades: Renovation and upgrading of SCADA systems, integration of industrial IoT solutions, upgrading of production lines.
+3. Scheduled Maintenance: Periodic maintenance of automation equipment according to contract.
+4. Technical Training: Operation and programming training of PLCs, HMIs for partner engineers.
+
+RESPONSE GUIDELINES FOR THE ASSISTANT:
+- Always greet customers politely in English (or the language they query in), using a friendly and professional tone.
+- When customers ask about pricing, reply that the price for equipment and services is "Contact" (or quotation depends on scale) and guide them to leave their contact information or call the Hotline 0972 916 382 / Zalo 0972 916 382 to get an accurate quote and best promotions.
+- Present answers neatly using Markdown formatting (bold **, bullet points -, line breaks) for readability on mobile and desktop screens.
+- Do not make up information outside the scope of automation and HT TECH's products and services. If the question is unrelated, guide the customer to contact the hotline for best support.`;
+
 // In-memory cache for dynamic products list to prevent overloading Sanity API
-let cachedCatalogText = "";
-let lastCacheTime = 0;
+interface CacheEntry {
+  text: string;
+  time: number;
+}
+const catalogCache: Record<string, CacheEntry> = {};
 const CACHE_TTL = 300000; // 5 minutes
 
-async function getDynamicCatalogText(): Promise<string> {
+async function getDynamicCatalogText(locale: string = "vi"): Promise<string> {
   const now = Date.now();
-  if (cachedCatalogText && (now - lastCacheTime < CACHE_TTL)) {
-    return cachedCatalogText;
+  const cached = catalogCache[locale];
+  if (cached && (now - cached.time < CACHE_TTL)) {
+    return cached.text;
   }
 
   try {
     const products = await fetchProducts();
     if (!products || products.length === 0) {
-      return "Hiện tại danh mục sản phẩm đang được cập nhật. Vui lòng liên hệ Hotline 0972 916 382.";
+      return locale === "en"
+        ? "Currently the product catalog is being updated. Please contact Hotline 0972 916 382."
+        : "Hiện tại danh mục sản phẩm đang được cập nhật. Vui lòng liên hệ Hotline 0972 916 382.";
     }
 
     // Group products by category
@@ -53,20 +83,44 @@ async function getDynamicCatalogText(): Promise<string> {
     });
 
     // Format readable catalog text
-    cachedCatalogText = Object.entries(categories)
+    const text = Object.entries(categories)
       .map(([catName, items]) => {
-        const displayCat = catName === "bien-tan" ? "1. Biến tần (Inverters)" :
-                           catName === "plc-hmi" ? "2. PLC & HMI" :
-                           catName === "dong-cat" ? "3. Thiết bị đóng cắt" :
-                           catName === "cam-bien" ? "4. Cảm biến (Sensors)" :
-                           catName === "vat-tu" ? "5. Vật tư tủ điện" : catName;
+        let displayCat = catName;
+        if (locale === "en") {
+          displayCat = catName === "bien-tan" ? "1. Inverters (VFD)" :
+                       catName === "plc-hmi" ? "2. PLC & HMI" :
+                       catName === "dong-cat" ? "3. Switchgear" :
+                       catName === "cam-bien" ? "4. Sensors" :
+                       catName === "vat-tu" ? "5. Panel Components" : catName;
+        } else {
+          displayCat = catName === "bien-tan" ? "1. Biến tần (Inverters)" :
+                       catName === "plc-hmi" ? "2. PLC & HMI" :
+                       catName === "dong-cat" ? "3. Thiết bị đóng cắt" :
+                       catName === "cam-bien" ? "4. Cảm biến (Sensors)" :
+                       catName === "vat-tu" ? "5. Vật tư tủ điện" : catName;
+        }
         
         const itemsText = items
           .map((item) => {
-            const specList = item.specs ? item.specs.map((s: any) => `${s.label}: ${s.value}`).join(", ") : "";
-            const priceText = item.price ? `${item.price.toLocaleString("vi-VN")} VNĐ` : "Liên hệ";
-            const originalPriceText = item.originalPrice ? ` (Giá gốc: ${item.originalPrice.toLocaleString("vi-VN")} VNĐ)` : "";
-            return `   - ${item.title} (Hãng: ${item.brand || "Chưa rõ"}, Giá bán: ${priceText}${originalPriceText}${specList ? `, Thông số: ${specList}` : ""}${item.description ? `, Mô tả: ${item.description}` : ""})`;
+            const title = locale === "en" ? (item.title_en || item.title) : item.title;
+            const desc = locale === "en" ? (item.description_en || item.description) : item.description;
+            const specs = locale === "en" ? (item.specs_en || item.specs) : item.specs;
+            const specList = specs ? specs.map((s: any) => `${s.label}: ${s.value}`).join(", ") : "";
+            
+            const priceText = item.price
+              ? (locale === "en" ? `${item.price.toLocaleString("en-US")} VND` : `${item.price.toLocaleString("vi-VN")} VNĐ`)
+              : (locale === "en" ? "Contact" : "Liên hệ");
+            
+            const originalPriceText = item.price && item.originalPrice && item.originalPrice > item.price
+              ? (locale === "en" ? ` (Original price: ${item.originalPrice.toLocaleString("en-US")} VND)` : ` (Giá gốc: ${item.originalPrice.toLocaleString("vi-VN")} VNĐ)`)
+              : "";
+              
+            const brandLabel = locale === "en" ? "Brand" : "Hãng";
+            const priceLabel = locale === "en" ? "Price" : "Giá bán";
+            const specLabel = locale === "en" ? "Specs" : "Thông số";
+            const descLabel = locale === "en" ? "Description" : "Mô tả";
+            
+            return `   - ${title} (${brandLabel}: ${item.brand || "N/A"}, ${priceLabel}: ${priceText}${originalPriceText}${specList ? `, ${specLabel}: ${specList}` : ""}${desc ? `, ${descLabel}: ${desc}` : ""})`;
           })
           .join("\n");
 
@@ -74,11 +128,11 @@ async function getDynamicCatalogText(): Promise<string> {
       })
       .join("\n\n");
 
-    lastCacheTime = now;
-    return cachedCatalogText;
+    catalogCache[locale] = { text, time: now };
+    return text;
   } catch (err) {
     console.error("Lỗi khi fetch sản phẩm cho chatbot system instruction:", err);
-    return cachedCatalogText || "Đang tải danh mục sản phẩm...";
+    return catalogCache[locale]?.text || (locale === "en" ? "Loading product catalog..." : "Đang tải danh mục sản phẩm...");
   }
 }
 
@@ -102,7 +156,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { message, history } = await req.json();
+    const { message, history, locale = "vi" } = await req.json();
 
     if (!message?.trim()) {
       return NextResponse.json({ error: "Tin nhắn rỗng" }, { status: 400 });
@@ -147,8 +201,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Lấy dữ liệu sản phẩm động từ Sanity hoặc cache
-    const catalogText = await getDynamicCatalogText();
-    const systemInstruction = BASE_SYSTEM_INSTRUCTION.replace("{CATALOG_TEXT}", catalogText);
+    const catalogText = await getDynamicCatalogText(locale);
+    const baseInstruction = locale === "en" ? BASE_SYSTEM_INSTRUCTION_EN : BASE_SYSTEM_INSTRUCTION;
+    const systemInstruction = baseInstruction.replace("{CATALOG_TEXT}", catalogText);
 
     // 3. Chuẩn bị dữ liệu gửi lên Gemini API
     const contents = history
