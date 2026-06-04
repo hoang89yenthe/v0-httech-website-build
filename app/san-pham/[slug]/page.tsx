@@ -7,8 +7,7 @@ import Script from "next/script";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { getRelatedProducts } from "@/lib/sanity/mock-data";
-import { fetchProductBySlug, fetchProducts } from "@/lib/sanity/fetch";
+import { fetchProductBySlug, fetchProducts, fetchRelatedProducts } from "@/lib/sanity/fetch";
 import { categoryLabels, tagLabels, getTagClass } from "@/lib/sanity/schema";
 import { getProductImageUrl } from "@/lib/sanity/image";
 import { formatPrice } from "@/lib/utils";
@@ -53,7 +52,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const product = await fetchProductBySlug(slug);
   if (!product) notFound();
 
-  const relatedProducts = getRelatedProducts(product, 4);
+  const relatedProducts = await fetchRelatedProducts(product.category, product._id, 4);
 
   // JSON-LD structured data cho Google Shopping / SEO
   const jsonLd = {
