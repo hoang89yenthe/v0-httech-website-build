@@ -19,7 +19,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm dev",
+    command: "PLAYWRIGHT_TEST=true pnpm dev",
     url: "http://localhost:3000",
     reuseExistingServer: true,
     stdout: "ignore",
