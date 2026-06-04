@@ -160,8 +160,8 @@ export async function POST(req: NextRequest) {
       return { ok: true, text: responseText };
     };
 
-    // Thử model chính gemini-2.5-flash
-    let result = await tryModel("gemini-2.5-flash");
+    // Thử model chính gemini-flash-latest (cực kỳ ổn định và nhanh trên gói Free)
+    let result = await tryModel("gemini-flash-latest");
 
     // Kiểm tra lỗi thanh toán/hết số dư từ Google AI Studio
     const isBillingError = !result.ok && (
@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Nếu quá tải, tự động chuyển hướng sang gemini-flash-latest (thay thế cho 2.0-flash)
+    // Nếu quá tải, tự động chuyển hướng sang gemini-3.5-flash
     if (
       !result.ok &&
       (result.status === 503 ||
@@ -186,8 +186,8 @@ export async function POST(req: NextRequest) {
         result.message?.includes("high demand") ||
         result.message?.includes("overloaded"))
     ) {
-      console.warn("Gemini 2.5 Flash bị quá tải, đang chuyển sang Gemini-flash-latest...");
-      result = await tryModel("gemini-flash-latest");
+      console.warn("Gemini-flash-latest bị quá tải, đang chuyển sang Gemini 3.5 Flash...");
+      result = await tryModel("gemini-3.5-flash");
     }
 
     if (!result.ok) {
