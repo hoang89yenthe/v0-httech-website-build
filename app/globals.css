@@ -324,11 +324,9 @@
   }
 }
 
-/* Ẩn các nút Floating CTA trên di động khi đang mở chat AI */
+/* Ẩn các nút Floating CTA trên mọi thiết bị khi đang mở chat AI */
 body.ai-chat-open .floating-cta-container {
-  @media (max-width: 640px) {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(16px);
-  }
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px);
 }

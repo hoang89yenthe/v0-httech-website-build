@@ -4,7 +4,7 @@ import { PHONE, ZALO } from "@/lib/constants";
 
 export function FloatingCTA() {
   return (
-    <div className="floating-cta-container fixed bottom-6 left-6 z-50 flex flex-col gap-3 transition-all duration-300">
+    <div className="floating-cta-container fixed top-1/2 -translate-y-[96px] right-6 z-50 flex flex-col gap-3 transition-all duration-300">
       {/* Zalo — có pulse ring thu hút chú ý */}
       <div className="relative">
         <span
