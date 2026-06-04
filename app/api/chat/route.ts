@@ -104,10 +104,22 @@ export async function POST(req: NextRequest) {
     // 1. Kiểm tra xem có đang chạy E2E test tự động không
     if (process.env.PLAYWRIGHT_TEST === "true") {
       console.log("[chat] Chế độ E2E Test: Trả về phản hồi mock thành công");
-      return NextResponse.json({
-        text: "Đây là phản hồi giả lập từ Trợ lý ảo HTtech trong môi trường kiểm thử Playwright. Hệ thống hoạt động tốt!",
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream({
+        async start(controller) {
+          controller.enqueue(encoder.encode("Đây là phản hồi giả lập từ Trợ lý ảo HTtech trong môi trường kiểm thử Playwright. Hệ thống hoạt động tốt!"));
+          controller.close();
+        }
+      });
+      return new Response(stream, {
+        headers: {
+          "Content-Type": "text/event-stream; charset=utf-8",
+          "Cache-Control": "no-cache",
+          "Connection": "keep-alive",
+        },
       });
     }
+
 
     // 2. Lấy API Key từ biến môi trường của Server
     const apiKey = process.env.GEMINI_API_KEY;
