@@ -39,15 +39,11 @@ jobs:
           cd qa-tests
           npm install
 
-      - name: Start Next.js App
+      - name: Start App, Run E2E Tests & QA Audit
         run: |
           pnpm dev &
-          npx wait-on http://localhost:3000 --timeout 60000
-
-      - name: Run Playwright E2E Tests
-        run: pnpm exec playwright test
-
-      - name: Run Puppeteer SEO, A11y & Performance Audit
-        run: |
+          npx wait-on http://localhost:3000 --timeout 90000
+          pnpm exec playwright test
           cd qa-tests
           node audit_seo_a11y.js
+
