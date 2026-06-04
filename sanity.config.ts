@@ -11,6 +11,11 @@ export default defineConfig({
 
   basePath: "/studio",
 
+  // Đăng ký URL studio để Sanity nhận diện đây là studio hợp lệ
+  auth: {
+    mode: "replace",
+  },
+
   plugins: [structureTool()],
 
   schema: {

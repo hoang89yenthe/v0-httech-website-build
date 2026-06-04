@@ -15,3 +15,8 @@ node_modules
 .DS_Store
 .vercel
 tsconfig.tsbuildinfo
+
+# Sanity local cache & build files
+.sanity/
+dist/
+
