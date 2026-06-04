@@ -178,7 +178,8 @@ export async function POST(req: NextRequest) {
     // Tự động chuyển đổi nếu model chính gặp lỗi quá tải (HTTP 503 / 429) và không phải lỗi hết tiền
     if (!response.ok && (response.status === 503 || response.status === 429)) {
       const errorData = await response.clone().json().catch(() => ({}));
-      const errMsg = errorData.error?.message || "";
+      const errObj = Array.isArray(errorData) ? errorData[0]?.error : errorData.error;
+      const errMsg = errObj?.message || "";
       const isBillingError = errMsg.toLowerCase().includes("prepayment") ||
                              errMsg.toLowerCase().includes("credit") ||
                              errMsg.toLowerCase().includes("deplete") ||
@@ -196,7 +197,8 @@ export async function POST(req: NextRequest) {
         try {
           if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            const errMsg = errorData.error?.message || "";
+            const errObj = Array.isArray(errorData) ? errorData[0]?.error : errorData.error;
+            const errMsg = errObj?.message || "";
             const isBillingError = errMsg.toLowerCase().includes("prepayment") ||
                                    errMsg.toLowerCase().includes("credit") ||
                                    errMsg.toLowerCase().includes("deplete") ||
