@@ -1,5 +1,8 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
+
+export const revalidate = 3600;
 
 import Image from "next/image";
 import Script from "next/script";
@@ -7,10 +10,11 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { fetchProductBySlug, fetchProducts, fetchRelatedProducts } from "@/lib/sanity/fetch";
-import { categoryLabels, tagLabels, getTagClass } from "@/lib/sanity/schema";
+import { getTagClass } from "@/lib/sanity/schema";
 import { getProductImageUrl } from "@/lib/sanity/image";
 import { formatPrice } from "@/lib/utils";
 import { PHONE, ZALO } from "@/lib/constants";
+import { t, type Locale, LOCALE_COOKIE } from "@/lib/i18n";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,8 +52,17 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
+  const cookieStore = await cookies();
+  const locale = (cookieStore.get(LOCALE_COOKIE)?.value ?? "vi") as Locale;
+  const tr = t(locale).productDetail;
+  const catTr = t(locale).products.categories;
+
   const product = await fetchProductBySlug(slug);
   if (!product) notFound();
+
+  const title = locale === "en" ? (product.title_en || product.title) : product.title;
+  const description = locale === "en" ? (product.description_en || product.description) : product.description;
+  const specs = locale === "en" ? (product.specs_en || product.specs) : product.specs;
 
   const relatedProducts = await fetchRelatedProducts(product.category, product._id, 4);
 
@@ -86,17 +99,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <main>
           <div className="container mx-auto px-4 py-8">
 
-            {/* Breadcrumb — BreadcrumbList schema */}
             <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-1.5 text-sm text-muted-foreground mb-8">
-              <Link href="/" className="hover:text-primary transition-colors">Trang chủ</Link>
+              <Link href="/" className="hover:text-primary transition-colors">{tr.breadcrumbHome}</Link>
               <ChevronRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <Link href="/san-pham" className="hover:text-primary transition-colors">Sản phẩm</Link>
+              <Link href="/san-pham" className="hover:text-primary transition-colors">{tr.breadcrumbProducts}</Link>
               <ChevronRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
               <Link href={`/san-pham?category=${product.category}`} className="hover:text-primary transition-colors">
-                {categoryLabels[product.category] ?? product.category}
+                {catTr[product.category as keyof typeof catTr] ?? product.category}
               </Link>
               <ChevronRight className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-              <span className="text-foreground font-medium line-clamp-1">{product.title}</span>
+              <span className="text-foreground font-medium line-clamp-1">{title}</span>
             </nav>
 
             {/* Product detail — dùng article cho semantic đúng chuẩn */}
@@ -131,9 +143,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   </p>
                 )}
 
-                <h1 className="text-2xl md:text-3xl font-semibold mb-4">
-                  {product.title}
-                </h1>
+                <h1 className="text-2xl md:text-3xl font-semibold mb-4">{title}</h1>
 
                 {/* Price */}
                 <div className="flex items-baseline gap-3 mb-5">
@@ -152,34 +162,29 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   )}
                 </div>
 
-                {/* Stock */}
                 <p className="flex items-center gap-2 text-sm mb-5">
                   {product.inStock ? (
                     <span className="flex items-center gap-1.5 text-green-600 font-medium">
                       <Check className="w-4 h-4" aria-hidden="true" />
-                      Còn hàng — Giao hàng trong 24h
+                      {tr.inStock}
                     </span>
                   ) : (
-                    <span className="text-amber-600">Đặt hàng trước — Giao trong 3–5 ngày</span>
+                    <span className="text-amber-600">{tr.preOrder}</span>
                   )}
                 </p>
 
-                {/* Description */}
-                {product.description && (
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                    {product.description}
-                  </p>
+                {description && (
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-6">{description}</p>
                 )}
 
-                {/* Specs table */}
-                {product.specs && product.specs.length > 0 && (
+                {specs && specs.length > 0 && (
                   <div className="mb-6">
                     <h2 className="text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground mb-2.5">
-                      Thông số kỹ thuật
+                      {tr.specs}
                     </h2>
                     <table className="w-full text-sm border border-border/60 rounded-xl overflow-hidden">
                       <tbody>
-                        {product.specs.map((spec, i) => (
+                        {specs.map((spec, i) => (
                           <tr key={i} className={i % 2 === 0 ? "bg-muted/30" : "bg-background"}>
                             <td className="py-2.5 px-4 text-muted-foreground w-2/5 text-xs font-medium">{spec.label}</td>
                             <td className="py-2.5 px-4 text-sm">{spec.value}</td>
@@ -195,13 +200,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <Button size="lg" className="gap-2 flex-1 rounded-full" asChild>
                     <a href={`tel:${PHONE}`}>
                       <Phone className="w-4 h-4" aria-hidden="true" />
-                      Gọi đặt hàng ngay
+                      {tr.orderNow}
                     </a>
                   </Button>
                   <Button size="lg" variant="outline" className="gap-2 flex-1 rounded-full border-border/60" asChild>
                     <a href={`https://zalo.me/${ZALO}`} target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="w-4 h-4" aria-hidden="true" />
-                      Chat Zalo báo giá
+                      {tr.chatZalo}
                     </a>
                   </Button>
                 </div>
@@ -213,9 +218,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   aria-label="Cam kết dịch vụ"
                 >
                   {[
-                    { icon: Truck,      label: "Giao hàng toàn quốc" },
-                    { icon: Shield,     label: "Bảo hành chính hãng" },
-                    { icon: RotateCcw,  label: "Đổi trả 7 ngày" },
+                    { icon: Truck,     label: tr.nationwide },
+                    { icon: Shield,    label: tr.warranty },
+                    { icon: RotateCcw, label: tr.returns },
                   ].map(({ icon: Icon, label }) => (
                     <li key={label} className="text-center p-3 bg-muted/60 rounded-xl">
                       <Icon className="w-5 h-5 mx-auto mb-1.5 text-primary" aria-hidden="true" />
@@ -226,23 +231,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </article>
 
-            {/* Related products */}
             {relatedProducts.length > 0 && (
               <section aria-labelledby="related-heading">
-                <h2 id="related-heading" className="text-xl font-bold mb-5">
-                  Sản phẩm liên quan
-                </h2>
-                <ul
-                  className="grid grid-cols-2 lg:grid-cols-4 gap-4"
-                  role="list"
-                  aria-label="Sản phẩm cùng danh mục"
-                >
+                <h2 id="related-heading" className="text-xl font-bold mb-5">{tr.related}</h2>
+                <ul className="grid grid-cols-2 lg:grid-cols-4 gap-4" role="list" aria-label={tr.relatedLabel}>
                   {relatedProducts.map((rel) => (
                     <li key={rel._id}>
                       <Link
                         href={`/san-pham/${rel.slug.current}`}
                         className="group block bg-card rounded-2xl overflow-hidden border border-border/60 hover:border-primary/20 hover:shadow-md transition-all duration-200 h-full"
-                        aria-label={`${rel.title} — ${formatPrice(rel.price)}`}
+                        aria-label={`${locale === "en" ? rel.title_en || rel.title : rel.title} — ${formatPrice(rel.price)}`}
                       >
                         <div className="relative aspect-square bg-muted overflow-hidden">
                           <Image
@@ -262,7 +260,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             </p>
                           )}
                           <h3 className="text-xs font-medium line-clamp-2 group-hover:text-primary transition-colors duration-200 leading-snug">
-                            {rel.title}
+                            {locale === "en" ? rel.title_en || rel.title : rel.title}
                           </h3>
                           <div className="flex items-baseline gap-1.5 mt-2 flex-wrap">
                             <span className="text-sm font-semibold text-primary">{formatPrice(rel.price)}</span>

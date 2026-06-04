@@ -1,22 +1,32 @@
+"use client";
+
 import Link from "next/link";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { PHONE, ZALO, formatPhoneDisplay } from "@/lib/constants";
-
-const companyLinks = [
-  { label: "Giới thiệu", href: "/#about" },
-  { label: "Dịch vụ",   href: "/#services" },
-  { label: "Liên hệ",   href: "/#contact" },
-];
-
-const productLinks = [
-  { label: "Biến tần",            href: "/san-pham?category=bien-tan" },
-  { label: "PLC & HMI",           href: "/san-pham?category=plc-hmi" },
-  { label: "Thiết bị đóng cắt",   href: "/san-pham?category=dong-cat" },
-  { label: "Cảm biến",            href: "/san-pham?category=cam-bien" },
-  { label: "Vật tư tủ điện",      href: "/san-pham?category=vat-tu" },
-];
+import { useLanguage } from "@/components/language-provider";
+import { t } from "@/lib/i18n";
 
 export function Footer() {
+  const { locale } = useLanguage();
+  const tr = t(locale);
+  const nav = tr.nav;
+  const cats = tr.products.categories;
+
+  const companyLinks = [
+    { label: nav.about,    href: "/#about" },
+    { label: nav.services, href: "/#services" },
+    { label: nav.contact,  href: "/#contact" },
+  ];
+
+  const productLinks = [
+    { label: cats["bien-tan"], href: "/san-pham?category=bien-tan" },
+    { label: cats["plc-hmi"],  href: "/san-pham?category=plc-hmi" },
+    { label: cats["dong-cat"], href: "/san-pham?category=dong-cat" },
+    { label: cats["cam-bien"], href: "/san-pham?category=cam-bien" },
+    { label: cats["vat-tu"],   href: "/san-pham?category=vat-tu" },
+  ];
+
+  const f = tr.footer;
   return (
     <footer role="contentinfo" className="bg-slate-950 text-slate-400 border-t border-primary/20">
       <div className="container mx-auto px-4 py-12 md:py-14">
@@ -34,9 +44,7 @@ export function Footer() {
               </div>
             </Link>
 
-            <p className="text-xs text-slate-500 mb-4">
-              Công ty TNHH Kỹ Thuật Công Nghiệp HT TECH
-            </p>
+            <p className="text-xs text-slate-500 mb-4">{f.companyFull}</p>
 
             <address className="not-italic space-y-2 text-sm">
               <p className="flex items-start gap-2">
@@ -57,7 +65,7 @@ export function Footer() {
               </p>
               <p className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-primary shrink-0" aria-hidden="true" />
-                <span>T2–T6: 8:00–17:30 &nbsp;|&nbsp; T7: 8:00–12:00</span>
+                <span>{f.hours}</span>
               </p>
             </address>
 
@@ -83,26 +91,23 @@ export function Footer() {
           </div>
 
           {/* Company nav */}
-          <nav aria-label="Điều hướng công ty">
-            <h3 className="text-white font-semibold mb-4 text-sm">Công ty</h3>
+          <nav aria-label={f.company}>
+            <h3 className="text-white font-semibold mb-4 text-sm">{f.company}</h3>
             <ul className="space-y-2.5" role="list">
               {companyLinks.map((link) => (
                 <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm hover:text-white transition-colors"
-                  >
+                  <Link href={link.href} className="text-sm hover:text-white transition-colors">
                     {link.label}
                   </Link>
                 </li>
               ))}
-              <li className="text-xs text-slate-600 pt-2">MST: 2301405035</li>
+              <li className="text-xs text-slate-600 pt-2">{f.taxId}</li>
             </ul>
           </nav>
 
           {/* Products nav */}
-          <nav aria-label="Điều hướng sản phẩm">
-            <h3 className="text-white font-semibold mb-4 text-sm">Sản phẩm</h3>
+          <nav aria-label={f.products}>
+            <h3 className="text-white font-semibold mb-4 text-sm">{f.products}</h3>
             <ul className="space-y-2.5" role="list">
               {productLinks.map((link) => (
                 <li key={link.label}>
@@ -120,8 +125,8 @@ export function Footer() {
         </div>
 
         <div className="border-t border-slate-800 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-600">
-          <p>&copy; {new Date().getFullYear()} HT TECH. Tất cả quyền được bảo lưu.</p>
-          <p>Thiết kế bởi <span className="text-slate-500">HTtechvietnam.vn</span></p>
+          <p>{f.copyright.replace("{year}", String(new Date().getFullYear()))}</p>
+          <p>{f.madeBy} <span className="text-slate-500">HTtechvietnam.vn</span></p>
         </div>
       </div>
     </footer>

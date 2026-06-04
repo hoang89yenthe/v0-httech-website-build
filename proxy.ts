@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/studio")) {
     // Chỉ cho phép truy cập studio trong môi trường development
     // hoặc khi có STUDIO_ACCESS_TOKEN đúng trong header/query

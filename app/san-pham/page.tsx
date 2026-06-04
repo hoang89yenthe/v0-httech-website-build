@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { t, type Locale, LOCALE_COOKIE } from "@/lib/i18n";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ProductGrid } from "@/components/sections/product-grid";
@@ -24,6 +26,9 @@ export default async function ProductsPage({
   searchParams: Promise<{ category?: string }>;
 }) {
   const { category } = await searchParams;
+  const cookieStore = await cookies();
+  const locale = (cookieStore.get(LOCALE_COOKIE)?.value ?? "vi") as Locale;
+  const tr = t(locale).productPage;
   const products = await fetchProducts();
 
   return (
@@ -34,15 +39,13 @@ export default async function ProductsPage({
         <div className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-12">
           <div className="container mx-auto px-4">
             <nav className="flex items-center gap-2 text-sm text-slate-300 mb-4">
-              <Link href="/" className="hover:text-white">
-                Trang chủ
-              </Link>
+              <Link href="/" className="hover:text-white">{tr.home}</Link>
               <ChevronRight className="w-4 h-4" />
-              <span className="text-white">Sản phẩm</span>
+              <span className="text-white">{tr.title}</span>
             </nav>
-            <h1 className="text-3xl md:text-4xl font-bold">Sản Phẩm</h1>
+            <h1 className="text-3xl md:text-4xl font-bold">{tr.title}</h1>
             <p className="text-slate-300 mt-2">
-              {products.length} sản phẩm thiết bị điện công nghiệp chính hãng
+              {tr.subtitle.replace("{n}", String(products.length))}
             </p>
           </div>
         </div>

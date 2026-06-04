@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { MessageSquare, X, Send } from "lucide-react";
 import { PHONE, ZALO, formatPhoneDisplay } from "@/lib/constants";
+import { useLanguage } from "@/components/language-provider";
+import { t } from "@/lib/i18n";
 
 // System Instruction context compiled from website brand info (Bắc Ninh branch)
 const SYSTEM_INSTRUCTION = `Bạn là "Trợ lý ảo HTtech" - Chuyên viên tư vấn kỹ thuật tự động hóa chuyên nghiệp của công ty HT TECH (Kỹ Thuật Công Nghiệp).
@@ -65,18 +67,33 @@ interface Message {
 }
 
 export function AIChatbot() {
+  const { locale } = useLanguage();
+  const tr = t(locale);
+
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "model",
-      text: "Xin chào! Em là **Trợ lý ảo HTtech**. Em có thể giúp gì cho anh/chị về sản phẩm thiết bị điện công nghiệp (biến tần, PLC, HMI, cảm biến, thiết bị đóng cắt) hoặc thiết kế thi công tủ điện tự động hóa ạ?",
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
   const chatAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Set dynamic greeting depending on the language without hydration mismatch
+  useEffect(() => {
+    setMessages((prev) => {
+      if (prev.length <= 1) {
+        return [
+          {
+            role: "model",
+            text: locale === "vi"
+              ? "Xin chào! Em là **Trợ lý ảo HTtech**. Em có thể giúp gì cho anh/chị về sản phẩm thiết bị điện công nghiệp (biến tần, PLC, HMI, cảm biến, thiết bị đóng cắt) hoặc thiết kế thi công tủ điện tự động hóa ạ?"
+              : "Hello! I am **HT TECH Virtual Assistant**. How can I help you with industrial electrical equipment (inverters, PLCs, HMIs, sensors, switchgear) or control panel design and installation?",
+          },
+        ];
+      }
+      return prev;
+    });
+  }, [locale]);
 
   // Toggle class on body to allow hiding other floating CTAs when chat widget is open
   useEffect(() => {
@@ -168,6 +185,7 @@ export function AIChatbot() {
         body: JSON.stringify({
           message: messageText,
           history: messages,
+          locale,
         }),
       });
 
@@ -258,6 +276,24 @@ export function AIChatbot() {
     e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
+  const suggestions = locale === "vi" ? [
+    { label: "Sản phẩm chính hãng", prompt: "HTtech cung cấp những sản phẩm gì?" },
+    { label: "Thiết kế & Thi công tủ điện", prompt: "Tư vấn dịch vụ thiết kế và thi công tủ điện" },
+    { label: "Biến tần Siemens V20", prompt: "Thông tin và thông số của Biến tần Siemens V20" },
+    { label: "PLC Siemens S7-1200", prompt: "Tìm hiểu về PLC Siemens S7-1200 CPU 1214C" },
+    { label: "Tư vấn SCADA & IoT", prompt: "Tư vấn giải pháp nâng cấp hệ thống SCADA nhà máy" },
+    { label: "Chính sách bảo hành", prompt: "Chính sách bảo hành thiết bị của HTtech" },
+    { label: "Hotline liên hệ", prompt: "Thông tin Hotline liên hệ trực tiếp HTtech" },
+  ] : [
+    { label: "Genuine Products", prompt: "What products does HTtech provide?" },
+    { label: "Control Panel Design", prompt: "Consultation for control panel design and installation" },
+    { label: "Siemens V20 Inverter", prompt: "Information and specifications of Siemens V20 inverter" },
+    { label: "Siemens S7-1200 PLC", prompt: "Learn about Siemens S7-1200 PLC CPU 1214C" },
+    { label: "SCADA & IoT Upgrade", prompt: "Consultation on SCADA and factory IoT upgrade solutions" },
+    { label: "Warranty Policy", prompt: "What is HTtech's product warranty policy?" },
+    { label: "Contact Hotline", prompt: "Contact hotline info for HTtech" },
+  ];
+
   return (
     <>
       {/* Backdrop mobile */}
@@ -273,8 +309,8 @@ export function AIChatbot() {
       <button
         id="aiChatBtn"
         onClick={handleToggleChat}
-        className={`fixed top-1/2 translate-y-[40px] right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-110 active:scale-95 z-50 group ${isOpen ? "hidden" : "flex"}`}
-        aria-label="Trợ lý ảo HTtech"
+        className={`fixed bottom-[9.5rem] sm:bottom-auto sm:top-1/2 sm:translate-y-[40px] right-4 sm:right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-110 active:scale-95 z-50 group ${isOpen ? "hidden" : "flex"}`}
+        aria-label={tr.chatbot.openBtn}
       >
         <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-red-500 rounded-full border-2 border-white flex items-center justify-center animate-bounce">
           <span className="block w-2.5 h-2.5 bg-white rounded-full"></span>
@@ -285,7 +321,7 @@ export function AIChatbot() {
       {/* AI Chat Widget */}
       <div
         id="aiChatWidget"
-        className={`fixed z-50 bg-white shadow-2xl flex flex-col transition-all duration-300
+        className={`fixed z-50 bg-background shadow-2xl flex flex-col transition-all duration-300
           bottom-0 left-0 right-0 h-[85vh] rounded-t-2xl rounded-b-none
           sm:bottom-24 sm:left-auto sm:right-6 sm:w-[380px] sm:h-[550px] sm:rounded-2xl sm:origin-bottom-right
           ${isOpen ? "translate-y-0 opacity-100 pointer-events-auto sm:scale-100" : "translate-y-full opacity-0 pointer-events-none sm:translate-y-0 sm:scale-0"}
@@ -299,8 +335,8 @@ export function AIChatbot() {
               <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></span>
             </div>
             <div>
-              <h3 className="font-bold text-sm leading-tight text-white">Trợ lý ảo HTtech</h3>
-              <p className="text-[10px] text-white/80 leading-none mt-0.5">Đang trực tuyến</p>
+              <h3 className="font-bold text-sm leading-tight text-white">{tr.chatbot.widgetTitle}</h3>
+              <p className="text-[10px] text-white/80 leading-none mt-0.5">{tr.chatbot.online}</p>
             </div>
           </div>
           <div className="flex items-center gap-1">
@@ -308,7 +344,7 @@ export function AIChatbot() {
               id="aiChatCloseBtn"
               onClick={() => setIsOpen(false)}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-              aria-label="Đóng khung chat"
+              aria-label={tr.chatbot.closeBtn}
             >
               <X className="w-4 h-4 text-white" />
             </button>
@@ -319,7 +355,7 @@ export function AIChatbot() {
         <div
           id="aiChatArea"
           ref={chatAreaRef}
-          className="flex-1 overflow-y-auto p-4 bg-slate-50 space-y-4 scrollbar-thin scrollbar-thumb-slate-200"
+          className="flex-1 overflow-y-auto p-4 bg-muted/30 space-y-4 scrollbar-thin scrollbar-thumb-border"
         >
           {messages.map((msg, i) => (
             <div key={i} className="flex gap-2.5 items-start animate-fade-in">
@@ -334,7 +370,7 @@ export function AIChatbot() {
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">
                     HT
                   </div>
-                  <div className="bg-white px-3.5 py-2.5 rounded-2xl rounded-tl-none shadow-sm text-sm text-slate-700 max-w-[80%] leading-relaxed break-words">
+                  <div className="bg-card px-3.5 py-2.5 rounded-2xl rounded-tl-none shadow-sm text-sm text-card-foreground max-w-[80%] leading-relaxed break-words">
                     <span dangerouslySetInnerHTML={{ __html: formatMarkdown(msg.text) }} />
                   </div>
                 </>
@@ -347,10 +383,10 @@ export function AIChatbot() {
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs flex-shrink-0">
                 HT
               </div>
-              <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-slate-400 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
-                <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-100"></span>
-                <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-200"></span>
+              <div className="bg-card px-4 py-3 rounded-2xl rounded-tl-none shadow-sm text-sm text-muted-foreground flex items-center gap-1">
+                <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce delay-100"></span>
+                <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce delay-200"></span>
               </div>
             </div>
           )}
@@ -359,54 +395,21 @@ export function AIChatbot() {
         {/* Suggested Questions */}
         <div
           id="aiChatSuggestions"
-          className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-none"
+          className="px-4 py-2 bg-muted/30 border-t border-border/60 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-none"
         >
-          <button
-            onClick={() => handleSuggestionClick("HTtech cung cấp những sản phẩm gì?")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
-          >
-            Sản phẩm chính hãng
-          </button>
-          <button
-            onClick={() => handleSuggestionClick("Tư vấn dịch vụ thiết kế và thi công tủ điện")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
-          >
-            Thiết kế & Thi công tủ điện
-          </button>
-          <button
-            onClick={() => handleSuggestionClick("Thông tin và thông số của Biến tần Siemens V20")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
-          >
-            Biến tần Siemens V20
-          </button>
-          <button
-            onClick={() => handleSuggestionClick("Tìm hiểu về PLC Siemens S7-1200 CPU 1214C")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
-          >
-            PLC Siemens S7-1200
-          </button>
-          <button
-            onClick={() => handleSuggestionClick("Tư vấn giải pháp nâng cấp hệ thống SCADA nhà máy")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
-          >
-            Nâng cấp SCADA & IoT
-          </button>
-          <button
-            onClick={() => handleSuggestionClick("Chính sách bảo hành thiết bị của HTtech")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
-          >
-            Chính sách bảo hành
-          </button>
-          <button
-            onClick={() => handleSuggestionClick("Thông tin Hotline liên hệ trực tiếp HTtech")}
-            className="ai-suggestion-chip bg-white border border-slate-200 hover:border-primary hover:text-primary text-slate-600 text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
-          >
-            Hotline liên hệ
-          </button>
+          {suggestions.map((sug) => (
+            <button
+              key={sug.label}
+              onClick={() => handleSuggestionClick(sug.prompt)}
+              className="ai-suggestion-chip bg-card border border-border hover:border-primary hover:text-primary text-muted-foreground text-xs px-3 py-1.5 rounded-full transition-all shadow-sm flex-shrink-0 font-medium cursor-pointer"
+            >
+              {sug.label}
+            </button>
+          ))}
         </div>
 
         {/* Input Area */}
-        <div className="p-3 bg-white border-t border-slate-200 flex gap-2 items-center rounded-b-2xl">
+        <div className="p-3 bg-background border-t border-border flex gap-2 items-center rounded-b-2xl">
           <textarea
             id="aiChatInput"
             ref={inputRef}
@@ -414,14 +417,14 @@ export function AIChatbot() {
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            className="flex-1 px-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-primary resize-none max-h-24 scrollbar-none text-slate-800"
-            placeholder="Nhập tin nhắn..."
+            className="flex-1 px-3 py-2 text-sm border border-border rounded-xl focus:outline-none focus:border-primary resize-none max-h-24 scrollbar-none text-foreground bg-background"
+            placeholder={tr.chatbot.placeholder}
           ></textarea>
           <button
             id="aiSendBtn"
             onClick={() => handleSendMessage()}
             className="w-9 h-9 bg-primary hover:bg-primary-light text-white rounded-xl flex items-center justify-center transition-all shadow-md shadow-primary/20 flex-shrink-0 hover:scale-105 active:scale-95"
-            aria-label="Gửi tin nhắn"
+            aria-label={tr.chatbot.send}
           >
             <Send className="w-4 h-4 transform rotate-90" />
           </button>

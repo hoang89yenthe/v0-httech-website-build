@@ -4,19 +4,14 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { Product, tagLabels, getTagClass } from "@/lib/sanity/schema";
+import { ArrowRight, ChevronLeft, ChevronRight, Search, X } from "lucide-react";
+import { Product, getTagClass } from "@/lib/sanity/schema";
 import { getProductImageUrl } from "@/lib/sanity/image";
 import { formatPrice } from "@/lib/utils";
+import { useLanguage } from "@/components/language-provider";
+import { t } from "@/lib/i18n";
 
-const categories = [
-  { value: "all",      label: "Tất cả" },
-  { value: "bien-tan", label: "Biến tần" },
-  { value: "plc-hmi",  label: "PLC & HMI" },
-  { value: "dong-cat", label: "Thiết bị đóng cắt" },
-  { value: "cam-bien", label: "Cảm biến" },
-  { value: "vat-tu",   label: "Vật tư tủ điện" },
-];
+const CATEGORY_KEYS = ["all", "bien-tan", "plc-hmi", "dong-cat", "cam-bien", "vat-tu"] as const;
 
 interface ProductGridProps {
   products: Product[];
@@ -25,9 +20,18 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ products, initialCategory, isPage = false }: ProductGridProps) {
+  const { locale } = useLanguage();
+  const tr = t(locale).products;
+
+  const categories = CATEGORY_KEYS.map((value) => ({
+    value,
+    label: tr.categories[value as keyof typeof tr.categories],
+  }));
+
   const [activeCategory, setActiveCategory] = useState(
     initialCategory && initialCategory !== "" ? initialCategory : "all"
   );
+  const [searchQuery, setSearchQuery] = useState("");
   const [canLeft,  setCanLeft]  = useState(false);
   const [canRight, setCanRight] = useState(true);
 
@@ -35,10 +39,19 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
   const router    = useRouter();
   const pathname  = usePathname();
 
-  const filteredProducts =
-    activeCategory === "all"
-      ? products
-      : products.filter((p) => p.category === activeCategory);
+  const getTitle = (p: Product) => (locale === "en" ? p.title_en || p.title : p.title);
+
+  const filteredProducts = products
+    .filter((p) => activeCategory === "all" || p.category === activeCategory)
+    .filter((p) => {
+      const q = searchQuery.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        getTitle(p).toLowerCase().includes(q) ||
+        p.brand?.toLowerCase().includes(q) ||
+        (locale === "en" ? p.description_en || p.description : p.description)?.toLowerCase().includes(q)
+      );
+    });
 
   /* ── Scroll logic ──────────────────────────────────────────── */
   const updateArrows = useCallback(() => {
@@ -87,28 +100,20 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
     >
       <div className="container mx-auto px-4">
 
-        {/* Section heading */}
         {!isPage && (
           <header className="text-center mb-12">
-            <h2
-              id="products-heading"
-              className="text-4xl md:text-5xl font-semibold tracking-tight mb-4"
-            >
-              Sản Phẩm<br />
-              <span className="text-primary">Chính Hãng.</span>
+            <h2 id="products-heading" className="text-4xl md:text-5xl font-semibold tracking-tight mb-4">
+              {tr.heading}<br />
+              <span className="text-primary">{tr.headingAccent}</span>
             </h2>
-            <p className="text-muted-foreground text-base max-w-lg mx-auto">
-              Nhập khẩu chính ngạch từ Siemens, ABB, Mitsubishi, Schneider,
-              Omron, Delta — đầy đủ chứng từ, bảo hành nhà sản xuất.
-            </p>
+            <p className="text-muted-foreground text-base max-w-lg mx-auto">{tr.body}</p>
           </header>
         )}
 
-        {/* Category tabs */}
         <div
           role="tablist"
-          aria-label="Lọc theo danh mục"
-          className="flex gap-2 mb-10 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center"
+          aria-label={tr.filterLabel}
+          className="flex gap-2 mb-4 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center"
         >
           {categories.map((cat) => {
             const isActive = activeCategory === cat.value;
@@ -130,12 +135,32 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
           })}
         </div>
 
-        {/* Empty state */}
+        {isPage && (
+          <div className="relative mb-8 max-w-md mx-auto sm:mx-0">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" aria-hidden="true" />
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={tr.searchPlaceholder}
+              aria-label={tr.searchLabel}
+              className="w-full pl-10 pr-9 py-2.5 text-sm rounded-xl border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+            />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery("")} aria-label={tr.clearSearch} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        )}
+
         {filteredProducts.length === 0 && (
           <div className="text-center py-20 text-muted-foreground" role="status" aria-live="polite">
-            <p className="font-medium mb-2">Không tìm thấy sản phẩm nào.</p>
-            <button onClick={() => handleCategoryChange("all")} className="text-primary text-sm hover:underline">
-              Xem tất cả sản phẩm
+            <p className="font-medium mb-2">
+              {searchQuery ? tr.emptySearch.replace("{q}", searchQuery) : tr.emptyCategory}
+            </p>
+            <button onClick={() => { setSearchQuery(""); handleCategoryChange("all"); }} className="text-primary text-sm hover:underline">
+              {tr.showAll}
             </button>
           </div>
         )}
@@ -143,10 +168,9 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
         {/* ── Carousel ──────────────────────────────────────── */}
         <div className="relative">
 
-          {/* Left arrow — Apple style: tròn, nổi trên card */}
           <button
             onClick={() => scrollByCards("left")}
-            aria-label="Cuộn trái"
+            aria-label={tr.scrollLeft}
             className={`
               absolute -left-4 top-1/2 -translate-y-8 z-20
               w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm
@@ -178,7 +202,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
               overscrollBehaviorX: "contain",
             }}
           >
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product, idx) => (
               <Link
                 key={product._id}
                 data-card
@@ -196,15 +220,12 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                 "
                 style={{ scrollSnapAlign: "start" }}
               >
-                {/* ── Header: brand + tên (Apple: tên to, nằm trên) ── */}
                 <div className="px-8 pt-8 pb-0">
                   {product.brand && (
-                    <p className="text-xs font-medium text-muted-foreground mb-2">
-                      {product.brand}
-                    </p>
+                    <p className="text-xs font-medium text-muted-foreground mb-2">{product.brand}</p>
                   )}
                   <h3 className="text-[21px] font-semibold leading-snug tracking-tight line-clamp-2 min-h-[3.2rem]">
-                    {product.title}
+                    {getTitle(product)}
                   </h3>
                 </div>
 
@@ -217,20 +238,20 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                       aria-hidden="true"
                       fill
                       sizes="(max-width: 640px) 87vw, 320px"
-                      loading="lazy"
+                      priority={isPage && idx === 0}
+                      loading={isPage && idx === 0 ? "eager" : "lazy"}
                       draggable={false}
                       className="object-cover transition-transform duration-300 group-hover:scale-[1.06]"
                     />
                   </div>
-                  {/* Tag badge */}
                   {product.tag && (
                     <span className={`absolute top-7 left-10 text-[10px] font-semibold px-2.5 py-1 rounded-full ${getTagClass(product.tag)}`}>
-                      {tagLabels[product.tag]}
+                      {tr.tags[product.tag as keyof typeof tr.tags] ?? product.tag}
                     </span>
                   )}
                   {!product.inStock && (
                     <span className="absolute top-7 right-10 bg-black/50 text-white text-[10px] px-2.5 py-1 rounded-full backdrop-blur-sm">
-                      Hết hàng
+                      {tr.outOfStock}
                     </span>
                   )}
                 </div>
@@ -238,17 +259,16 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                 {/* ── Footer: giá trái, nút phải (y hệt Apple) ── */}
                 <div className="px-8 py-7">
                   <div className="flex items-end justify-between gap-3">
-                    {/* Giá */}
                     <div className="min-w-0">
                       {product.price ? (
                         <>
-                          <p className="text-xs text-muted-foreground mb-1">Từ</p>
+                          <p className="text-xs text-muted-foreground mb-1">{tr.from}</p>
                           <p className="text-base font-semibold text-foreground truncate">
                             {formatPrice(product.price)}
                           </p>
                         </>
                       ) : (
-                        <p className="text-base font-semibold">Liên hệ</p>
+                        <p className="text-base font-semibold">{tr.contact}</p>
                       )}
                       {product.price && product.originalPrice && product.originalPrice > product.price && (
                         <p className="text-xs text-muted-foreground line-through mt-0.5">
@@ -257,9 +277,8 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                       )}
                     </div>
 
-                    {/* Nút CTA — pill xanh như Apple */}
                     <span className="shrink-0 inline-flex items-center gap-1.5 bg-primary text-primary-foreground rounded-full px-5 py-2.5 text-sm font-medium group-hover:opacity-85 transition-opacity duration-200">
-                      Mua
+                      {tr.buy}
                       <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
@@ -279,7 +298,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
           {/* Right arrow */}
           <button
             onClick={() => scrollByCards("right")}
-            aria-label="Cuộn phải"
+            aria-label={tr.scrollRight}
             className={`
               absolute -right-4 top-1/2 -translate-y-8 z-20
               w-12 h-12 rounded-full bg-background/90 backdrop-blur-sm
@@ -294,14 +313,10 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
           </button>
         </div>
 
-        {/* View all */}
         {!isPage && (
           <p className="text-center mt-8">
-            <Link
-              href="/san-pham"
-              className="text-primary hover:underline font-medium text-sm"
-            >
-              Xem tất cả {products.length} sản phẩm &rarr;
+            <Link href="/san-pham" className="text-primary hover:underline font-medium text-sm">
+              {tr.viewAll.replace("{n}", String(products.length))}
             </Link>
           </p>
         )}

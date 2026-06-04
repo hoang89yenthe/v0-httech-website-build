@@ -3,12 +3,16 @@
 import { useState } from "react";
 import { Phone, Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import { PHONE, ZALO, formatPhoneDisplay } from "@/lib/constants";
+import { useLanguage } from "@/components/language-provider";
+import { t } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 
 export function ContactSection() {
+  const { locale } = useLanguage();
+  const tr = t(locale).contact;
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -34,7 +38,7 @@ export function ContactSection() {
       setSubmitted(true);
       setFormData({ name: "", phone: "", email: "", product: "", message: "" });
     } catch {
-      setError("Có lỗi xảy ra, vui lòng thử lại hoặc gọi trực tiếp 0972 916 382.");
+      setError(tr.errorDefault);
     } finally {
       setLoading(false);
     }
@@ -49,19 +53,15 @@ export function ContactSection() {
   return (
     <section id="contact" className="py-24 md:py-32 bg-muted/30">
       <div className="container mx-auto px-4">
-        {/* Section header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 leading-tight">
-            Liên Hệ<br />
-            <span className="text-primary">Với Chúng Tôi.</span>
+            {tr.heading}<br />
+            <span className="text-primary">{tr.headingAccent}</span>
           </h2>
-          <p className="text-muted-foreground text-lg md:text-xl max-w-md mx-auto">
-            Để lại thông tin, đội ngũ kỹ sư HT TECH sẽ phản hồi trong vòng 30 phút.
-          </p>
+          <p className="text-muted-foreground text-lg md:text-xl max-w-md mx-auto">{tr.subtitle}</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Contact info */}
           <div className="space-y-6">
             <Card>
               <CardContent className="p-6">
@@ -70,7 +70,7 @@ export function ContactSection() {
                     <MapPin className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Địa chỉ</h3>
+                    <h3 className="font-semibold mb-1">{tr.address}</h3>
                     <p className="text-sm text-muted-foreground">
                       CL13-16 KĐT Him Lam Green Park, Phường Võ Cường, Tỉnh Bắc Ninh, Việt Nam
                     </p>
@@ -86,7 +86,7 @@ export function ContactSection() {
                     <Phone className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Hotline / Zalo</h3>
+                    <h3 className="font-semibold mb-1">{tr.phone}</h3>
                     <a href={`tel:${PHONE}`} className="text-sm text-muted-foreground hover:text-primary transition-colors block">
                       {formatPhoneDisplay(PHONE)}
                     </a>
@@ -96,7 +96,7 @@ export function ContactSection() {
                       rel="noopener noreferrer"
                       className="text-sm text-[#0068FF] hover:underline mt-0.5 block"
                     >
-                      Chat Zalo ngay →
+                      {tr.chatZalo}
                     </a>
                   </div>
                 </div>
@@ -110,7 +110,7 @@ export function ContactSection() {
                     <Mail className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Email</h3>
+                    <h3 className="font-semibold mb-1">{tr.email}</h3>
                     <p className="text-sm text-muted-foreground">
                       Httechbn@gmail.com
                     </p>
@@ -124,16 +124,14 @@ export function ContactSection() {
           <div className="lg:col-span-2">
             <Card>
               <CardContent className="p-6 md:p-8">
-                <h3 className="text-xl font-semibold mb-6">Gửi yêu cầu tư vấn</h3>
+                <h3 className="text-xl font-semibold mb-6">{tr.formTitle}</h3>
                 {submitted ? (
                   <div className="flex flex-col items-center justify-center py-12 text-center gap-4">
                     <CheckCircle className="w-16 h-16 text-green-500" />
-                    <h4 className="text-xl font-semibold">Gửi yêu cầu thành công!</h4>
-                    <p className="text-muted-foreground max-w-sm">
-                      Cảm ơn bạn đã liên hệ. Đội ngũ tư vấn HT TECH sẽ phản hồi trong thời gian sớm nhất.
-                    </p>
+                    <h4 className="text-xl font-semibold">{tr.successTitle}</h4>
+                    <p className="text-muted-foreground max-w-sm">{tr.successBody}</p>
                     <Button variant="outline" onClick={() => setSubmitted(false)}>
-                      Gửi yêu cầu khác
+                      {tr.sendAnother}
                     </Button>
                   </div>
                 ) : (
@@ -141,82 +139,47 @@ export function ContactSection() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-sm font-medium mb-2 block">
-                        Họ và tên <span className="text-red-500">*</span>
+                        {tr.name} <span className="text-red-500">*</span>
                       </label>
-                      <Input
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Nhập họ và tên"
-                        required
-                      />
+                      <Input name="name" value={formData.name} onChange={handleChange} placeholder={tr.namePlaceholder} required />
                     </div>
                     <div>
                       <label className="text-sm font-medium mb-2 block">
-                        Số điện thoại <span className="text-red-500">*</span>
+                        {tr.phoneField} <span className="text-red-500">*</span>
                       </label>
-                      <Input
-                        name="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="Nhập số điện thoại"
-                        required
-                      />
+                      <Input name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder={tr.phonePlaceholder} required />
                     </div>
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Email</label>
-                    <Input
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Nhập email"
-                    />
+                    <label className="text-sm font-medium mb-2 block">{tr.emailField}</label>
+                    <Input name="email" type="email" value={formData.email} onChange={handleChange} placeholder={tr.emailPlaceholder} />
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-2 block">
-                      Sản phẩm quan tâm
-                    </label>
+                    <label className="text-sm font-medium mb-2 block">{tr.productField}</label>
                     <select
                       name="product"
                       value={formData.product}
                       onChange={handleChange}
                       className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
                     >
-                      <option value="">-- Chọn sản phẩm --</option>
-                      <option value="bien-tan">Biến tần</option>
-                      <option value="plc-hmi">PLC & HMI</option>
-                      <option value="dong-cat">Thiết bị đóng cắt</option>
-                      <option value="cam-bien">Cảm biến</option>
-                      <option value="vat-tu">Vật tư tủ điện</option>
-                      <option value="dich-vu">Dịch vụ kỹ thuật</option>
-                      <option value="khac">Khác</option>
+                      <option value="">{tr.productDefault}</option>
+                      {Object.entries(tr.productOptions).map(([value, label]) => (
+                        <option key={value} value={value}>{label}</option>
+                      ))}
                     </select>
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-2 block">
-                      Nội dung yêu cầu
-                    </label>
-                    <Textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Mô tả chi tiết nhu cầu của bạn..."
-                      rows={4}
-                    />
+                    <label className="text-sm font-medium mb-2 block">{tr.messageField}</label>
+                    <Textarea name="message" value={formData.message} onChange={handleChange} placeholder={tr.messagePlaceholder} rows={4} />
                   </div>
 
-                  {error && (
-                    <p className="text-sm text-red-500 text-center">{error}</p>
-                  )}
+                  {error && <p className="text-sm text-red-500 text-center">{error}</p>}
                   <Button type="submit" size="lg" className="w-full gap-2" disabled={loading}>
                     <Send className="w-4 h-4" />
-                    {loading ? "Đang gửi..." : "Gửi yêu cầu"}
+                    {loading ? tr.submitting : tr.submit}
                   </Button>
                 </form>
                 )}

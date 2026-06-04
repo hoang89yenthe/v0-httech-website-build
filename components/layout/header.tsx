@@ -5,19 +5,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Phone } from "lucide-react";
 import { PHONE, formatPhoneDisplay } from "@/lib/constants";
-
-const navItems = [
-  { label: "Trang chủ",  href: "/" },
-  { label: "Giới thiệu", href: "/#about" },
-  { label: "Sản phẩm",  href: "/san-pham" },
-  { label: "Dịch vụ",   href: "/#services" },
-  { label: "Liên hệ",   href: "/#contact" },
-];
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LanguageToggle } from "@/components/ui/language-toggle";
+import { useLanguage } from "@/components/language-provider";
+import { t } from "@/lib/i18n";
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const { locale } = useLanguage();
+  const tr = t(locale).nav;
+
+  const navItems = [
+    { label: tr.home,     href: "/" },
+    { label: tr.about,    href: "/#about" },
+    { label: tr.products, href: "/san-pham" },
+    { label: tr.services, href: "/#services" },
+    { label: tr.contact,  href: "/#contact" },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -82,11 +88,13 @@ export function Header() {
           </nav>
 
           {/* CTA + toggle */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <LanguageToggle />
+            <ThemeToggle />
             <a
               href={`tel:${PHONE}`}
               className="hidden sm:flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-medium hover:opacity-85 active:scale-[0.97] transition-all duration-200"
-              aria-label={`Gọi ngay ${formatPhoneDisplay(PHONE)}`}
+              aria-label={`${tr.callNow} ${formatPhoneDisplay(PHONE)}`}
             >
               <Phone className="w-3.5 h-3.5" aria-hidden="true" />
               {formatPhoneDisplay(PHONE)}
@@ -127,7 +135,7 @@ export function Header() {
               className="mt-3 flex items-center justify-center gap-2 bg-accent text-accent-foreground px-4 py-3 rounded-xl font-semibold text-sm"
             >
               <Phone className="w-4 h-4" aria-hidden="true" />
-              Gọi ngay: {formatPhoneDisplay(PHONE)}
+              {tr.callNow}: {formatPhoneDisplay(PHONE)}
             </a>
           </nav>
         )}
