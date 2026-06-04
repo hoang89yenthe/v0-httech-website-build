@@ -178,7 +178,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Nếu quá tải, tự động chuyển hướng sang gemini-2.0-flash (thay thế cho 1.5-flash)
+    // Nếu quá tải, tự động chuyển hướng sang gemini-flash-latest (thay thế cho 2.0-flash)
     if (
       !result.ok &&
       (result.status === 503 ||
@@ -186,8 +186,8 @@ export async function POST(req: NextRequest) {
         result.message?.includes("high demand") ||
         result.message?.includes("overloaded"))
     ) {
-      console.warn("Gemini 2.5 Flash bị quá tải, đang chuyển sang Gemini 2.0 Flash...");
-      result = await tryModel("gemini-2.0-flash");
+      console.warn("Gemini 2.5 Flash bị quá tải, đang chuyển sang Gemini-flash-latest...");
+      result = await tryModel("gemini-flash-latest");
     }
 
     if (!result.ok) {
