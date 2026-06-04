@@ -346,7 +346,7 @@ export function AIChatbot() {
       <button
         id="aiChatBtn"
         onClick={handleToggleChat}
-        className={`fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-110 active:scale-95 z-50 group ${isOpen ? "hidden sm:flex" : "flex"}`}
+        className={`fixed top-1/2 translate-y-[40px] right-6 w-14 h-14 bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-110 active:scale-95 z-50 group ${isOpen ? "hidden" : "flex"}`}
         aria-label="Trợ lý ảo HTtech"
       >
         <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-red-500 rounded-full border-2 border-white flex items-center justify-center animate-bounce">
