@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
 import Image from "next/image";
 import Script from "next/script";
 import { notFound } from "next/navigation";
@@ -19,7 +18,7 @@ import {
   Truck, Shield, RotateCcw, MessageCircle,
 } from "lucide-react";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://httech.vn";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://httechvietnam.vn";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;

@@ -62,7 +62,7 @@ test.describe("Homepage E2E Tests", () => {
     // Fill thông tin
     await page.fill("#contact input[name='name']", "Kiểm Thử Viên");
     await page.fill("#contact input[name='phone']", "0987654321");
-    await page.fill("#contact input[name='email']", "tester@httech.vn");
+    await page.fill("#contact input[name='email']", "tester@httechvietnam.vn");
     await page.selectOption("#contact select[name='product']", "bien-tan");
     await page.fill("#contact textarea[name='message']", "Đây là tin nhắn tự động từ kịch bản kiểm thử E2E Playwright.");
 

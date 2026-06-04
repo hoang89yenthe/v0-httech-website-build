@@ -12,13 +12,13 @@ const beVietnamPro = Be_Vietnam_Pro({
   variable: "--font-sans",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://httech.vn';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://httechvietnam.vn';
 
 export const metadata: Metadata = {
   title: 'HT TECH - Thiết Bị Điện Công Nghiệp & Tự Động Hóa',
   description: 'HT TECH chuyên cung cấp thiết bị điện công nghiệp, biến tần, PLC, HMI, thiết bị đóng cắt từ Siemens, ABB, Mitsubishi, Schneider. Dịch vụ thiết kế tủ điện chuyên nghiệp tại Bắc Ninh.',
   keywords: ['biến tần', 'PLC', 'HMI', 'thiết bị điện công nghiệp', 'tự động hóa', 'Siemens', 'ABB', 'Mitsubishi', 'Bắc Ninh'],
-  generator: 'v0.app',
+  generator: 'Next.js',
   metadataBase: new URL(SITE_URL),
   openGraph: {
     title: 'HT TECH - Thiết Bị Điện Công Nghiệp & Tự Động Hóa',

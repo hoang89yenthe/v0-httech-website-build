@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { getMockProducts } from "@/lib/sanity/mock-data";
 import { fetchProducts } from "@/lib/sanity/fetch";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://httech.vn";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://httechvietnam.vn";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let products = getMockProducts();
