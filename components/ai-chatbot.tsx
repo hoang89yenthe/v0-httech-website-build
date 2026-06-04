@@ -90,6 +90,16 @@ export function AIChatbot() {
     setHasApiKey(!!savedKey);
   }, []);
 
+  // Toggle class on body to allow hiding other floating CTAs when chat widget is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("ai-chat-open");
+    } else {
+      document.body.classList.remove("ai-chat-open");
+    }
+    return () => document.body.classList.remove("ai-chat-open");
+  }, [isOpen]);
+
   // Scroll to bottom when messages list changes
   useEffect(() => {
     if (chatAreaRef.current) {

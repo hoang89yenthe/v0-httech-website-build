@@ -1,0 +1,50 @@
+name: HTtech CI/CD Test Suite
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install chromium --with-deps
+
+      - name: Install QA Tests Dependencies
+        run: |
+          cd qa-tests
+          npm install
+
+      - name: Start Next.js App
+        run: |
+          pnpm dev &
+          npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Run Playwright E2E Tests
+        run: pnpm exec playwright test
+
+      - name: Run Puppeteer SEO, A11y & Performance Audit
+        run: |
+          cd qa-tests
+          node audit_seo_a11y.js
