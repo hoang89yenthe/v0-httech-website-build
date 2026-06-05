@@ -103,24 +103,8 @@ async function getDynamicCatalogText(locale: string = "vi"): Promise<string> {
         const itemsText = items
           .map((item) => {
             const title = locale === "en" ? (item.title_en || item.title) : item.title;
-            const desc = locale === "en" ? (item.description_en || item.description) : item.description;
-            const specs = locale === "en" ? (item.specs_en || item.specs) : item.specs;
-            const specList = specs ? specs.map((s: any) => `${s.label}: ${s.value}`).join(", ") : "";
-            
-            const priceText = item.price
-              ? (locale === "en" ? `${item.price.toLocaleString("en-US")} VND` : `${item.price.toLocaleString("vi-VN")} VNĐ`)
-              : (locale === "en" ? "Contact" : "Liên hệ");
-            
-            const originalPriceText = item.price && item.originalPrice && item.originalPrice > item.price
-              ? (locale === "en" ? ` (Original price: ${item.originalPrice.toLocaleString("en-US")} VND)` : ` (Giá gốc: ${item.originalPrice.toLocaleString("vi-VN")} VNĐ)`)
-              : "";
-              
             const brandLabel = locale === "en" ? "Brand" : "Hãng";
-            const priceLabel = locale === "en" ? "Price" : "Giá bán";
-            const specLabel = locale === "en" ? "Specs" : "Thông số";
-            const descLabel = locale === "en" ? "Description" : "Mô tả";
-            
-            return `   - ${title} (${brandLabel}: ${item.brand || "N/A"}, ${priceLabel}: ${priceText}${originalPriceText}${specList ? `, ${specLabel}: ${specList}` : ""}${desc ? `, ${descLabel}: ${desc}` : ""})`;
+            return `   - ${title} (${brandLabel}: ${item.brand || "N/A"})`;
           })
           .join("\n");
 
@@ -205,8 +189,9 @@ export async function POST(req: NextRequest) {
     const baseInstruction = locale === "en" ? BASE_SYSTEM_INSTRUCTION_EN : BASE_SYSTEM_INSTRUCTION;
     const systemInstruction = baseInstruction.replace("{CATALOG_TEXT}", catalogText);
 
-    // 3. Chuẩn bị dữ liệu gửi lên Gemini API
-    const contents = history
+    // 3. Chuẩn bị dữ liệu gửi lên Gemini API (giới hạn 10 tin nhắn gần nhất để tối ưu token)
+    const recentHistory = history.slice(-10);
+    const contents = recentHistory
       .filter((m: Message, idx: number) => m.role !== "system" && !(idx === 0 && m.role === "model"))
       .map((m: Message) => ({
         role: m.role === "model" ? "model" : "user",
@@ -256,8 +241,8 @@ export async function POST(req: NextRequest) {
                              errMsg.toLowerCase().includes("billing");
 
       if (!isBillingError) {
-        console.warn("gemini-2.5-flash bị quá tải hoặc lỗi tạm thời, chuyển sang gemini-2.0-flash...");
-        response = await startStream("gemini-2.0-flash");
+        console.warn("gemini-2.5-flash bị quá tải hoặc lỗi tạm thời, chuyển sang gemini-3.5-flash...");
+        response = await startStream("gemini-3.5-flash");
       }
     }
 

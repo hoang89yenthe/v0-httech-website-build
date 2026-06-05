@@ -186,7 +186,7 @@ export function AIChatbot() {
         },
         body: JSON.stringify({
           message: messageText,
-          history: messages,
+          history: messages.slice(-10), // Giới hạn gửi đi tối đa 10 tin nhắn gần nhất để tiết kiệm token
           locale,
         }),
       });
