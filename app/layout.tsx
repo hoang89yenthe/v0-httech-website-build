@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Be_Vietnam_Pro } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { cookies } from 'next/headers'
-import Script from 'next/script'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AutoThemeProvider } from '@/components/auto-theme'
 import { LanguageProvider } from '@/components/language-provider'
@@ -83,6 +82,9 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  alternates: {
+    canonical: '/',
+  },
 }
 
 export default async function RootLayout({
@@ -95,12 +97,14 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className="bg-background" suppressHydrationWarning>
-      <body className={`${beVietnamPro.variable} font-sans antialiased`}>
-        <Script
+      <head>
+        <script
           id="org-jsonld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
+      </head>
+      <body className={`${beVietnamPro.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light">
           <LanguageProvider defaultLocale={locale}>
           <AutoThemeProvider>
