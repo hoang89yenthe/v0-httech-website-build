@@ -35,7 +35,7 @@ export function AnimateOnScroll({
           observer.disconnect();
         }
       },
-      { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.01, rootMargin: "60px 0px 0px 0px" }
     );
     observer.observe(node);
     return () => observer.disconnect();
