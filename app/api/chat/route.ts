@@ -243,7 +243,7 @@ export async function POST(req: NextRequest) {
       );
     };
 
-    let response = await startStream("gemini-flash-latest");
+    let response = await startStream("gemini-2.5-flash");
 
     // Tự động chuyển đổi nếu model chính gặp lỗi quá tải (HTTP 503 / 429) và không phải lỗi hết tiền
     if (!response.ok && (response.status === 503 || response.status === 429)) {
@@ -256,8 +256,8 @@ export async function POST(req: NextRequest) {
                              errMsg.toLowerCase().includes("billing");
 
       if (!isBillingError) {
-        console.warn("Gemini-flash-latest bị quá tải hoặc lỗi tạm thời, chuyển sang Gemini 3.5 Flash...");
-        response = await startStream("gemini-3.5-flash");
+        console.warn("gemini-2.5-flash bị quá tải hoặc lỗi tạm thời, chuyển sang gemini-2.0-flash...");
+        response = await startStream("gemini-2.0-flash");
       }
     }
 
