@@ -10,15 +10,29 @@ import { ProductGrid } from "@/components/sections/product-grid";
 import { fetchProducts } from "@/lib/sanity/fetch";
 import { ChevronRight } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Sản Phẩm - HT TECH Thiết Bị Điện Công Nghiệp",
-  description: "Khám phá đầy đủ các sản phẩm biến tần, PLC, HMI, thiết bị đóng cắt, cảm biến và vật tư tủ điện chính hãng tại HT TECH.",
-  openGraph: {
-    title: "Sản Phẩm - HT TECH Thiết Bị Điện Công Nghiệp",
-    description: "Khám phá đầy đủ các sản phẩm biến tần, PLC, HMI, thiết bị đóng cắt, cảm biến và vật tư tủ điện chính hãng tại HT TECH.",
-    type: "website",
-  },
+const CATEGORY_META: Record<string, { title: string; description: string }> = {
+  "bien-tan":  { title: "Biến Tần Chính Hãng",        description: "Biến tần Siemens, ABB, Mitsubishi, Schneider, Delta chính hãng — bảo hành 24 tháng, giao hàng toàn quốc." },
+  "plc-hmi":  { title: "PLC & HMI Chính Hãng",        description: "PLC Siemens S7, Mitsubishi FX5U, Omron CP1E và màn hình HMI chính hãng tại HT TECH Bắc Ninh." },
+  "dong-cat": { title: "Thiết Bị Đóng Cắt Chính Hãng", description: "MCCB, ACB, Contactor, Relay nhiệt Schneider, ABB, LS chính hãng — đủ chứng từ xuất xứ." },
+  "cam-bien": { title: "Cảm Biến Công Nghiệp",         description: "Cảm biến tiệm cận, quang, nhiệt độ, áp suất từ Omron, Sick, Autonics, Keyence chính hãng." },
+  "vat-tu":   { title: "Vật Tư Tủ Điện",              description: "Thanh cái, máng điện, cầu đấu, đầu cos, dây điện Cadivi và phụ kiện tủ điện chính hãng." },
 };
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}): Promise<Metadata> {
+  const { category } = await searchParams;
+  const cat = category && CATEGORY_META[category] ? CATEGORY_META[category] : null;
+  const title = cat ? `${cat.title} - HT TECH` : "Sản Phẩm - HT TECH Thiết Bị Điện Công Nghiệp";
+  const description = cat ? cat.description : "Khám phá đầy đủ các sản phẩm biến tần, PLC, HMI, thiết bị đóng cắt, cảm biến và vật tư tủ điện chính hãng tại HT TECH.";
+  return {
+    title,
+    description,
+    openGraph: { title, description, type: "website" },
+  };
+}
 
 export default async function ProductsPage({
   searchParams,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
@@ -41,7 +41,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
 
   const getTitle = (p: Product) => (locale === "en" ? p.title_en || p.title : p.title);
 
-  const filteredProducts = products
+  const filteredProducts = useMemo(() => products
     .filter((p) => activeCategory === "all" || p.category === activeCategory)
     .filter((p) => {
       const q = searchQuery.trim().toLowerCase();
@@ -51,7 +51,8 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
         p.brand?.toLowerCase().includes(q) ||
         (locale === "en" ? p.description_en || p.description : p.description)?.toLowerCase().includes(q)
       );
-    });
+    }),
+  [products, activeCategory, searchQuery, locale]);
 
   /* ── Scroll logic ──────────────────────────────────────────── */
   const updateArrows = useCallback(() => {
@@ -122,6 +123,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                 key={cat.value}
                 role="tab"
                 aria-selected={isActive}
+                aria-controls="product-carousel"
                 onClick={() => handleCategoryChange(cat.value)}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap shrink-0 ${
                   isActive
@@ -194,6 +196,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
 
           {/* Scrollable container */}
           <div
+            id="product-carousel"
             ref={scrollRef}
             className="flex gap-5 overflow-x-auto scrollbar-none pb-6"
             style={{
@@ -207,7 +210,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                 key={product._id}
                 data-card
                 href={`/san-pham/${product.slug.current}`}
-                aria-label={product.title}
+                aria-label={`${getTitle(product)} — ${product.price ? formatPrice(product.price) : tr.contact}`}
                 draggable={false}
                 className="
                   group shrink-0 flex flex-col
@@ -234,8 +237,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                   <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-muted/60">
                     <Image
                       src={getProductImageUrl(product)}
-                      alt=""
-                      aria-hidden="true"
+                      alt={getTitle(product)}
                       fill
                       sizes="(max-width: 640px) 87vw, 320px"
                       priority={isPage && idx === 0}
