@@ -20,3 +20,4 @@ tsconfig.tsbuildinfo
 .sanity/
 dist/
 
+.env*

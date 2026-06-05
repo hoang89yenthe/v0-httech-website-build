@@ -4,7 +4,7 @@ import { Product } from "./schema";
 
 export async function fetchProducts(): Promise<Product[]> {
   try {
-    const products = await getProducts();
+    const products: Product[] = await getProducts();
     if (products && products.length > 0) return products;
   } catch {
     console.log("[v0] Sanity not connected, using mock data");
@@ -14,7 +14,7 @@ export async function fetchProducts(): Promise<Product[]> {
 
 export async function fetchProductBySlug(slug: string): Promise<Product | null> {
   try {
-    const product = await getProductBySlug(slug);
+    const product: Product | null = await getProductBySlug(slug);
     if (product) return product;
   } catch {
     console.log("[v0] Sanity not connected, using mock data");
@@ -28,7 +28,7 @@ export async function fetchRelatedProducts(
   limit: number = 4
 ): Promise<Product[]> {
   try {
-    const products = await getProductsByCategory(category);
+    const products: Product[] = await getProductsByCategory(category);
     if (products && products.length > 0) {
       return products
         .filter((p) => p._id !== currentProductId)
