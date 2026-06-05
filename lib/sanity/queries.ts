@@ -1,4 +1,5 @@
 import { client } from "./client";
+import type { Product } from "./schema";
 
 // GROQ queries for Sanity
 export const PRODUCTS_QUERY = `*[_type == "product"] | order(_createdAt desc) {
@@ -12,6 +13,9 @@ export const PRODUCTS_QUERY = `*[_type == "product"] | order(_createdAt desc) {
   originalPrice,
   specs,
   description,
+  title_en,
+  description_en,
+  specs_en,
   tag,
   inStock
 }`;
@@ -27,6 +31,9 @@ export const PRODUCT_BY_SLUG_QUERY = `*[_type == "product" && slug.current == $s
   originalPrice,
   specs,
   description,
+  title_en,
+  description_en,
+  specs_en,
   tag,
   inStock
 }`;
@@ -42,6 +49,9 @@ export const PRODUCTS_BY_CATEGORY_QUERY = `*[_type == "product" && category == $
   originalPrice,
   specs,
   description,
+  title_en,
+  description_en,
+  specs_en,
   tag,
   inStock
 }`;
@@ -51,14 +61,14 @@ export const CATEGORIES_QUERY = `*[_type == "product"] {
 } | unique`;
 
 // Fetch functions
-export async function getProducts() {
+export async function getProducts(): Promise<Product[]> {
   return client.fetch(PRODUCTS_QUERY);
 }
 
-export async function getProductBySlug(slug: string) {
+export async function getProductBySlug(slug: string): Promise<Product | null> {
   return client.fetch(PRODUCT_BY_SLUG_QUERY, { slug });
 }
 
-export async function getProductsByCategory(category: string) {
+export async function getProductsByCategory(category: string): Promise<Product[]> {
   return client.fetch(PRODUCTS_BY_CATEGORY_QUERY, { category });
 }
