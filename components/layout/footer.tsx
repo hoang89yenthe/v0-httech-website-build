@@ -126,7 +126,7 @@ export function Footer() {
 
         <div className="border-t border-slate-800 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-600">
           <p>{f.copyright.replace("{year}", String(new Date().getFullYear()))}</p>
-          <p>{f.madeBy} <span className="text-slate-500">HTtechvietnam.vn</span></p>
+          <p>{f.madeBy} <span className="text-slate-500">httechvietnam.vn</span></p>
         </div>
       </div>
     </footer>
