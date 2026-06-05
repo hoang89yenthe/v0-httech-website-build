@@ -10,7 +10,7 @@ import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { fetchProductBySlug, fetchProducts, fetchRelatedProducts } from "@/lib/sanity/fetch";
-import { getTagClass } from "@/lib/sanity/schema";
+import { getTagClass, tagLabels } from "@/lib/sanity/schema";
 import { getProductImageUrl } from "@/lib/sanity/image";
 import { formatPrice } from "@/lib/utils";
 import { PHONE, ZALO } from "@/lib/constants";
