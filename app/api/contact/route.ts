@@ -42,7 +42,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { name, phone, email, product, message } = await req.json();
+    const { name, phone, email, product, message, _hp } = await req.json();
+
+    // Honeypot: nếu bot điền field ẩn thì reject silently
+    if (_hp) {
+      return NextResponse.json({ ok: true });
+    }
 
     if (!name?.trim() || !phone?.trim()) {
       return NextResponse.json({ error: "Thiếu thông tin bắt buộc" }, { status: 400 });

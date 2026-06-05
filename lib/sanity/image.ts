@@ -40,6 +40,10 @@ const categoryImagePools: Record<string, string[]> = {
   ],
 };
 
+// Tiny 1×1 grey blur placeholder — 40 bytes, works for all product images
+export const PRODUCT_BLUR_DATA_URL =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg==";
+
 export function getProductImageUrl(product: Product, size = 400): string {
   if (product.image?.asset?._ref) {
     return urlFor(product.image).width(size).height(size).fit("crop").url();
