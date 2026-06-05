@@ -6,7 +6,7 @@ export default defineConfig({
   name: "default",
   title: "HTtech Studio",
 
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "881hwmwa",
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "jqex286kt2zxxcm3t9dqz5u2",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
 
   basePath: "/studio",
