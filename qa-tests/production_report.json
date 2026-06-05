@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Tải trang chủ (HTTP 200)",
+    "status": "PASS",
+    "details": "Tiêu đề: \"HT TECH - Thiết Bị Điện Công Nghiệp & Tự Động Hóa\""
+  },
+  {
+    "name": "Thẻ Canonical URL",
+    "status": "FAIL",
+    "details": "Canonical sai hoặc thiếu: null"
+  },
+  {
+    "name": "Số lượng thẻ H1",
+    "status": "PASS",
+    "details": "Có duy nhất 1 thẻ H1: \"Thiết Bị Điện\nCông Nghiệp\nChính Hãng.\""
+  },
+  {
+    "name": "Mô tả hình ảnh (Alt tags)",
+    "status": "PASS",
+    "details": "100% ảnh (34/34) có mô tả alt."
+  },
+  {
+    "name": "Chatbot Widget Button",
+    "status": "PASS",
+    "details": "Nút mở Chatbot (#aiChatBtn) tồn tại trên giao diện."
+  },
+  {
+    "name": "Chụp ảnh màn hình Production",
+    "status": "PASS",
+    "details": "Đã lưu ảnh và đồng bộ sang artifacts."
+  },
+  {
+    "name": "Kiểm tra Robots.txt",
+    "status": "PASS",
+    "details": "Robots.txt hoạt động và chứa đường dẫn Sitemap."
+  },
+  {
+    "name": "Kiểm tra Sitemap.xml",
+    "status": "PASS",
+    "details": "Sitemap.xml hợp lệ và chứa danh sách URL domain chính."
+  }
+]

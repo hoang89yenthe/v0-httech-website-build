@@ -34,14 +34,14 @@ export function Footer() {
 
           {/* Company info */}
           <div>
-            <Link href="/" className="flex items-center gap-2.5 mb-4" aria-label="HT TECH — Trang chủ">
-              <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm select-none">HT</span>
-              </div>
-              <div>
-                <span className="text-base font-bold text-white">HT TECH</span>
-                <p className="text-[10px] text-slate-500 leading-none mt-0.5">Kỹ Thuật Công Nghiệp</p>
-              </div>
+            <Link href="/" className="flex items-center mb-4" aria-label="HT TECH — Trang chủ">
+              <img
+                src="/logo-horizontal-white.svg"
+                alt="HT TECH"
+                width="144"
+                height="36"
+                className="h-9 w-auto"
+              />
             </Link>
 
             <p className="text-xs text-slate-500 mb-4">{f.companyFull}</p>

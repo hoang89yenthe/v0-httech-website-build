@@ -48,16 +48,21 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-18">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0" aria-label="HT TECH — Trang chủ">
-            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-base leading-none select-none">HT</span>
-            </div>
-            <div>
-              <span className="text-lg font-bold text-primary tracking-tight">HT TECH</span>
-              <p className="text-[10px] text-muted-foreground hidden sm:block leading-none mt-0.5">
-                Kỹ Thuật Công Nghiệp
-              </p>
-            </div>
+          <Link href="/" className="flex items-center shrink-0" aria-label="HT TECH — Trang chủ">
+            <img
+              src="/logo-horizontal.svg"
+              alt="HT TECH"
+              width="144"
+              height="36"
+              className="h-9 w-auto dark:hidden"
+            />
+            <img
+              src="/logo-horizontal-white.svg"
+              alt="HT TECH"
+              width="144"
+              height="36"
+              className="h-9 w-auto hidden dark:block"
+            />
           </Link>
 
           {/* Desktop nav */}

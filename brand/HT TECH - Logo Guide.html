@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HT TECH — Logo Guide</title>
+<link rel="icon" type="image/png" href="png/HT-TECH-icon-64.png" />
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --blue:#2D5BFF; --ink:#181818; --sec:#5C5C5C; --ter:#8A8A8A;
+    --bg:#F5F6F8; --line:#EFEFEF; --card:#FFFFFF; --dark:#0c1020;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:'Mulish',system-ui,sans-serif;color:var(--ink)}
+  .wrap{max-width:1080px;margin:0 auto;padding:64px 32px 96px}
+  header{margin-bottom:48px}
+  .eyebrow{font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);margin:0 0 12px}
+  h1{font-size:40px;font-weight:800;letter-spacing:-.01em;margin:0 0 12px}
+  .lede{font-size:17px;line-height:1.5;color:var(--sec);max-width:60ch;margin:0}
+  section{margin-top:40px}
+  h2{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ter);margin:0 0 16px}
+  .card{background:var(--card);border-radius:16px;box-shadow:0 4px 24px rgba(132,132,132,.10);padding:48px;display:flex;align-items:center;justify-content:center}
+  .card.dark{background:var(--dark);box-shadow:none}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .grid-icons{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .mini{flex-direction:column;gap:14px;padding:32px}
+  .mini .cap{font-size:12px;color:var(--ter)}
+  .swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .sw{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(132,132,132,.10)}
+  .sw .chip{height:96px}
+  .sw .meta{padding:14px 18px}
+  .sw .name{font-weight:700;font-size:15px}
+  .sw .hex{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--sec);margin-top:2px}
+  .specs{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .spec{background:var(--card);border-radius:16px;box-shadow:0 4px 24px rgba(132,132,132,.10);padding:28px 32px}
+  .spec h3{font-size:16px;font-weight:800;margin:0 0 10px}
+  .spec p{font-size:14px;line-height:1.6;color:var(--sec);margin:0}
+  pre{background:var(--dark);color:#E7ECff;border-radius:12px;padding:22px 24px;overflow:auto;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;margin:0}
+  .tok{color:#7FA0FF}
+  ul.files{columns:2;gap:32px;padding-left:18px;margin:0;font-size:14px;color:var(--sec);line-height:1.9}
+  ul.files code{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink)}
+  footer{margin-top:56px;font-size:13px;color:var(--ter)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Bộ nhận diện</p>
+    <h1>HT TECH — Logo</h1>
+    <p class="lede">Phương án <strong>Chip IC</strong>: khối vi mạch với chân kết nối, chữ “HT” dựng dạng hình học. Họa tiết mạch điện gợi đúng tinh thần thiết bị điện công nghiệp & tự động hóa. Tất cả file đều là vector — không phụ thuộc font, hiển thị sắc nét ở mọi kích thước.</p>
+  </header>
+
+  <section>
+    <h2>Logo chính · nền sáng</h2>
+    <div class="card"><img src="HT-TECH-logo-horizontal.svg" style="height:96px" alt="HT TECH logo" /></div>
+  </section>
+
+  <section>
+    <h2>Logo · nền tối</h2>
+    <div class="card dark"><img src="HT-TECH-logo-horizontal-white.svg" style="height:96px" alt="HT TECH logo trên nền tối" /></div>
+  </section>
+
+  <section>
+    <h2>Icon · biểu tượng (favicon / app)</h2>
+    <div class="grid-icons">
+      <div class="card mini"><img src="HT-TECH-icon.svg" style="height:96px" /><span class="cap">Chính</span></div>
+      <div class="card mini dark"><img src="HT-TECH-icon-white.svg" style="height:96px" /><span class="cap" style="color:rgba(255,255,255,.6)">Nền tối</span></div>
+      <div class="card mini"><img src="HT-TECH-icon.svg" style="height:48px" /><span class="cap">48 px</span></div>
+      <div class="card mini"><img src="HT-TECH-icon.svg" style="height:24px" /><span class="cap">24 px (favicon)</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Bảng màu</h2>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#2D5BFF"></div><div class="meta"><div class="name">Xanh thương hiệu</div><div class="hex">#2D5BFF</div></div></div>
+      <div class="sw"><div class="chip" style="background:#181818"></div><div class="meta"><div class="name">Mực / Đen kỹ thuật</div><div class="hex">#181818</div></div></div>
+      <div class="sw"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid var(--line)"></div><div class="meta"><div class="name">Trắng</div><div class="hex">#FFFFFF</div></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Nguyên tắc dùng</h2>
+    <div class="specs">
+      <div class="spec"><h3>Khoảng trống an toàn</h3><p>Chừa khoảng trống quanh logo tối thiểu bằng chiều cao của khối icon. Không đặt chữ/đồ họa khác sát logo.</p></div>
+      <div class="spec"><h3>Kích thước tối thiểu</h3><p>Logo ngang ≥ 120 px chiều rộng; icon ≥ 24 px. Dưới mức này hãy dùng riêng icon.</p></div>
+      <div class="spec"><h3>Nền tối</h3><p>Trên nền đậm/ảnh, dùng bản “nền tối” (thân chip trắng). Không đảo màu xanh.</p></div>
+      <div class="spec"><h3>Tránh</h3><p>Không kéo méo, đổi màu chữ, thêm viền/đổ bóng, hay xoay logo. Giữ tỷ lệ gốc.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Nhúng vào web</h2>
+    <pre><span class="tok">&lt;!-- Logo header (SVG, co giãn theo chiều cao) --&gt;</span>
+&lt;img src=<span class="tok">"/logo/HT-TECH-logo-horizontal.svg"</span> alt=<span class="tok">"HT TECH"</span> height=<span class="tok">"40"</span> /&gt;
+
+<span class="tok">&lt;!-- Favicon --&gt;</span>
+&lt;link rel=<span class="tok">"icon"</span> type=<span class="tok">"image/svg+xml"</span> href=<span class="tok">"/logo/HT-TECH-icon.svg"</span> /&gt;
+&lt;link rel=<span class="tok">"icon"</span> type=<span class="tok">"image/png"</span> sizes=<span class="tok">"64x64"</span> href=<span class="tok">"/logo/HT-TECH-icon-64.png"</span> /&gt;
+&lt;link rel=<span class="tok">"apple-touch-icon"</span> href=<span class="tok">"/logo/HT-TECH-icon-256.png"</span> /&gt;</pre>
+  </section>
+
+  <section>
+    <h2>File trong gói</h2>
+    <ul class="files">
+      <li><code>HT-TECH-logo-horizontal.svg</code> — logo ngang, nền sáng</li>
+      <li><code>HT-TECH-logo-horizontal-white.svg</code> — logo ngang, nền tối</li>
+      <li><code>HT-TECH-icon.svg</code> — icon chính</li>
+      <li><code>HT-TECH-icon-white.svg</code> — icon nền tối</li>
+      <li><code>png/…-logo-horizontal-1600.png</code> — logo PNG (trong suốt)</li>
+      <li><code>png/…-icon-1024/512/256/64.png</code> — icon PNG (trong suốt)</li>
+    </ul>
+  </section>
+
+  <footer>HT TECH · Công ty TNHH Kỹ Thuật Công Nghiệp — Bắc Ninh. Font wordmark dựng vector hình học, không cần cài font.</footer>
+</div>
+</body>
+</html>
