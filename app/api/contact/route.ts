@@ -64,6 +64,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Số điện thoại không hợp lệ" }, { status: 400 });
     }
 
+    // Validate email format nếu có
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      return NextResponse.json({ error: "Email không hợp lệ" }, { status: 400 });
+    }
+
+    // Validate product nằm trong danh sách cho phép
+    const ALLOWED_PRODUCTS = Object.keys(PRODUCT_LABELS);
+    if (product && !ALLOWED_PRODUCTS.includes(product)) {
+      return NextResponse.json({ error: "Sản phẩm không hợp lệ" }, { status: 400 });
+    }
+
     if (process.env.PLAYWRIGHT_TEST === "true" && process.env.NODE_ENV !== "production") {
       console.log("[contact] Chế độ E2E Test: Tự động Mock gửi email thành công");
       return NextResponse.json({ ok: true });

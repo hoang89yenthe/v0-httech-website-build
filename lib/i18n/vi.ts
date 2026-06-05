@@ -96,9 +96,9 @@ const vi = {
     home: "Trang chủ",
   },
   chatbot: {
-    widgetTitle: "Trợ lý ảo HTtech", online: "Đang trực tuyến",
+    widgetTitle: "Trợ lý ảo HT TECH", online: "Đang trực tuyến",
     placeholder: "Nhập tin nhắn...", send: "Gửi tin nhắn",
-    closeBtn: "Đóng khung chat", openBtn: "Trợ lý ảo HTtech",
+    closeBtn: "Đóng khung chat", openBtn: "Trợ lý ảo HT TECH",
   },
 } as const;
 

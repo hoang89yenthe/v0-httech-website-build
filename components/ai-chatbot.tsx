@@ -7,7 +7,7 @@ import { useLanguage } from "@/components/language-provider";
 import { t } from "@/lib/i18n";
 
 // System Instruction context compiled from website brand info (Bắc Ninh branch)
-const SYSTEM_INSTRUCTION = `Bạn là "Trợ lý ảo HTtech" - Chuyên viên tư vấn kỹ thuật tự động hóa chuyên nghiệp của công ty HT TECH (Kỹ Thuật Công Nghiệp).
+const SYSTEM_INSTRUCTION = `Bạn là "Trợ lý ảo HT TECH" - Chuyên viên tư vấn kỹ thuật tự động hóa chuyên nghiệp của công ty HT TECH (Kỹ Thuật Công Nghiệp).
 Nhiệm vụ của bạn là tư vấn tận tình, chuyên nghiệp cho khách hàng về các sản phẩm và dịch vụ của HT TECH dựa trên thông tin chính xác dưới đây:
 
 THÔNG TIN VỀ CÔNG TY HT TECH:
@@ -86,7 +86,7 @@ export function AIChatbot() {
           {
             role: "model",
             text: locale === "vi"
-              ? "Xin chào! Em là **Trợ lý ảo HTtech**. Em có thể giúp gì cho anh/chị về sản phẩm thiết bị điện công nghiệp (biến tần, PLC, HMI, cảm biến, thiết bị đóng cắt) hoặc thiết kế thi công tủ điện tự động hóa ạ?"
+              ? "Xin chào! Em là **Trợ lý ảo HT TECH**. Em có thể giúp gì cho anh/chị về sản phẩm thiết bị điện công nghiệp (biến tần, PLC, HMI, cảm biến, thiết bị đóng cắt) hoặc thiết kế thi công tủ điện tự động hóa ạ?"
               : "Hello! I am **HT TECH Virtual Assistant**. How can I help you with industrial electrical equipment (inverters, PLCs, HMIs, sensors, switchgear) or control panel design and installation?",
           },
         ];
@@ -140,11 +140,13 @@ export function AIChatbot() {
       for (let i = 0; i < lines.length; i++) {
         let line = lines[i].trim();
         if (line.startsWith("- ") || line.startsWith("* ")) {
+          const stripped = line.replace(/^[-*]\s+/, "");
+          let content = `<li>${stripped}</li>`;
           if (!inList) {
-            lines[i] = '<ul class="list-disc pl-5 my-1.5 space-y-1">' + lines[i];
+            content = '<ul class="list-disc pl-5 my-1.5 space-y-1">' + content;
             inList = true;
           }
-          lines[i] = lines[i].replace(/^[-*]\s+/, "<li>") + "</li>";
+          lines[i] = content;
         } else {
           if (inList) {
             lines[i-1] += "</ul>";
@@ -277,21 +279,21 @@ export function AIChatbot() {
   };
 
   const suggestions = locale === "vi" ? [
-    { label: "Sản phẩm chính hãng", prompt: "HTtech cung cấp những sản phẩm gì?" },
+    { label: "Sản phẩm chính hãng", prompt: "HT TECH cung cấp những sản phẩm gì?" },
     { label: "Thiết kế & Thi công tủ điện", prompt: "Tư vấn dịch vụ thiết kế và thi công tủ điện" },
     { label: "Biến tần Siemens V20", prompt: "Thông tin và thông số của Biến tần Siemens V20" },
     { label: "PLC Siemens S7-1200", prompt: "Tìm hiểu về PLC Siemens S7-1200 CPU 1214C" },
     { label: "Tư vấn SCADA & IoT", prompt: "Tư vấn giải pháp nâng cấp hệ thống SCADA nhà máy" },
-    { label: "Chính sách bảo hành", prompt: "Chính sách bảo hành thiết bị của HTtech" },
-    { label: "Hotline liên hệ", prompt: "Thông tin Hotline liên hệ trực tiếp HTtech" },
+    { label: "Chính sách bảo hành", prompt: "Chính sách bảo hành thiết bị của HT TECH" },
+    { label: "Hotline liên hệ", prompt: "Thông tin Hotline liên hệ trực tiếp HT TECH" },
   ] : [
-    { label: "Genuine Products", prompt: "What products does HTtech provide?" },
+    { label: "Genuine Products", prompt: "What products does HT TECH provide?" },
     { label: "Control Panel Design", prompt: "Consultation for control panel design and installation" },
     { label: "Siemens V20 Inverter", prompt: "Information and specifications of Siemens V20 inverter" },
     { label: "Siemens S7-1200 PLC", prompt: "Learn about Siemens S7-1200 PLC CPU 1214C" },
     { label: "SCADA & IoT Upgrade", prompt: "Consultation on SCADA and factory IoT upgrade solutions" },
-    { label: "Warranty Policy", prompt: "What is HTtech's product warranty policy?" },
-    { label: "Contact Hotline", prompt: "Contact hotline info for HTtech" },
+    { label: "Warranty Policy", prompt: "What is HT TECH's product warranty policy?" },
+    { label: "Contact Hotline", prompt: "Contact hotline info for HT TECH" },
   ];
 
   return (
