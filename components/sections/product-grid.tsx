@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { ArrowRight, ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import { Product, getTagClass } from "@/lib/sanity/schema";
-import { getProductImageUrl } from "@/lib/sanity/image";
+import { getProductImageUrl, PRODUCT_BLUR_DATA_URL } from "@/lib/sanity/image";
 import { formatPrice } from "@/lib/utils";
 import { useLanguage } from "@/components/language-provider";
 import { t } from "@/lib/i18n";
@@ -93,6 +93,12 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
     return () => { el.removeEventListener("scroll", updateArrows); ro.disconnect(); };
   }, [updateArrows, filteredProducts]);
 
+  // Keyboard navigation: ← → khi focus vào vùng carousel
+  const handleCarouselKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") { e.preventDefault(); scrollByCards("left"); }
+    if (e.key === "ArrowRight") { e.preventDefault(); scrollByCards("right"); }
+  }, []);
+
   return (
     <section
       id="products"
@@ -160,6 +166,12 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
           </div>
         )}
 
+        {isPage && filteredProducts.length > 0 && (
+          <p className="text-sm text-muted-foreground mb-4" role="status" aria-live="polite">
+            {filteredProducts.length} sản phẩm
+          </p>
+        )}
+
         {filteredProducts.length === 0 && (
           <div className="text-center py-20 text-muted-foreground" role="status" aria-live="polite">
             <p className="font-medium mb-2">
@@ -172,7 +184,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
         )}
 
         {/* ── Carousel ──────────────────────────────────────── */}
-        <div className="relative">
+        <div className="relative" onKeyDown={handleCarouselKeyDown} tabIndex={-1}>
 
           <button
             onClick={() => scrollByCards("left")}
@@ -246,6 +258,8 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
                       sizes="(max-width: 640px) 87vw, 320px"
                       priority={isPage && idx === 0}
                       loading={isPage && idx === 0 ? "eager" : "lazy"}
+                      placeholder="blur"
+                      blurDataURL={PRODUCT_BLUR_DATA_URL}
                       draggable={false}
                       className="object-cover transition-transform duration-300 group-hover:scale-[1.06]"
                     />

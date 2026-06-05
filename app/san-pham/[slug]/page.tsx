@@ -10,7 +10,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { fetchProductBySlug, fetchProducts, fetchRelatedProducts } from "@/lib/sanity/fetch";
 import { getTagClass, tagLabels } from "@/lib/sanity/schema";
-import { getProductImageUrl } from "@/lib/sanity/image";
+import { getProductImageUrl, PRODUCT_BLUR_DATA_URL } from "@/lib/sanity/image";
 import { formatPrice } from "@/lib/utils";
 import { PHONE, ZALO } from "@/lib/constants";
 import { t, type Locale, LOCALE_COOKIE } from "@/lib/i18n";
@@ -147,6 +147,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
+                    placeholder="blur"
+                    blurDataURL={PRODUCT_BLUR_DATA_URL}
                     className="object-cover"
                   />
                 </div>
@@ -271,6 +273,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             fill
                             sizes="(max-width: 640px) 50vw, 200px"
                             loading="lazy"
+                            placeholder="blur"
+                            blurDataURL={PRODUCT_BLUR_DATA_URL}
                             className="object-cover group-hover:scale-[1.03] transition-transform duration-200"
                           />
                         </div>

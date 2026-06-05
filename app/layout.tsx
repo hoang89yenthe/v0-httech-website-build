@@ -59,6 +59,14 @@ export const metadata: Metadata = {
     locale: 'vi_VN',
     type: 'website',
     url: SITE_URL,
+    images: [
+      {
+        url: `${SITE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'HT TECH - Thiết Bị Điện Công Nghiệp Chính Hãng',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -84,6 +92,11 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: '/',
+    languages: {
+      'vi': '/',
+      'en': '/',
+      'x-default': '/',
+    },
   },
 }
 
@@ -98,6 +111,11 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="bg-background" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://cdn.sanity.io" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://generativelanguage.googleapis.com" />
         <script
           id="org-jsonld"
           type="application/ld+json"

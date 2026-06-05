@@ -20,19 +20,22 @@ export function ContactSection() {
     product: "",
     message: "",
   });
+  const [honeypot, setHoneypot] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Honeypot: bot tự điền field ẩn → reject ngay client-side
+    if (honeypot) return;
     setLoading(true);
     setError("");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, _hp: honeypot }),
       });
       if (!res.ok) throw new Error("Gửi thất bại");
       setSubmitted(true);
@@ -136,6 +139,16 @@ export function ContactSection() {
                   </div>
                 ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Honeypot — ẩn với người dùng, bot tự điền */}
+                  <input
+                    type="text"
+                    name="website"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px" }}
+                  />
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-sm font-medium mb-2 block">
