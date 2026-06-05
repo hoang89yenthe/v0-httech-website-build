@@ -5,7 +5,6 @@ import { cookies } from "next/headers";
 export const revalidate = 3600;
 
 import Image from "next/image";
-import Script from "next/script";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -87,7 +86,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   return (
     <>
-      <Script
+      <script
         id={`json-ld-${slug}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -245,8 +244,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         <div className="relative aspect-square bg-muted overflow-hidden">
                           <Image
                             src={getProductImageUrl(rel)}
-                            alt=""
-                            aria-hidden="true"
+                            alt={locale === "en" ? rel.title_en || rel.title : rel.title}
                             fill
                             sizes="(max-width: 640px) 50vw, 200px"
                             loading="lazy"

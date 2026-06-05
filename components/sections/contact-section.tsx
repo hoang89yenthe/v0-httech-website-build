@@ -112,7 +112,7 @@ export function ContactSection() {
                   <div>
                     <h3 className="font-semibold mb-1">{tr.email}</h3>
                     <p className="text-sm text-muted-foreground">
-                      Httechbn@gmail.com
+                      httechbn@gmail.com
                     </p>
                   </div>
                 </div>
