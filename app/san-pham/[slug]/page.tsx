@@ -65,23 +65,46 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const relatedProducts = await fetchRelatedProducts(product.category, product._id, 4);
 
-  // JSON-LD structured data cho Google Shopping / SEO
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://httechvietnam.vn";
+  const categoryName = catTr[product.category as keyof typeof catTr] ?? product.category;
+
+  const modelSpec = product.specs?.find((s) =>
+    /model|mã|ký hiệu/i.test(s.label)
+  )?.value;
+
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.title,
-    description: product.description ?? "",
-    image: getProductImageUrl(product, 800),
-    brand: { "@type": "Brand", name: product.brand ?? "HT TECH" },
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "VND",
-      price: product.price ?? 0,
-      availability: product.inStock
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
-      seller: { "@type": "Organization", name: "HT TECH" },
-    },
+    "@graph": [
+      {
+        "@type": "Product",
+        "@id": `${SITE_URL}/san-pham/${slug}#product`,
+        name: product.title,
+        description: product.description ?? "",
+        image: getProductImageUrl(product, 800),
+        sku: product._id,
+        ...(modelSpec ? { model: modelSpec } : {}),
+        brand: { "@type": "Brand", name: product.brand ?? "HT TECH" },
+        offers: {
+          "@type": "Offer",
+          url: `${SITE_URL}/san-pham/${slug}`,
+          priceCurrency: "VND",
+          price: product.price ?? 0,
+          availability: product.inStock
+            ? "https://schema.org/InStock"
+            : "https://schema.org/OutOfStock",
+          seller: { "@type": "Organization", name: "HT TECH", url: SITE_URL },
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Trang chủ", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Sản phẩm", item: `${SITE_URL}/san-pham` },
+          { "@type": "ListItem", position: 3, name: categoryName, item: `${SITE_URL}/san-pham?category=${product.category}` },
+          { "@type": "ListItem", position: 4, name: product.title, item: `${SITE_URL}/san-pham/${slug}` },
+        ],
+      },
+    ],
   };
 
   return (
@@ -96,7 +119,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <Header />
 
         <main>
-          <div className="container mx-auto px-4 py-8">
+          <div className="container mx-auto px-4 pr-20 sm:pr-4 py-8">
 
             <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-1.5 text-sm text-muted-foreground mb-8">
               <Link href="/" className="hover:text-primary transition-colors">{tr.breadcrumbHome}</Link>

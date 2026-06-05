@@ -18,9 +18,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  const CATEGORIES = ["bien-tan", "plc-hmi", "dong-cat", "cam-bien", "vat-tu"];
+  const categoryUrls: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
+    url: `${SITE_URL}/san-pham?category=${cat}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.85,
+  }));
+
   return [
     { url: SITE_URL, lastModified: new Date(), changeFrequency: "daily", priority: 1 },
     { url: `${SITE_URL}/san-pham`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    ...categoryUrls,
     ...productUrls,
   ];
 }

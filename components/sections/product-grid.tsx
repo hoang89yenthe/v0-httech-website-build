@@ -111,10 +111,13 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
           </header>
         )}
 
+        <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0 mb-4">
+          {/* Fade gradient — chỉ hiện trên mobile để báo có thể scroll thêm */}
+          <div aria-hidden="true" className="pointer-events-none absolute right-0 top-0 bottom-1 w-10 bg-gradient-to-l from-background to-transparent z-10 sm:hidden" />
         <div
           role="tablist"
           aria-label={tr.filterLabel}
-          className="flex gap-2 mb-4 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center"
+          className="flex gap-2 overflow-x-auto pb-1 scrollbar-none sm:flex-wrap sm:justify-center"
         >
           {categories.map((cat) => {
             const isActive = activeCategory === cat.value;
@@ -135,6 +138,7 @@ export function ProductGrid({ products, initialCategory, isPage = false }: Produ
               </button>
             );
           })}
+        </div>
         </div>
 
         {isPage && (
