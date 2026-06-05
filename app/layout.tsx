@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Be_Vietnam_Pro } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { cookies } from 'next/headers'
+import Script from 'next/script'
 import { ThemeProvider } from '@/components/theme-provider'
 import { AutoThemeProvider } from '@/components/auto-theme'
 import { LanguageProvider } from '@/components/language-provider'
@@ -18,6 +19,33 @@ const beVietnamPro = Be_Vietnam_Pro({
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://httechvietnam.vn';
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "LocalBusiness"],
+      "@id": `${SITE_URL}/#organization`,
+      name: "HT TECH - Kỹ Thuật Công Nghiệp",
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon.svg`,
+      telephone: "+840972916382",
+      email: "httechbn@gmail.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "CL13-16 KĐT Him Lam Green Park",
+        addressLocality: "Phường Võ Cường, TP. Bắc Ninh",
+        addressRegion: "Bắc Ninh",
+        addressCountry: "VN",
+      },
+      openingHoursSpecification: [
+        { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday"], opens: "08:00", closes: "17:30" },
+        { "@type": "OpeningHoursSpecification", dayOfWeek: ["Saturday"], opens: "08:00", closes: "12:00" },
+      ],
+      sameAs: [`https://zalo.me/0972916382`],
+    },
+  ],
+};
 
 export const metadata: Metadata = {
   title: 'HT TECH - Thiết Bị Điện Công Nghiệp & Tự Động Hóa',
@@ -68,6 +96,11 @@ export default async function RootLayout({
   return (
     <html lang={locale} className="bg-background" suppressHydrationWarning>
       <body className={`${beVietnamPro.variable} font-sans antialiased`}>
+        <Script
+          id="org-jsonld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
         <ThemeProvider attribute="class" defaultTheme="light">
           <LanguageProvider defaultLocale={locale}>
           <AutoThemeProvider>
